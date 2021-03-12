@@ -14,5 +14,4 @@ public class Main {
         dataClass.set(serviceObject.sendData());
         countWithMap.countLetters(dataClass.get());
     }
-
 }
