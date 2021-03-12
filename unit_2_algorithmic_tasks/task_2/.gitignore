@@ -1,0 +1,5 @@
+*.class
+*.iml
+/src/test
+/src/main/java/resources
+/target
