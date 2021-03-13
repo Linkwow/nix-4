@@ -26,6 +26,7 @@ public class AddWithChar {
                     if (!StringTemp.isEmpty()) {
                         sum += Integer.parseInt(StringTemp);
                     }
+                    StringTemp = "";
                 }
             } else {
                 if (!StringTemp.isEmpty()) {
