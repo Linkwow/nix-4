@@ -1,0 +1,7 @@
+.idea/
+*.class/
+*.iml/
+dependency-reduced-pom.xml/
+target/
+test/
+resources/
