@@ -13,11 +13,14 @@ public class Service {
     public String menuOperations(){
         System.out.println("Выберите, какую операцию вы желаете осуществить : ");
         System.out.println("1. Сложение.");
+        System.out.println("2. Вычитание.");
+        System.out.println("3. Умножение.");
+        System.out.println("4. Деление.");
         return consoleHelper.input();
     }
 
     public String firstNum(){
-        System.out.println("Введите перевое число : ");
+        System.out.println("Введите первое число : ");
         return consoleHelper.input();
     }
 

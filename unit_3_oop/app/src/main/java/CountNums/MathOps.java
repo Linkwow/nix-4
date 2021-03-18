@@ -4,8 +4,12 @@ import CountNums.services.LogicOfApp;
 
 public class MathOps {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         LogicOfApp logic = new LogicOfApp();
-        logic.start();
+        try {
+            logic.start();
+        } catch(Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 }
