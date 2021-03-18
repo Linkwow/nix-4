@@ -1,4 +1,4 @@
-package consoleHelper;
+package consolehelper;
 
 public interface Console {
     String input();

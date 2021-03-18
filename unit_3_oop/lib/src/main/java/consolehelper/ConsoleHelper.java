@@ -1,9 +1,9 @@
-package consoleHelper;
+package consolehelper;
 
 import java.util.Scanner;
 
 public class ConsoleHelper implements Console {
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     @Override
     public String input() {
@@ -14,4 +14,6 @@ public class ConsoleHelper implements Console {
     public void output(Object obj) {
        System.out.println(obj);
     }
+
+
 }
