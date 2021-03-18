@@ -1,10 +1,16 @@
 package MathematicsOperation;
 
+import java.math.BigInteger;
+
 public class MathOps {
 
     public static void main(String[] args) {
-        //метод отвечающий за ввод данных из строки и возвращающий их в мой дс
-        //
+        int i = 12;
+        double d = 11.21;
+
+
+        System.out.println(d + i);
+
     }
 
 }
