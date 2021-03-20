@@ -1,4 +1,4 @@
-@chcp 866
+@chcp 1251
 @set MAVEN_DIR=%~dp0apache-maven
 @set ROOT=%~dp0
 @path %PATH%;%MAVEN_DIR%\bin
