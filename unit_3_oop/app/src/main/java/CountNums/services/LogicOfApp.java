@@ -26,7 +26,7 @@ public class LogicOfApp {
     }
 
     private void calculate(String typeOperations, String typeValue, String firstNum, String secondNum) throws Exception {
-        System.out.println("Р РµР·СѓР»СЊС‚Р°С‚ РѕРїРµСЂР°С†РёРё : ");
+        System.out.println("Результат операции : ");
         if (Integer.parseInt(typeValue) == 1) {
             if (Integer.parseInt(typeOperations) == 1) {
                 consoleHelper.output(FactoryControlService.integerOperations().add(Integer.parseInt(firstNum), Integer.parseInt(secondNum)));

@@ -7,32 +7,32 @@ public class UserInterface {
     private static ConsoleHelper consoleHelper = new ConsoleHelper();
 
     private static void firstMethod(){
-        System.out.println("Р’РІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ РєРѕС‚РѕСЂСѓСЋ РЅСѓР¶РЅРѕ РѕР±СЂР°С‚РёС‚СЊ");
+        System.out.println("Введите строку которую нужно обратить");
         consoleHelper.output(ChangeString.reverse(consoleHelper.input()));
     }
 
     private static void secondMethod(){
-        System.out.println("Р’РІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ РєРѕС‚РѕСЂСѓСЋ РЅСѓР¶РЅРѕ РѕР±СЂР°С‚РёС‚СЊ");
+        System.out.println("Введите строку которую нужно обратить");
         String reverseString = consoleHelper.input();
-        System.out.println("Р’РІРµРґРёС‚Рµ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ СЃРёРјРІРѕР»РѕРІ РєРѕС‚РѕСѓСЋ РЅСѓР¶РЅРѕ СЂР°Р·РІРµСЂРЅСѓС‚СЊ РІРѕ РІСЃРµС… СЃР»РѕРІР°С…");
+        System.out.println("Введите последовательность символов котоую нужно развернуть во всех словах");
         String pattern = consoleHelper.input();
-        consoleHelper.output(methods.ChangeString.reverse(reverseString, pattern));
+        consoleHelper.output(ChangeString.reverse(reverseString, pattern));
     }
 
     private static void thirdMethod(){
-        System.out.println("Р’РІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ РєРѕС‚РѕСЂСѓСЋ РЅСѓР¶РЅРѕ РѕР±СЂР°С‚РёС‚СЊ");
+        System.out.println("Введите строку которую нужно обратить");
         String reverseString = consoleHelper.input();
-        System.out.println("Р’РІРµРґРёС‚Рµ РїРµСЂРІРѕРµ С‡РёСЃР»Рѕ РґР»СЏ РґРёР°РїР°Р·РѕРЅР°");
+        System.out.println("Введите первое число для диапазона");
         Integer first = Integer.parseInt(consoleHelper.input());
-        System.out.println("Р’РІРµРґРёС‚Рµ РІС‚РѕСЂРѕРµ С‡РёСЃР»Рѕ РґР»СЏ РґРёР°РїР°Р·РѕРЅР°");
+        System.out.println("Введите второе число для диапазона");
         Integer second = Integer.parseInt(consoleHelper.input());
         consoleHelper.output(ChangeString.reverse(reverseString, first, second));
     }
 
     private static boolean end(){
-        System.out.println("Р–РµР»Р°РµС‚Рµ РїСЂРѕРґРѕР»Р¶РёС‚СЊ?");
-        System.out.println("1. РќРµС‚.");
-        System.out.println("2. Р”Р°.");
+        System.out.println("Желаете продолжить?");
+        System.out.println("1. Нет.");
+        System.out.println("2. Да.");
         int end = Integer.parseInt(consoleHelper.input());
         if(end == 1){
             return  false;

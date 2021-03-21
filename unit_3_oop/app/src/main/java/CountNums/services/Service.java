@@ -6,35 +6,35 @@ public class Service {
     private ConsoleHelper consoleHelper = new ConsoleHelper();
 
     public String menuType(){
-        System.out.println("Р’С‹Р±РµСЂРёС‚Рµ СЃ РєР°РєРёРј С‚РёРїРѕРј РґР°РЅРЅС‹С… Р±СѓРґСѓС‚ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ РѕРїРµСЂР°С†РёРё : ");
+        System.out.println("Выберите с каким типом данных будут производится операции : ");
         System.out.println("1. Integer.");
         System.out.println("2. Double.");
         return consoleHelper.input();
     }
 
     public String menuOperations(){
-        System.out.println("Р’С‹Р±РµСЂРёС‚Рµ, РєР°РєСѓСЋ РѕРїРµСЂР°С†РёСЋ РІС‹ Р¶РµР»Р°РµС‚Рµ РѕСЃСѓС‰РµСЃС‚РІРёС‚СЊ : ");
-        System.out.println("1. РЎР»РѕР¶РµРЅРёРµ.");
-        System.out.println("2. Р’С‹С‡РёС‚Р°РЅРёРµ.");
-        System.out.println("3. РЈРјРЅРѕР¶РµРЅРёРµ.");
-        System.out.println("4. Р”РµР»РµРЅРёРµ.");
+        System.out.println("Выберите, какую операцию вы желаете осуществить : ");
+        System.out.println("1. Сложение.");
+        System.out.println("2. Вычитание.");
+        System.out.println("3. Умножение.");
+        System.out.println("4. Деление.");
         return consoleHelper.input();
     }
 
     public String firstNum(){
-        System.out.println("Р’РІРµРґРёС‚Рµ РїРµСЂРІРѕРµ С‡РёСЃР»Рѕ : ");
+        System.out.println("Введите первое число : ");
         return consoleHelper.input();
     }
 
     public String secondNum(){
-        System.out.println("Р’РІРµРґРёС‚Рµ РІС‚РѕСЂРѕРµ С‡РёСЃР»Рѕ : ");
+        System.out.println("Введите второе число : ");
         return consoleHelper.input();
     }
 
     public String end(){
-        System.out.println("Р’С‹ Р¶РµР»Р°РµС‚Рµ РїСЂРѕРґРѕР»Р¶РёС‚СЊ?");
-        System.out.println("1. Р”Р°.");
-        System.out.println("2. РќРµС‚.");
+        System.out.println("Вы желаете продолжить?");
+        System.out.println("1. Да.");
+        System.out.println("2. Нет.");
         return consoleHelper.input();
     }
 }
