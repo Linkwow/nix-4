@@ -33,6 +33,11 @@ public class AppLogic {
     private static boolean nextPositionCheck(char ch, int i, Object[] currentPosition) {
         char letterPosition = (char) currentPosition[0];
         int digitPosition = (int) currentPosition[1];
+        if(digitPosition + i < 0){
+            digitPosition = 0;
+        } else if( digitPosition - i < 0){
+            digitPosition = Integer.MAX_VALUE - 2;
+        }
         if ((ch == letterPosition + 1) || (ch == letterPosition - 1)) {
             if (i == digitPosition + 2 || i == digitPosition - 2) {
                 return true;
