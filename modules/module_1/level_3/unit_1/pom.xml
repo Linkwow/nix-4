@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>unit_2</artifactId>
+    <artifactId>unit_1</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -31,7 +31,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>chess.ChessBoard</mainClass>
+                                    <mainClass>cellcreator.CellBoard</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -40,4 +40,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
