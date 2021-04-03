@@ -1,6 +1,5 @@
 package ua.nix.bookslibrary.console;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Console {

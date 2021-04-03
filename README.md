@@ -3,3 +3,4 @@ if you add author with 3 part initials(Erich-Maria Remark, e.g.) you shall use t
 you always shall add the year to bokk in special menu.
 E.G.
 Erich-Maria Remark "Three mates" 1930.
+to start -> run the run.bat
