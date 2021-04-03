@@ -13,10 +13,11 @@ public class DataBase {
     private final List<Author> authorList = new ArrayList<>();
     private final List<Book> bookList = new ArrayList<>();
     private final String[] nullArray = new String[]{"null"};
-    private int bookId;
-    private int authorId;
+    private int bookId = 1;
+    private int authorId = 1;
 
-    private DataBase() {}
+    private DataBase() {
+    }
 
     public void createBook(Book book) {
         if (book.getAuthorList().get(0).isBlank()) {
@@ -124,7 +125,7 @@ public class DataBase {
 
     public void updateBook(int id, String title, String year, String[] authors) {
         logger.info("Start update book");
-        Book book = bookList.get(id);
+        Book book = findBookById(id);
         book.setTitle(title);
         book.setYear(year);
         book.clear();
@@ -134,7 +135,7 @@ public class DataBase {
 
     public void updateAuthor(int id, String firstName, String lastName, String[] authors) {
         logger.info("Start update author");
-        Author author = authorList.get(id);
+        Author author = findAuthorById(id);
         author.setFirstName(firstName);
         author.setLastName(lastName);
         author.clear();
@@ -144,27 +145,23 @@ public class DataBase {
 
     public void deleteBook(int id) {
         logger.info("Start delete book");
-        List<Book> tempList = new ArrayList<>();
-        tempList.containsAll(bookList);
-        for (Book book : tempList) {
-            if(book.getId() == id)
-                tempList.remove(bookList.indexOf(book));
+        Book book = new Book();
+        for (Book b : bookList) {
+            if (b.getId() == id)
+                book = b;
         }
-        bookList.clear();
-        bookList.containsAll(tempList);
+        bookList.remove(book);
         logger.info("End delete book");
     }
 
     public void deleteAuthor(int id) {
         logger.info("Start delete author");
-        List<Author> tempList = new ArrayList<>();
-        tempList.containsAll(authorList);
-        for (Author author : tempList) {
-            if(author.getId() == id)
-                tempList.remove(authorList.indexOf(author));
+        Author author = new Author();
+        for (Author a : authorList) {
+            if (a.getId() == id)
+                author = a;
         }
-        authorList.clear();
-        authorList.containsAll(tempList);
+        authorList.remove(author);
         logger.info("End delete author");
     }
 
@@ -207,24 +204,23 @@ public class DataBase {
                 String[] info = book.split(" ");
                 String title = info[0];
                 String year = info[1];
-                int id = findBookByTitle(title, year).getId();
-                author.setBookId(id);
+                author.setBookId(findBookByTitle(title, year).getId());
             }
         }
     }
 
-    public List<Author> getAllAuthorsByBook(int id){
+    public List<Author> getAllAuthorsByBook(int id) {
         List<Author> allAuthors = new ArrayList<>();
-        for (int i : findBookById(id).getAuthorId()){
+        for (int i : findBookById(id).getAuthorId()) {
             allAuthors.add(findAuthorById(i));
         }
         return allAuthors;
     }
 
-    public List<Book> getAllBooksByAuthor(int id){
+    public List<Book> getAllBooksByAuthor(int id) {
         List<Integer> booksIdList = findAuthorById(id).getBookId();
         List<Book> allBooks = new ArrayList<>();
-        for (int i : booksIdList){
+        for (int i : booksIdList) {
             allBooks.add(findBookById(i));
         }
         return allBooks;

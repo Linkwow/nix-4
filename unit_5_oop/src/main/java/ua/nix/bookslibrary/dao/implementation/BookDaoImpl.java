@@ -43,11 +43,6 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void getAuthorList(int id) {
-        DataBase.getInstance().getAuthorsList(id);
-    }
-
-    @Override
     public List<Book> getList(int id) {
         DataBase.getInstance().createRelationshipsBooksToAuthor();
         return DataBase.getInstance().getAllBooksByAuthor(id);

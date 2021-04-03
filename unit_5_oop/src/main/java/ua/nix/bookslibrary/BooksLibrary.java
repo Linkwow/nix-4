@@ -1,18 +1,12 @@
 package ua.nix.bookslibrary;
 
-import ua.nix.bookslibrary.controller.AuthorController;
-import ua.nix.bookslibrary.controller.BookController;
-import ua.nix.bookslibrary.data.Book;
+import ua.nix.bookslibrary.demodatabase.DemoDataBase;
+import ua.nix.bookslibrary.ui.UserInterface;
 
 public class BooksLibrary {
 
     public static void main(String[] args) {
-        AuthorController.getInstance().create();
-        AuthorController.getInstance().create();
-        AuthorController.getInstance().printTable();
-        BookController.getInstance().create();
-        BookController.getInstance().create();
-        BookController.getInstance().printTable();
-        AuthorController.getInstance().getAuthorsByBook();
+        DemoDataBase.getInstance().createDemoDataBase();
+        new UserInterface().run();
     }
 }

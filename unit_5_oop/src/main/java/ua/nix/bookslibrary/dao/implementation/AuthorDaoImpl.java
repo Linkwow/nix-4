@@ -42,11 +42,6 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public void getBooksList(int id) {
-        DataBase.getInstance().getBookList(id);
-    }
-
-    @Override
     public List<Author> getList(int id) {
         DataBase.getInstance().createRelationshipsAuthorsToBook();
         return DataBase.getInstance().getAllAuthorsByBook(id);

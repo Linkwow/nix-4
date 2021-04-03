@@ -42,11 +42,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void getAuthorList(int id) {
-        BookDaoImpl.getInstance().getAuthorList(id);
-    }
-
-    @Override
     public List<Book> getList(int id) {
         return BookDaoImpl.getInstance().getList(id);
     }

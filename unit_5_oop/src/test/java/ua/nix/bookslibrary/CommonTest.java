@@ -70,7 +70,7 @@ public class CommonTest {
     @Test
     @Order(4)
     public void readByIdForBookCheck() {
-        for (int i = 0; i < db.findAllBooks().size(); i++) {
+        for (int i = 1; i < db.findAllBooks().size(); i++) {
             Assert.assertEquals(i, BookServiceImpl.getInstance().read(i).getId());
         }
     }
@@ -78,7 +78,7 @@ public class CommonTest {
     @Test
     @Order(5)
     public void readByIdForAuthorCheck() {
-        for (int i = 0; i < db.findAllAuthors().size(); i++) {
+        for (int i = 1; i < db.findAllAuthors().size(); i++) {
             Assert.assertEquals(i, AuthorServiceImpl.getInstance().read(i).getId());
         }
     }
@@ -86,7 +86,7 @@ public class CommonTest {
     @Test
     @Order(6)
     public void readByTitleForBookCheck() {
-        for (int i = 0; i < db.findAllBooks().size(); i++) {
+        for (int i = 1; i < db.findAllBooks().size(); i++) {
             Assert.assertEquals(i,
                     BookServiceImpl.getInstance().read(
                             BookServiceImpl.getInstance().read(i).getTitle(),
@@ -97,7 +97,7 @@ public class CommonTest {
     @Test
     @Order(7)
     public void readByTitleForAuthorCheck() {
-        for (int i = 0; i < db.findAllAuthors().size(); i++) {
+        for (int i = 1; i < db.findAllAuthors().size(); i++) {
             Assert.assertEquals(i, AuthorServiceImpl.getInstance().read(
                     AuthorServiceImpl.getInstance().read(i).getLastName(),
                     AuthorServiceImpl.getInstance().read(i).getFirstName()).getId());
@@ -109,7 +109,7 @@ public class CommonTest {
     public void updateBookCheck() {
         String title = "lights";
         String year = "200";
-        for (int i = 0; i < db.findAllBooks().size(); i++) {
+        for (int i = 1; i < db.findAllBooks().size(); i++) {
             year += i;
             String[] authors = new String[]{"Nick Doomski#" + i};
             BookServiceImpl.getInstance().update(i, title, year, authors);
@@ -125,7 +125,7 @@ public class CommonTest {
     public void updateAuthorCheck() {
         String firstName = "Nick";
         String lastName = "Doomski#";
-        for (int i = 0; i < db.findAllAuthors().size(); i++) {
+        for (int i = 1; i < db.findAllAuthors().size(); i++) {
             lastName += i;
             String[] bookArray = new String[]{"lights 200" + i};
             AuthorServiceImpl.getInstance().update(i, firstName, lastName, bookArray);
@@ -139,16 +139,15 @@ public class CommonTest {
     @Test
     @Order(8)
     public void deleteBookCheck() {
-        for (int i = 0; i < db.findAllBooks().size(); i++) {
+        for (int i = 0; !db.findAllBooks().isEmpty(); i++) {
             BookServiceImpl.getInstance().delete(i);
         }
-        Assert.assertTrue(db.findAllBooks().size() == 0);
     }
 
     @Test
     @Order(9)
     public void deleteAuthorCheck() {
-        for (int i = 0; i < db.findAllAuthors().size(); i++) {
+        for (int i = 0; !db.findAllAuthors().isEmpty(); i++) {
             AuthorServiceImpl.getInstance().delete(i);
         }
         Assert.assertTrue(db.findAllAuthors().size() == 0);
