@@ -1,5 +1,15 @@
 package ua.nix.calendar.entity;
 
 public abstract class DateEntity {
-    protected int id;
+    protected Integer id;
+    protected Long day;
+    protected Long month;
+    protected Long year;
+    protected Long hour;
+    protected Long minutes;
+    protected Long seconds;
+    protected Long milliseconds;
+    protected Long allDateImMilliseconds;
+    protected Long dayCount;
+    protected Boolean leapYear;
 }

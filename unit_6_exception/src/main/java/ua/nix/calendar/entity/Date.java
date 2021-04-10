@@ -1,58 +1,96 @@
 package ua.nix.calendar.entity;
 
-public class Date extends DateEntity {                      //сущность хранит дни в милисекундах
-    private static final long SECONDS_TO_MS_VALUE = 1000;
-    private static final long MINUTE_TO_MS_VALUE = 60000;
-    private static final long HOUR_TO_MS_VALUE = 3600000;
-    private static final long DAY_TO_MS_VALUE = 86400000;
+public class Date extends DateEntity {                              //класс должен содержать в себе данные о том какая это дата. Не отминусовывать ничего
 
-    private long day;
-    private long month;
-    private long year;
-    private long hour;
-    private long minutes;
-    private long seconds;
-    private long milliseconds;
-
-    private long ms;
-
-    public void setDay(long day) {
+    public void setDay(Long day) {
         this.day = day;
     }
 
-    public void setMonth(long month) {
+    public void setMonth(Long month) {
         this.month = month;
     }
 
-    public void setYear(long year) {
+    public void setYear(Long year) {
         this.year = year;
     }
 
-    public void setHour(long hour) {
+    public void setHour(Long hour) {
         this.hour = hour;
     }
 
-    public void setMinutes(long minutes) {
+    public void setMinutes(Long minutes) {
         this.minutes = minutes;
     }
 
-    public void setSeconds(long seconds) {
+    public void setSeconds(Long seconds) {
         this.seconds = seconds;
     }
 
-    public void setMilliseconds(long milliseconds) {
+    public void setMilliseconds(Long milliseconds) {
         this.milliseconds = milliseconds;
     }
 
-    public void setId(int id){
+    public void setAllDateImMilliseconds(Long allDateImMilliseconds) {  //сюда подаем то количество миллисекунд которое прошло до текущей даты.
+        this.allDateImMilliseconds = allDateImMilliseconds;
+    }
+
+    public void setDayCount(Long dayCount){                             //вот сюда подаём то количество дней которое прошло до этой даты. -1
+        this.dayCount = dayCount;
+    }
+
+    public void setLeapYear(Boolean leapYear){                          //сюда подаём високосный год или нет....
+        this.leapYear = leapYear;
+    }
+
+    public void setId(Integer id){
         this.id = id;
     }
 
-    public void setMs(long ms) {
-        this.ms = ms;
+    public Long getDay() {
+        return day;
+    }
+
+    public Long getMonth() {
+        return month;
+    }
+
+    public Long getYear() {
+        return year;
+    }
+
+    public Long getHour() {
+        return hour;
+    }
+
+    public Long getMinutes() {
+        return minutes;
+    }
+
+    public Long getSeconds() {
+        return seconds;
+    }
+
+    public Long getMilliseconds() {
+        return milliseconds;
+    }
+
+    public Long getAllDateImMilliseconds() {
+        return allDateImMilliseconds;
+    }
+
+    public Long getDayCount() {
+        return dayCount;
+    }
+
+    public Boolean getLeapYear() {
+        return leapYear;
+    }
+
+    public Integer getId(){
+        return id;
     }
 
     public String toString(){
-        return day + "/" + month + "/" +  year + " " + hour + ":" + minutes +  ":" + seconds;
+        return day + "/" + month + "/" +  year + " " + hour + ":" + minutes + ":" + seconds + ":" + milliseconds;
     }
 }

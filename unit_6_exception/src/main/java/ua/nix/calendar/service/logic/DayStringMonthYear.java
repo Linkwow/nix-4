@@ -1,6 +1,6 @@
 package ua.nix.calendar.service.logic;
 
-import ua.nix.calendar.exceptions.impl.DateExceptions;
+import ua.nix.calendar.exceptions.impl.DateException;
 
 import java.util.Map;
 
@@ -48,7 +48,7 @@ public class DayStringMonthYear {
         return sb.toString();
     }
 
-    public static String[] createStringData(String result) throws DateExceptions {
+    public static String[] createStringData(String result) throws DateException {
         String[] array = new String[7];
         String[] temp = result.split("[/ :]");
         if (temp[0].isEmpty()) {
@@ -62,14 +62,14 @@ public class DayStringMonthYear {
                 if (i == 1) {
                     array[i] = String.valueOf(monthMap.get(temp[i]));
                     if (array[i] == "null") {
-                        throw new DateExceptions("Вы ввели неверный месяц");
+                        throw new DateException("Вы ввели неверный месяц");
                     }
                 } else {
                     array[i] = temp[i];
                 }
             }
-        } catch (DateExceptions d) {
-            throw new DateExceptions(d.getMessage());
+        } catch (DateException d) {
+            throw new DateException(d.getMessage());
         }
         return array;
     }

@@ -1,12 +1,11 @@
 package ua.nix.calendar.service.impl;
 
 import ua.nix.calendar.data.DataBase;
-import ua.nix.calendar.exceptions.impl.DateExceptions;
-
-import static ua.nix.calendar.service.logic.ConvertStringToLong.*;
-
-import ua.nix.calendar.service.logic.*;
+import ua.nix.calendar.entity.Date;
+import ua.nix.calendar.exceptions.impl.DateException;
+import ua.nix.calendar.repository.impl.RepositoryImpl;
 import ua.nix.calendar.service.Service;
+import ua.nix.calendar.service.logic.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +17,8 @@ public class ServiceImpl implements Service {
     }
 
     @Override
-    public void createDate(String input) throws DateExceptions {
+    public void createDate(String input) throws DateException {
+
         Matcher dayMonthYearWithoutTime = Pattern.compile("\\d{0,2}/\\d{1,2}/\\d{0,2}").matcher(input);
         Matcher dayMonthYearWithTime = Pattern.compile("\\d{0,2}/\\d{1,2}/\\d{0,2}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}").matcher(input);
         Matcher monthDayYearWithoutTime = Pattern.compile("\\d{0,2}/\\d{0,2}/\\d{4}").matcher(input);
@@ -28,29 +28,28 @@ public class ServiceImpl implements Service {
         Matcher stringMonthDayYearWithoutTime = Pattern.compile("\\w+/\\d{0,2}/\\d{0,4}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
         Matcher monthStringDayYearWithTime = Pattern.compile("\\w+/\\d{0,2}/\\d{0,4}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
 
-
         try {
             if (dayMonthYearWithoutTime.matches()) {
-                DataBase.getInstance().create(dataPrepareToSave(DayMonthYearNoTime.createStringData(DayMonthYearNoTime.addTime(input))));
+                RepositoryImpl.create(DayMonthYearNoTime.createStringData(DayMonthYearNoTime.addTime(input)));
             } else if (dayMonthYearWithTime.matches()) {
-                DataBase.getInstance().create(dataPrepareToSave(DayMonthYear.createStringData(DayMonthYear.addTime(input))));
+                RepositoryImpl.create(DayMonthYear.createStringData(DayMonthYear.addTime(input)));
             } else if (monthDayYearWithoutTime.matches()) {
-                DataBase.getInstance().create(dataPrepareToSave(MonthDayYearNoTime.createStringData(MonthDayYearNoTime.addTime(input))));
+                RepositoryImpl.create(MonthDayYearNoTime.createStringData(MonthDayYearNoTime.addTime(input)));
             } else if (monthDayYearWithTime.matches()) {
-                DataBase.getInstance().create(dataPrepareToSave(MonthDayYear.createStringData(MonthDayYear.addTime(input))));
+                RepositoryImpl.create(MonthDayYear.createStringData(MonthDayYear.addTime(input)));
             } else if (dayStringMonthYearWithoutTime.matches()) {
-                DataBase.getInstance().create(dataPrepareToSave(DayStringMonthYearNoTime.createStringData(DayStringMonthYearNoTime.addTime(input))));
+                RepositoryImpl.create(DayStringMonthYearNoTime.createStringData(DayStringMonthYearNoTime.addTime(input)));
             } else if (dayStringMonthYearWithTime.matches()) {
-                DataBase.getInstance().create(dataPrepareToSave(DayStringMonthYear.createStringData(DayStringMonthYear.addTime(input))));
+                RepositoryImpl.create(DayStringMonthYear.createStringData(DayStringMonthYear.addTime(input)));
             } else if (stringMonthDayYearWithoutTime.matches()) {
-                DataBase.getInstance().create(dataPrepareToSave(StringMonthDayYearNoTime.createStringData(StringMonthDayYearNoTime.addTime(input))));
+                RepositoryImpl.create(StringMonthDayYearNoTime.createStringData(StringMonthDayYearNoTime.addTime(input)));
             } else if (monthStringDayYearWithTime.matches()) {
-                DataBase.getInstance().create(dataPrepareToSave(StringMonthDayYear.createStringData(StringMonthDayYear.addTime(input))));
+                RepositoryImpl.create(StringMonthDayYear.createStringData(StringMonthDayYear.addTime(input)));
             } else {
-                throw new DateExceptions("Pattern Error");
+                throw new DateException("Pattern Error");
             }
-        } catch (DateExceptions d) {
-            System.err.println(d.getMessage());
+        } catch (DateException d) {
+            throw new DateException(d.getMessage());
         }
     }
 
@@ -62,19 +61,11 @@ public class ServiceImpl implements Service {
     }
 
     public static void main(String[] args) throws Exception {
-        getInstance().createDate("/04/");
-        getInstance().createDate("01/04/");
-        getInstance().createDate("/04/02");
-        getInstance().createDate("12/03/21");
-        getInstance().createDate("1/12/21 12:00:00");
-        getInstance().createDate("//2021");
-        getInstance().createDate("12//2021");
-        getInstance().createDate("12//2021 12");
-        getInstance().createDate("//2021 00:47");
-        getInstance().createDate("1/Май/102");
-        getInstance().createDate("/Февраль/ 12");
-        getInstance().createDate("Февраль//");
-        getInstance().createDate("Февраль// 12");
+        getInstance().createDate("1/12/21 10:00:00");
+        getInstance().createDate("1/12/20 00:00:00");
+        Date date1 = DataBase.getInstance().listDate.get(0);
+        Date date2 = DataBase.getInstance().listDate.get(1);
+        System.out.println(DataBase.getInstance().subtractTwoDate(date1, date2));
 
     }
 }

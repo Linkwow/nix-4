@@ -1,7 +1,5 @@
 package ua.nix.calendar.service.logic;
 
-import ua.nix.calendar.exceptions.impl.DateExceptions;
-
 public class DayMonthYearNoTime {
 
     private static final String DEFAULT_MILLENNIUM_AND_CENTURY = "19";
