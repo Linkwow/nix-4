@@ -9,7 +9,7 @@ public class Calendar {
             ui.run();
         } catch (Exception d){
             System.err.println(d.getMessage());
-            ui.run();
+            //ui.run();
         }
     }
 }

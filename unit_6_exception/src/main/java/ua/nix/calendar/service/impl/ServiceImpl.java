@@ -22,8 +22,8 @@ public class ServiceImpl implements Service {
         Matcher dayMonthYearWithTime = Pattern.compile("\\d{0,2}/\\d{1,2}/\\d{0,2}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}").matcher(input);
         Matcher monthDayYearWithoutTime = Pattern.compile("\\d{0,2}/\\d{0,2}/\\d{4}").matcher(input);
         Matcher monthDayYearWithTime = Pattern.compile("\\d{0,2}/\\d{0,2}/\\d{4}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}").matcher(input);
-        Matcher dayStringMonthYearWithoutTime = Pattern.compile("\\d{0,2}/\\w+/\\d{0,4}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
-        Matcher dayStringMonthYearWithTime = Pattern.compile("\\d{0,2}/\\w+/\\d{0,4}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
+        Matcher dayStringMonthYearWithoutTime = Pattern.compile("\\w+\\s\\d{0,2}\\s\\d{0,4}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
+        Matcher dayStringMonthYearWithTime = Pattern.compile("\\w+\\s\\d{0,2}\\s\\d{0,4}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
         Matcher stringMonthDayYearWithoutTime = Pattern.compile("\\w+/\\d{0,2}/\\d{0,4}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
         Matcher monthStringDayYearWithTime = Pattern.compile("\\w+/\\d{0,2}/\\d{0,4}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
 
