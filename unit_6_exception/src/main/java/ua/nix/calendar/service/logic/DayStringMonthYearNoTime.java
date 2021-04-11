@@ -16,9 +16,9 @@ public class DayStringMonthYearNoTime {
             Map.entry("Июль", 7),
             Map.entry("Август", 8),
             Map.entry("Сентябрь", 9),
-            Map.entry("Октябрь", 11),
-            Map.entry("Ноябрь", 12),
-            Map.entry("Декабрь", 13));
+            Map.entry("Октябрь", 10),
+            Map.entry("Ноябрь", 11),
+            Map.entry("Декабрь", 12));
 
     public static String addTime(String input) {
         StringBuilder sb = new StringBuilder();
