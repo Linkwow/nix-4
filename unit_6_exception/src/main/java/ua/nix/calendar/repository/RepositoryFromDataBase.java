@@ -84,6 +84,8 @@ public class RepositoryFromDataBase {
         for (MyDate d : getAll()) {
             if (d.getDay() <= 9) {
                 day = "0" + d.getDay();
+            } else {
+                day = String.valueOf(d.getDay());
             }
             System.out.println(day + "/" +
                     d.getMonth() + "/" +

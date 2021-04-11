@@ -6,6 +6,8 @@ import java.util.Map;
 
 public class DayStringMonthYearNoTime {
 
+    private static final String DEFAULT_MILLENNIUM_AND_CENTURY = "19";
+
     private static Map<String, Integer> monthMap = Map.ofEntries(
             Map.entry("январь", 1),
             Map.entry("‘евраль", 2),
@@ -30,25 +32,24 @@ public class DayStringMonthYearNoTime {
     public static String[] createStringData(String result) throws DateException {
         String[] array = new String[7];
         String[] temp = result.split("[/ :]");
-        if (temp[0].isEmpty()) {
-            temp[0] = "01";
+        if (temp[1].isEmpty()) {
+            temp[1] = "01";
         }
         if (temp[2].isEmpty()) {
             temp[2] = "2021";
+        } else if (temp[2].length() == 2) {
+            String s;
+            s = temp[2];
+            temp[2] = DEFAULT_MILLENNIUM_AND_CENTURY;
+            temp[2] += s;
         }
-        try {
-            for (int i = 0; i < array.length; i++) {
-                if (i == 1) {
-                    array[i] = String.valueOf(monthMap.get(temp[i]));
-                    if (array[i] == "null") {
-                        throw new DateException("¬ы ввели неверный мес€ц");
-                    }
-                } else {
-                    array[i] = temp[i];
-                }
-            }
-        } catch (DateException d) {
-            throw new DateException(d.getMessage());
+        array[0] = temp[1];
+        array[1] = String.valueOf(monthMap.get(temp[0]));;
+        if (array[1] == "null") {
+            throw new DateException("¬ы ввели неверный мес€ц");
+        }
+        for (int i = 2; i < array.length; i++) {
+            array[i] = temp[i];
         }
         return array;
     }
