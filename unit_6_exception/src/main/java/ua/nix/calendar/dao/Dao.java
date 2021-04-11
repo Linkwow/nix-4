@@ -1,12 +1,15 @@
 package ua.nix.calendar.dao;
 
 import ua.nix.calendar.entity.MyDate;
+import ua.nix.calendar.exceptions.impl.DateException;
 
 import java.util.List;
 
 public interface Dao {
 
-    void create(List<Long> parameters, Boolean leapYear);
-    MyDate read(int id);
-
+    void create(List<Long> parameters);
+    MyDate read(int id) throws DateException;
+    List<MyDate> getAll();
+    void ascSort();
+    void descSort();
 }

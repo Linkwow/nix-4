@@ -6,16 +6,14 @@ public class MyDate extends DateEntity implements Comparable<MyDate> {
     public int compareTo(MyDate dateObject) {
         int result = 0;
         if(this.getAllDateImMilliseconds() > dateObject.getAllDateImMilliseconds()){
-            result = -1;
+            return -1;
         } else if(this.getAllDateImMilliseconds() < dateObject.getAllDateImMilliseconds()){
-            result = 1;
-        } else if(this.getAllDateImMilliseconds() == dateObject.getAllDateImMilliseconds()){
-            result = 0;
+            return 1;
+        } else if(this.getAllDateImMilliseconds().equals(dateObject.getAllDateImMilliseconds())){
+            return 0;
         }
         return result;
     }
-
-
 
     public void setDay(Long day) {
         this.day = day;
@@ -45,16 +43,8 @@ public class MyDate extends DateEntity implements Comparable<MyDate> {
         this.milliseconds = milliseconds;
     }
 
-    public void setAllDateImMilliseconds(Long allDateImMilliseconds) {  //сюда подаем то количество миллисекунд которое прошло до текущей даты.
+    public void setAllDateImMilliseconds(Long allDateImMilliseconds) {
         this.allDateImMilliseconds = allDateImMilliseconds;
-    }
-
-    public void setDayCount(Long dayCount){                             //вот сюда подаём то количество дней которое прошло до этой даты. -1
-        this.dayCount = dayCount;
-    }
-
-    public void setLeapYear(Boolean leapYear){                          //сюда подаём високосный год или нет....
-        this.leapYear = leapYear;
     }
 
     public void setId(Integer id){
@@ -93,19 +83,7 @@ public class MyDate extends DateEntity implements Comparable<MyDate> {
         return allDateImMilliseconds;
     }
 
-    public Long getDayCount() {
-        return dayCount;
-    }
-
-    public Boolean getLeapYear() {
-        return leapYear;
-    }
-
     public Integer getId(){
         return id;
-    }
-
-    public String toString(){
-        return day + "/" + month + "/" +  year + " " + hour + ":" + minutes + ":" + seconds + ":" + milliseconds;
     }
 }

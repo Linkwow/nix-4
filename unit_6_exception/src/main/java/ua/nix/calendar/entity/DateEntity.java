@@ -10,6 +10,4 @@ public abstract class DateEntity {
     protected Long seconds;
     protected Long milliseconds;
     protected Long allDateImMilliseconds;
-    protected Long dayCount;
-    protected Boolean leapYear;
 }

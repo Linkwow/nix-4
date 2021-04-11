@@ -4,6 +4,8 @@ import ua.nix.calendar.exceptions.impl.DateException;
 
 public class UtilClass {
     public static final Long[] dayInMonth = new Long[]{31L, 28L, 31L, 30L, 31L, 30L, 31L, 31L, 30L, 31L, 30L, 31L};
+    public static final String[] monthInYear = new String[]{"", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь",
+            "Ноябрь", "Декабрь"};
     public static final Long SECONDS_TO_MS_VALUE = 1000L;
     public static final Long MINUTE_TO_MS_VALUE = 60000L;
     public static final Long HOUR_TO_MS_VALUE = 3600000L;
@@ -79,17 +81,6 @@ public class UtilClass {
         return countYear;
     }
 
-    public static Long leapYearCountByDay(Long day) {
-        Long countYear = 0L;
-        for (long i = 365; i <= day; i++) {
-            if (isCurrentYearLeap(i)) {
-                countYear++;
-            }
-        }
-        return countYear;
-    }
-
-
     public static Long leapYearCount(Long yearStart, long yearEnd) {
         long start, end = 0;
         if(yearStart > yearEnd){
@@ -132,56 +123,67 @@ public class UtilClass {
                 temp[i] = Long.parseLong(arrayOfParameters[i]);
             }
         } catch (Exception e) {
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РІС‹ РІРІРµР»Рё РґР°С‚Сѓ РЅРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰СѓСЋ С€Р°Р±Р»РѕРЅСѓ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ");
+            throw new DateException("Извините, вы ввели дату не соответствующую шаблону, попробуйте повторно");
         }
         return temp;
     }
 
     private static void checkDay(Long day, Long month, Boolean leapYear) throws DateException {
         if (day > 31 || (day < 1)) {
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РІРІРµСЃС‚Рё РґРµРЅСЊ РІ РґРёР°РїР°Р·РѕРЅРµ РЅРµ Р±РѕР»СЊС€Рµ 31 Рё РЅРµ РјРµРЅСЊС€Рµ 1.");
+            throw new DateException("Извините, попробуйте повторно ввести день в диапазоне не больше 31 и не меньше 1.");
         } else if (day == 31 && (month == 4 || month == 6 || month == 9 || month == 11)) {
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РєРѕР»РёС‡РµСЃС‚РІРѕ РґРЅРµР№ РЅРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 31 РІ СЌС‚РѕРј РјРµСЃСЏС†Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РІРІРµСЃС‚Рё РґРµРЅСЊ.");
+            throw new DateException("Извините, количество дней не должно быть 31 в этом месяце, попробуйте повторно ввести день.");
         } else if (day == 30 && (month == 1 || month == 2 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)) {
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РєРѕР»РёС‡РµСЃС‚РІРѕ РґРЅРµР№ РЅРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 30 РІ СЌС‚РѕРј РјРµСЃСЏС†Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РІРІРµСЃС‚Рё РґРµРЅСЊ.");
+            throw new DateException("Извините, количество дней не должно быть 30 в этом месяце, попробуйте повторно ввести день.");
         } else if (month == 2 && !leapYear && day == 29) {
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РєРѕР»РёС‡РµСЃС‚РІРѕ РґРЅРµР№ РЅРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 29 РІ СЌС‚РѕРј РјРµСЃСЏС†Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РІРІРµСЃС‚Рё РґРµРЅСЊ.");
+            throw new DateException("Извините, количество дней не должно быть 29 в этом месяце, попробуйте повторно ввести день.");
         }
     }
 
     private static void checkMonth(Long month) throws DateException {
         if(month < 1 || month > 12){
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РІРІРµСЃС‚Рё РјРµСЃСЏС† РІ РґРёР°РїР°Р·РѕРЅРµ РЅРµ Р±РѕР»СЊС€Рµ 12 Рё РЅРµ РјРµРЅСЊС€Рµ 1.");
+            throw new DateException("Извините, попробуйте повторно ввести месяц в диапазоне не больше 12 и не меньше 1.");
         }
     }
 
     private static void checkYear(Long year) throws DateException {
         if(year < 1){
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РІРІРµСЃС‚Рё РіРѕРґ РЅРµ РјРµРЅСЊС€Рµ 1.");
+            throw new DateException("Извините, попробуйте повторно ввести год не меньше 1.");
         }
     }
 
     private static void checkHours(Long hours) throws DateException{
         if(hours > 23){
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РІРІРµСЃС‚Рё С‡Р°СЃС‹ РІ РґРёР°РїР°Р·РѕРЅРµ РЅРµ Р±РѕР»СЊС€Рµ 23.");
+            throw new DateException("Извините, попробуйте повторно ввести часы в диапазоне не больше 23.");
         }
     }
 
     private static void checkMinutes(Long minutes) throws DateException{
         if(minutes > 59){
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РІРІРµСЃС‚Рё РјРёРЅСѓС‚С‹ РІ РґРёР°РїР°Р·РѕРЅРµ РЅРµ Р±РѕР»СЊС€Рµ 59.");
+            throw new DateException("Извините, попробуйте повторно ввести минуты в диапазоне не больше 59.");
         }
     }
 
     private static void checkSeconds(Long seconds) throws DateException{
         if(seconds > 59){
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РІРІРµСЃС‚Рё СЃРµРєСѓРЅРґС‹ РІ РґРёР°РїР°Р·РѕРЅРµ РЅРµ Р±РѕР»СЊС€Рµ 59.");
+            throw new DateException("Извините, попробуйте повторно ввести секунды в диапазоне не больше 59.");
         }
     }
 
     private static void checkMilliSeconds(Long milliSeconds) throws DateException{
         if(milliSeconds > 999){
-            throw new DateException("РР·РІРёРЅРёС‚Рµ, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕРІС‚РѕСЂРЅРѕ РІРІРµСЃС‚Рё СЃРµРєСѓРЅРґС‹ РІ РґРёР°РїР°Р·РѕРЅРµ РЅРµ Р±РѕР»СЊС€Рµ 999.");
+            throw new DateException("Извините, попробуйте повторно ввести секунды в диапазоне не больше 999.");
         }
     }
+
+    public static String returnStringRepresentationOfMonth(long month){
+        String s = "";
+        for (int i = 0; i < monthInYear.length; i++) {
+            if(i == month){
+                s = monthInYear[i];
+            }
+        }
+        return s;
+    }
+
 }
