@@ -5,10 +5,7 @@ public class DayMonthYearNoTime {
     private static final String DEFAULT_MILLENNIUM_AND_CENTURY = "19";
 
     public static String addTime(String input) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(input);
-        sb.append(" 00:00:00:00");
-        return sb.toString();
+        return input + " 00:00:00:00";
     }
 
     public static String[] createStringData(String result) {

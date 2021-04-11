@@ -21,10 +21,7 @@ public class DayStringMonthYearNoTime {
             Map.entry("Декабрь", 12));
 
     public static String addTime(String input) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(input);
-        sb.append(" 00:00:00:00");
-        return sb.toString();
+        return input + " 00:00:00:00";
     }
 
     public static String[] createStringData(String result) throws DateException {
