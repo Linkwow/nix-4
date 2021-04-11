@@ -2,7 +2,7 @@ package ua.nix.calendar.repository;
 
 import ua.nix.calendar.dao.impl.DaoImpl;
 import ua.nix.calendar.entity.MyDate;
-import ua.nix.calendar.exceptions.impl.DateException;
+import ua.nix.calendar.exceptions.DateException;
 
 import static ua.nix.calendar.util.UtilClass.*;
 
@@ -158,8 +158,8 @@ public class RepositoryFromDataBase {
         array[4] = String.valueOf(minutes);
         array[5] = String.valueOf(seconds);
         array[6] = String.valueOf(milliseconds);
-        System.out.println("Разница между двумя датами составляет" +
-                array[6] + " миллисекунд" +
+        System.out.println("Разница между двумя датами составляет :" +
+                array[6] + " миллисекунд " +
                 array[5] + " секунд " +
                 array[4] + " минут " +
                 array[3] + " часов " +
@@ -229,7 +229,7 @@ public class RepositoryFromDataBase {
         array[5] = String.valueOf(seconds);
         array[6] = String.valueOf(milliseconds);
         System.out.println("После сложения двух выбранных дат, дата составляет : " +
-                array[6] + " миллисекунд" +
+                array[6] + " миллисекунд " +
                 array[5] + " секунд " +
                 array[4] + " минут " +
                 array[3] + " часов " +
@@ -290,7 +290,7 @@ public class RepositoryFromDataBase {
             month += 12;
         }
         if (years < 1) {
-            throw new DateException("Извините, попробуйте повторно ввести год, больше, так как разница ниже минимального года");
+            throw new DateException("Извините, попробуйте повторно выбрать данные, так как разница ниже минимального года");
         }
 
         array[0] = String.valueOf(day);
@@ -301,7 +301,7 @@ public class RepositoryFromDataBase {
         array[5] = String.valueOf(seconds);
         array[6] = String.valueOf(milliseconds);
         System.out.println("После вычитания двух выбранных дат, дата составляет : " +
-                array[6] + " миллисекунд" +
+                array[6] + " миллисекунд " +
                 array[5] + " секунд " +
                 array[4] + " минут " +
                 array[3] + " часов " +

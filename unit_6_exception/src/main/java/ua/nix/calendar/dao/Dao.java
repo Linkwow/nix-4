@@ -1,7 +1,7 @@
 package ua.nix.calendar.dao;
 
 import ua.nix.calendar.entity.MyDate;
-import ua.nix.calendar.exceptions.impl.DateException;
+import ua.nix.calendar.exceptions.DateException;
 
 import java.util.List;
 

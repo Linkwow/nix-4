@@ -1,6 +1,6 @@
 package ua.nix.calendar.service.impl;
 
-import ua.nix.calendar.exceptions.impl.DateException;
+import ua.nix.calendar.exceptions.DateException;
 import ua.nix.calendar.repository.RepositoryFromDataBase;
 import ua.nix.calendar.repository.RepositoryToDataBaseImpl;
 import ua.nix.calendar.service.Service;
@@ -18,14 +18,14 @@ public class ServiceImpl implements Service {
     @Override
     public void createDate(String input) throws DateException {
 
-        Matcher dayMonthYearWithoutTime = Pattern.compile("\\d{0,2}/\\d{1,2}/\\d{0,2}").matcher(input);
-        Matcher dayMonthYearWithTime = Pattern.compile("\\d{0,2}/\\d{1,2}/\\d{0,2}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}").matcher(input);
-        Matcher monthDayYearWithoutTime = Pattern.compile("\\d{0,2}/\\d{0,2}/\\d{4}").matcher(input);
-        Matcher monthDayYearWithTime = Pattern.compile("\\d{0,2}/\\d{0,2}/\\d{4}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}").matcher(input);
-        Matcher dayStringMonthYearWithoutTime = Pattern.compile("\\w+\\s\\d{0,2}\\s\\d{0,4}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
-        Matcher dayStringMonthYearWithTime = Pattern.compile("\\w+\\s\\d{0,2}\\s\\d{0,4}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
-        Matcher stringMonthDayYearWithoutTime = Pattern.compile("\\w+/\\d{0,2}/\\d{0,4}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
-        Matcher monthStringDayYearWithTime = Pattern.compile("\\w+/\\d{0,2}/\\d{0,4}\\s\\d{1,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
+        Matcher dayMonthYearWithoutTime = Pattern.compile("\\d{0,2}/\\d{0,2}/\\d{0,2}").matcher(input);
+        Matcher dayMonthYearWithTime = Pattern.compile("\\d{0,2}/\\d{0,2}/\\d{0,2}\\s\\d{0,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}").matcher(input);
+        Matcher monthDayYearWithoutTime = Pattern.compile("\\d{0,2}/\\d{0,2}/\\d{0,4}").matcher(input);
+        Matcher monthDayYearWithTime = Pattern.compile("\\d{0,2}/\\d{0,2}/\\d{0,4}\\s\\d{0,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}").matcher(input);
+        Matcher stringMonthDayYearWithoutTime = Pattern.compile("\\w+\\s\\d{0,2}\\s\\d{0,4}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
+        Matcher stringMonthDayYearWithTime = Pattern.compile("\\w+\\s\\d{0,2}\\s\\d{0,4}\\s\\d{0,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
+        Matcher dayStringMonthYearWithoutTime = Pattern.compile("\\d{0,2}\\s?\\w?\\s?\\d{0,4}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
+        Matcher dayStringMonthYearWithTime = Pattern.compile("\\d{0,2}\\s?\\w?\\s?\\d{0,4}\\s\\d{0,2}:?\\d{0,2}:?\\d{0,2}:?\\d{0,2}", Pattern.UNICODE_CHARACTER_CLASS).matcher(input);
 
         try {
             if (dayMonthYearWithoutTime.matches()) {
@@ -36,14 +36,14 @@ public class ServiceImpl implements Service {
                 RepositoryToDataBaseImpl.create(MonthDayYearNoTime.createStringData(MonthDayYearNoTime.addTime(input)));
             } else if (monthDayYearWithTime.matches()) {
                 RepositoryToDataBaseImpl.create(MonthDayYear.createStringData(MonthDayYear.addTime(input)));
+            } else if (stringMonthDayYearWithoutTime.matches()) {
+                RepositoryToDataBaseImpl.create(StringMonthDayYearNoTime.createStringData(StringMonthDayYearNoTime.addTime(input)));
+            } else if (stringMonthDayYearWithTime.matches()) {
+                RepositoryToDataBaseImpl.create(StringMonthDayYear.createStringData(StringMonthDayYear.addTime(input)));
             } else if (dayStringMonthYearWithoutTime.matches()) {
                 RepositoryToDataBaseImpl.create(DayStringMonthYearNoTime.createStringData(DayStringMonthYearNoTime.addTime(input)));
             } else if (dayStringMonthYearWithTime.matches()) {
                 RepositoryToDataBaseImpl.create(DayStringMonthYear.createStringData(DayStringMonthYear.addTime(input)));
-            } else if (stringMonthDayYearWithoutTime.matches()) {
-                RepositoryToDataBaseImpl.create(StringMonthDayYearNoTime.createStringData(StringMonthDayYearNoTime.addTime(input)));
-            } else if (monthStringDayYearWithTime.matches()) {
-                RepositoryToDataBaseImpl.create(StringMonthDayYear.createStringData(StringMonthDayYear.addTime(input)));
             } else {
                 throw new DateException("Извините попробуйте снова ввести Вашу строку в соответствии с форматом");
             }

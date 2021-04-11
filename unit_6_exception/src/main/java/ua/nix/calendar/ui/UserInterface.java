@@ -1,7 +1,7 @@
 package ua.nix.calendar.ui;
 
 import ua.nix.calendar.controller.Controller;
-import ua.nix.calendar.exceptions.impl.DateException;
+import ua.nix.calendar.exceptions.DateException;
 
 import static ua.nix.calendar.console.Console.*;
 import static ua.nix.calendar.console.Console.inputString;
@@ -35,7 +35,7 @@ public class UserInterface {
                     System.out.println("dd/mm/yy.");
                     System.out.println("m/d/yyyy.");
                     System.out.println("mmm-d-yy.");
-                    System.out.println("dd-mmm-yyyy.");
+                    System.out.println("dd-mmm-yyyy hh:mm.");
                     try {
                         Controller.getInstance().create(inputString());
                     } catch (DateException d) {

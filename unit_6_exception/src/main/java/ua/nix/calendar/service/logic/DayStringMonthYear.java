@@ -1,11 +1,10 @@
 package ua.nix.calendar.service.logic;
 
-import ua.nix.calendar.exceptions.impl.DateException;
+import ua.nix.calendar.exceptions.DateException;
 
 import java.util.Map;
 
 public class DayStringMonthYear {
-
     private static Map<String, Integer> monthMap = Map.ofEntries(
             Map.entry("январь", 1),
             Map.entry("‘евраль", 2),
@@ -24,13 +23,38 @@ public class DayStringMonthYear {
         String[] array = new String[]{"", "", "", "", "", "", ""};
         String[] temp = input.split("[ :]");
         StringBuilder sb = new StringBuilder();
-        for (int z = 0; z < temp.length; z++) {
-            array[z] = temp[z];
+
+        if (Integer.parseInt(temp[0]) > 31) {
+            array[0] = "";
+        } else {
+            array[0] = temp[0];
+        }
+        for (String s : monthMap.keySet()){
+            if (temp[1].equals(s)){
+                array[1] = String.valueOf(monthMap.get(s));
+            } else {
+                array[1] ="";
+            }
+        }
+        for (int i = 0, j = 2; i < temp.length; i++, j++) {
+            array[j] = temp[i];
         }
         for (int i = 0; i < array.length; i++) {
-            if (i == 0 || i == 1 || i == 2) {
-                array[i] += " ";
-            } else if (i < array.length - 1) {
+            if (i == 0) {
+                if(array[i].isEmpty()){
+                    array[i] = "01 ";
+                } else {
+                    array[i] += " ";
+                }
+            } else if (i == 1) {
+                if (array[i].isEmpty()) {
+                    array[i] += "01 ";
+                } else {
+                    array[i] += " ";
+                }
+            } else if(i == 2 ){
+                    array[2] += " ";
+            } else if (i == 3 || i == 4 || i == 5){
                 if (array[i].isEmpty()) {
                     array[i] += "00:";
                 } else {
@@ -51,13 +75,11 @@ public class DayStringMonthYear {
     public static String[] createStringData(String result) throws DateException {
         String[] array = new String[7];
         String[] temp = result.split("[/ :]");
-        array[0] = temp[1];
-        array[1] = String.valueOf(monthMap.get(temp[0]));;
+        for (int i = 0; i < array.length; i++) {
+            array[i] = temp[i];
+        }
         if (array[1] == "null") {
             throw new DateException("¬ы ввели неверный мес€ц");
-        }
-        for (int i = 2; i < array.length; i++) {
-            array[i] = temp[i];
         }
         return array;
     }

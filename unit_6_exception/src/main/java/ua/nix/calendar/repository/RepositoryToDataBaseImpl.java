@@ -1,7 +1,7 @@
 package ua.nix.calendar.repository;
 
 import ua.nix.calendar.dao.impl.DaoImpl;
-import ua.nix.calendar.exceptions.impl.DateException;
+import ua.nix.calendar.exceptions.DateException;
 
 import static ua.nix.calendar.util.UtilClass.*;
 

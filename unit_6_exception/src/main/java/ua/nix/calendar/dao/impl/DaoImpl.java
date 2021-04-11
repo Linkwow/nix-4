@@ -3,7 +3,7 @@ package ua.nix.calendar.dao.impl;
 import ua.nix.calendar.dao.Dao;
 import ua.nix.calendar.data.DataBase;
 import ua.nix.calendar.entity.MyDate;
-import ua.nix.calendar.exceptions.impl.DateException;
+import ua.nix.calendar.exceptions.DateException;
 
 import java.util.List;
 

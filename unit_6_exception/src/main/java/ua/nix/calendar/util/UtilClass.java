@@ -1,6 +1,6 @@
 package ua.nix.calendar.util;
 
-import ua.nix.calendar.exceptions.impl.DateException;
+import ua.nix.calendar.exceptions.DateException;
 
 public class UtilClass {
     public static final Long[] dayInMonth = new Long[]{31L, 28L, 31L, 30L, 31L, 30L, 31L, 31L, 30L, 31L, 30L, 31L};

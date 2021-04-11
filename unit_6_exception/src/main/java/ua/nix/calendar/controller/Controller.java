@@ -1,6 +1,6 @@
 package ua.nix.calendar.controller;
 
-import ua.nix.calendar.exceptions.impl.DateException;
+import ua.nix.calendar.exceptions.DateException;
 import ua.nix.calendar.service.impl.ServiceImpl;;
 
 public class Controller {
