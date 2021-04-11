@@ -1,6 +1,9 @@
-so, here's the home task
-if you add author with 3 part initials(Erich-Maria Remark, e.g.) you shall use the '-' between the part of name, the surname must be separate by space.
-you always shall add the year to bokk in special menu.
-E.G.
-Erich-Maria Remark "Three mates" 1930.
-to start -> run the run.bat
+Information about home task 6.
+As usual you run run.bat to start the application.You cann enter the text in 4 format 
+dd/mm/yy
+m/d/yyyy
+mmm-d-yy
+dd-mmm-yyyy
+If you didn't enter time value it will be added automatically
+The application can calculate the differnce between date in days, months, years, centurys, hours, minutes, seconds, milliseconds
+The start year is 1 because in humanity history never was year 0.

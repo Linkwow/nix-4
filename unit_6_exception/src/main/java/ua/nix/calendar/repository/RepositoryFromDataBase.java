@@ -41,7 +41,7 @@ public class RepositoryFromDataBase {
 
     public void output(int choice) throws DateException {
         if(choice < 1 || choice > 4){
-            throw new DateException("Извините, попробуйте повторно ввести номер формата лдя вывода.");
+            throw new DateException("Извините, попробуйте повторно ввести номер формата для вывода.");
         }
         switch (choice) {
             case 1:
@@ -127,8 +127,11 @@ public class RepositoryFromDataBase {
         }
     }
 
-    private String[] differenceBetweenTwoDate(MyDate firstMyDate, MyDate secondMyDate) {
+    private String[] differenceBetweenTwoDate(MyDate firstMyDate, MyDate secondMyDate) throws DateException {
         String[] array = new String[7];
+        if(firstMyDate == null || secondMyDate == null){
+            throw new DateException();
+        }
         long ms = 0;
         if (firstMyDate.getAllDateImMilliseconds() > secondMyDate.getAllDateImMilliseconds()) {
             ms = firstMyDate.getAllDateImMilliseconds() - secondMyDate.getAllDateImMilliseconds();
@@ -166,6 +169,9 @@ public class RepositoryFromDataBase {
     }
 
     public String[] addTwoDate(MyDate firstMyDate, MyDate secondMyDate) throws DateException {
+        if(firstMyDate == null || secondMyDate == null){
+            throw new DateException();
+        }
         String[] array = new String[7];
         long years = firstMyDate.getYear() + secondMyDate.getYear();
         long month = firstMyDate.getMonth() + secondMyDate.getMonth();
@@ -234,6 +240,9 @@ public class RepositoryFromDataBase {
 
     public String[] subtractTwoDate(MyDate firstMyDate, MyDate secondMyDate) throws DateException {
         String[] array = new String[7];
+        if(firstMyDate == null || secondMyDate == null){
+            throw new DateException();
+        }
         long years = firstMyDate.getYear() - secondMyDate.getYear();
         long month = firstMyDate.getMonth() - secondMyDate.getMonth();
         long day = firstMyDate.getDay() - secondMyDate.getDay();

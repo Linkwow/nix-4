@@ -27,7 +27,6 @@ public class UserInterface {
                 }
             } catch (Exception e){
                 System.err.println("Извините но выв ввели не корректный номер, введите корректный номер.");
-                run();
             }
             switch (Integer.parseInt(menuChoice)) {
                 case 1:
@@ -40,7 +39,6 @@ public class UserInterface {
                         Controller.getInstance().create(inputString());
                     } catch (DateException d) {
                         System.err.println(d.getMessage());
-                        Controller.getInstance().create(inputString());
                     }
                     break;
                 case 2:
@@ -58,7 +56,6 @@ public class UserInterface {
                         Controller.getInstance().difference(firstId, secondId);
                     } catch (DateException d) {
                         System.err.println(d.getMessage());
-                        Controller.getInstance().create(inputString());
                     }
                     break;
                 case 3:
@@ -76,7 +73,6 @@ public class UserInterface {
                         Controller.getInstance().add(firstId, secondId);
                     } catch (DateException d) {
                         System.err.println(d.getMessage());
-                        Controller.getInstance().create(inputString());
                     }
                     break;
                 case 4:
@@ -94,7 +90,6 @@ public class UserInterface {
                         Controller.getInstance().subtract(firstId, secondId);
                     } catch (DateException d) {
                         System.err.println(d.getMessage());
-                        Controller.getInstance().create(inputString());
                     }
                     break;
                 case 5:
@@ -107,7 +102,6 @@ public class UserInterface {
                         Controller.getInstance().ascSort(inputInt());
                     } catch (DateException d) {
                         System.err.println(d.getMessage());
-                        Controller.getInstance().create(inputString());
                     }
                     break;
                 case 6:
@@ -120,7 +114,6 @@ public class UserInterface {
                         Controller.getInstance().descSort(inputInt());
                     } catch (DateException d) {
                         System.err.println(d.getMessage());
-                        Controller.getInstance().create(inputString());
                     }
                     break;
                 case 7:

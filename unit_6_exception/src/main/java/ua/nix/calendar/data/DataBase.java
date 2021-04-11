@@ -26,6 +26,9 @@ public class DataBase {
     }
 
     public MyDate read(int id) throws Exception {
+        if(listMyDate.isEmpty()) {
+            throw new Exception();
+        }
         MyDate myDate = new MyDate();
         for (MyDate d : listMyDate) {
             if (d.getId() == id) {

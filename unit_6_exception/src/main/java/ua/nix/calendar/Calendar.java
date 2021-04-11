@@ -7,7 +7,7 @@ public class Calendar {
         UserInterface ui = new UserInterface();
         try {
             ui.run();
-        } catch (DateException d){
+        } catch (Exception d){
             System.err.println(d.getMessage());
             ui.run();
         }
