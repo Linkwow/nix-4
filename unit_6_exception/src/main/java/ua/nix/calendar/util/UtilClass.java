@@ -46,6 +46,15 @@ public class UtilClass {
         return day;
     }
 
+    public static Long monthToDay(Long month) {
+        long day = 0L;
+        for (int i = 0; i < month; i++) {
+            day += dayInMonth[i];
+        }
+        return day;
+    }
+
+
     public static long dayToMonth(long days){
         long monthCount = 0;
         long dayQuantity = days;
@@ -62,31 +71,38 @@ public class UtilClass {
 
     public static Long leapYearCount(Long year) {
         Long countYear = 0L;
-        for (long i = 1; i < year; i++) {
+        for (long i = 1; i <= year; i++) {
             if (isCurrentYearLeap(i)) {
                 countYear++;
-            }
-            if (i % 128 == 0) {
-                countYear--;
             }
         }
         return countYear;
     }
 
+    public static Long leapYearCountByDay(Long day) {
+        Long countYear = 0L;
+        for (long i = 365; i <= day; i++) {
+            if (isCurrentYearLeap(i)) {
+                countYear++;
+            }
+        }
+        return countYear;
+    }
+
+
     public static Long leapYearCount(Long yearStart, long yearEnd) {
         long start, end = 0;
         if(yearStart > yearEnd){
             start = yearEnd;
+            end = yearStart;
         } else {
             start = yearStart;
+            end = yearEnd;
         }
         Long countYear = 0L;
-        for (long i = start; i < end; i++) {
+        for (long i = start; i <= end; i++) {
             if (isCurrentYearLeap(i)) {
                 countYear++;
-            }
-            if (i % 128 == 0) {
-                countYear--;
             }
         }
         return countYear;

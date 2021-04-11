@@ -61,11 +61,12 @@ public class ServiceImpl implements Service {
     }
 
     public static void main(String[] args) throws Exception {
-        getInstance().createDate("1/12/21 10:00:00");
-        getInstance().createDate("1/12/20 00:00:00");
+        getInstance().createDate("4/6/21 00:00:00");
+        getInstance().createDate("30/6/78 00:00:00");
         Date date1 = DataBase.getInstance().listDate.get(0);
         Date date2 = DataBase.getInstance().listDate.get(1);
-        System.out.println(DataBase.getInstance().subtractTwoDate(date1, date2));
+        System.out.println(DataBase.getInstance().differenceBetweenTwoDate(date1, date2));
+        System.out.println(DataBase.getInstance().addTwoDate(date1, date2));
 
     }
 }
