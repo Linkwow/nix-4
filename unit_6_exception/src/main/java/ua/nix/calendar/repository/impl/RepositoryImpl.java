@@ -11,8 +11,6 @@ import java.util.List;
 
 public class RepositoryImpl {
 
-
-
     public static void create(String[] arrayOfParameters) throws DateException {
         List<Long> parameters = new ArrayList<>();
         Boolean isYearLeap = false;
@@ -27,7 +25,6 @@ public class RepositoryImpl {
         }
         DaoImpl.getInstance().create(parameters, isYearLeap);
     }
-
 
     private static Long countAllPassedDay(List<Long> parameters, Boolean isYearLeap) {
         long dayCount = (parameters.get(2) - 1) * DAY_IN_YEAR + leapYearCount(parameters.get(2)) + dayPassedSinceYearStart(parameters.get(1)) + (parameters.get(0));

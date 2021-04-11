@@ -1,6 +1,21 @@
 package ua.nix.calendar.entity;
 
-public class Date extends DateEntity {                              //класс должен содержать в себе данные о том какая это дата. Не отминусовывать ничего
+public class MyDate extends DateEntity implements Comparable<MyDate> {
+
+    @Override
+    public int compareTo(MyDate dateObject) {
+        int result = 0;
+        if(this.getAllDateImMilliseconds() > dateObject.getAllDateImMilliseconds()){
+            result = -1;
+        } else if(this.getAllDateImMilliseconds() < dateObject.getAllDateImMilliseconds()){
+            result = 1;
+        } else if(this.getAllDateImMilliseconds() == dateObject.getAllDateImMilliseconds()){
+            result = 0;
+        }
+        return result;
+    }
+
+
 
     public void setDay(Long day) {
         this.day = day;

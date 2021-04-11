@@ -1,12 +1,14 @@
 package ua.nix.calendar.service.impl;
 
 import ua.nix.calendar.data.DataBase;
-import ua.nix.calendar.entity.Date;
+import ua.nix.calendar.entity.MyDate;
 import ua.nix.calendar.exceptions.impl.DateException;
 import ua.nix.calendar.repository.impl.RepositoryImpl;
 import ua.nix.calendar.service.Service;
 import ua.nix.calendar.service.logic.*;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,12 +63,21 @@ public class ServiceImpl implements Service {
     }
 
     public static void main(String[] args) throws Exception {
-        getInstance().createDate("4/6/21 00:00:00");
-        getInstance().createDate("30/6/78 00:00:00");
-        Date date1 = DataBase.getInstance().listDate.get(0);
-        Date date2 = DataBase.getInstance().listDate.get(1);
-        System.out.println(DataBase.getInstance().differenceBetweenTwoDate(date1, date2));
-        System.out.println(DataBase.getInstance().addTwoDate(date1, date2));
+        getInstance().createDate("4/6/21 21:00:00");
+        getInstance().createDate("30/6/78 21:00:00");
+        MyDate myDate1 = DataBase.getInstance().listMyDate.get(0);
+        MyDate myDate2 = DataBase.getInstance().listMyDate.get(1);
+        System.out.println(DataBase.getInstance().differenceBetweenTwoDate(myDate1, myDate2));
+        System.out.println(DataBase.getInstance().addTwoDate(myDate1, myDate2));
+        getInstance().createDate("05/22/2020 01:13:00");
+        getInstance().createDate("01/31/1000 21:00:00");
+        myDate1 = DataBase.getInstance().listMyDate.get(2);
+        myDate2 = DataBase.getInstance().listMyDate.get(3);
+        System.out.println(DataBase.getInstance().subtractTwoDate(myDate1, myDate2));
+        Collections.sort(DataBase.getInstance().listMyDate);
+        Collections.sort(DataBase.getInstance().listMyDate, Collections.reverseOrder());
+        System.out.println(DataBase.getInstance().listMyDate);
+
 
     }
 }
