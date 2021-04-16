@@ -6,10 +6,10 @@
 
     <groupId>ua.nix.collections</groupId>
     <artifactId>mathsetdemo</artifactId>
-    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <modules>
-        <module>mathset</module>
+        <module>lib</module>
     </modules>
 
     <properties>
