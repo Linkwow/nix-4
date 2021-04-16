@@ -1,5 +1,7 @@
 package ua.nix.mathtest;
 
+import java.math.BigInteger;
+
 public class MathSet {
     private static final int BASE_CAPACITY = 0;
     private Number[] arrayOfUniqueNumber;
@@ -31,7 +33,7 @@ public class MathSet {
     //done
     public MathSet(MathSet numbers) {
         arrayOfUniqueNumber = new Number[BASE_CAPACITY];
-        for (Number number : numbers.getAll()) {
+        for (Number number : numbers.toArray()) {
             add(number);
         }
     }
@@ -39,9 +41,7 @@ public class MathSet {
     //done
     public MathSet(MathSet... numbers) {
         for (MathSet mathSet : numbers) {
-            for (Number number : mathSet.getAll()) {
-                add(number);
-            }
+            add(mathSet.toArray());
         }
     }
 
@@ -59,66 +59,246 @@ public class MathSet {
         }
     }
 
-    public void add(Number... n) {  //добавить элементы
+    //done
+    public void add(Number... n) {
+        for (Number number : n) {
+            add(number);
+        }
+    }
+
+    //done
+    public void join(MathSet ms) {
+        for (Number number : ms.toArray()) {
+            add(number);
+        }
+    }
+
+    //done
+    public void join(MathSet... ms) {
+        for (MathSet mathSet : ms) {
+            add(mathSet.toArray());
+        }
+    }
+
+    //done
+    public void sortDesc() {
+        Number[] tempArray = new Number[arrayOfUniqueNumber.length];
+        Number tempNumber;
+        for (int outerIndex = 0; outerIndex < arrayOfUniqueNumber.length; outerIndex++) {
+            int indexCount = 0;
+            tempNumber = arrayOfUniqueNumber[outerIndex];
+            for (int innerIndex = 0; innerIndex < arrayOfUniqueNumber.length; innerIndex++) {
+                if (tempNumber.doubleValue() < arrayOfUniqueNumber[innerIndex].doubleValue()) {
+                    indexCount++;
+                }
+            }
+            tempArray[indexCount] = tempNumber;
+        }
+        arrayOfUniqueNumber = tempArray;
+    }
+
+    //done
+    public void sortDesc(int firstIndex, int lastIndex) {
+        Number[] tempArray = new Number[lastIndex - firstIndex + 1];
+        Number tempNumber;
+        for (int outerIndex = firstIndex; outerIndex <= lastIndex; outerIndex++) {
+            int indexCount = 0;
+            tempNumber = arrayOfUniqueNumber[outerIndex];
+            for (int innerIndex = firstIndex; innerIndex <= lastIndex; innerIndex++) {
+                if (tempNumber.doubleValue() < arrayOfUniqueNumber[innerIndex].doubleValue()) {
+                    indexCount++;
+                }
+            }
+            tempArray[indexCount] = tempNumber;
+        }
+        for (int innerIndex = 0, outerIndex = firstIndex; innerIndex < tempArray.length; innerIndex++, outerIndex++) {
+            arrayOfUniqueNumber[outerIndex] = tempArray[innerIndex];
+        }
+    }
+
+    //done
+    public void sortDesc(Number value) throws ClassNotFoundException {
+        int indexOfValue;
+        Number[] tempArray;
+        try {
+            indexOfValue = findIndexOfValue(value);
+            tempArray = new Number[arrayOfUniqueNumber.length - indexOfValue - 1];
+        } catch (ClassNotFoundException classNotFoundException) {
+            throw new ClassNotFoundException(classNotFoundException.getMessage());
+        }
+        Number tempNumber;
+        for (int outerIndex = indexOfValue + 1; outerIndex < arrayOfUniqueNumber.length; outerIndex++) {
+            int indexCount = 0;
+            tempNumber = arrayOfUniqueNumber[outerIndex];
+            for (int innerIndex = indexOfValue + 1; innerIndex < arrayOfUniqueNumber.length; innerIndex++) {
+                if (tempNumber.doubleValue() < arrayOfUniqueNumber[innerIndex].doubleValue()) {
+                    indexCount++;
+                }
+            }
+            tempArray[indexCount] = tempNumber;
+        }
+        for (int innerIndex = 0, outerIndex = indexOfValue + 1; innerIndex < tempArray.length; innerIndex++, outerIndex++) {
+            arrayOfUniqueNumber[outerIndex] = tempArray[innerIndex];
+        }
+    }
+
+    //done
+    public void sortAsc(int firstIndex, int lastIndex) {
+        Number[] tempArray = new Number[lastIndex - firstIndex + 1];
+        Number tempNumber;
+        for (int outerIndex = firstIndex; outerIndex <= lastIndex; outerIndex++) {
+            int indexCount = 0;
+            tempNumber = arrayOfUniqueNumber[outerIndex];
+            for (int innerIndex = firstIndex; innerIndex <= lastIndex; innerIndex++) {
+                if (tempNumber.doubleValue() > arrayOfUniqueNumber[innerIndex].doubleValue()) {
+                    indexCount++;
+                }
+            }
+            tempArray[indexCount] = tempNumber;
+        }
+        for (int innerIndex = 0, outerIndex = firstIndex; innerIndex < tempArray.length; innerIndex++, outerIndex++) {
+            arrayOfUniqueNumber[outerIndex] = tempArray[innerIndex];
+        }
+    }
+
+    //done
+    public void sortAsc() {
+        Number[] tempArray = new Number[arrayOfUniqueNumber.length];
+        Number tempNumber;
+        for (int outerIndex = 0; outerIndex < arrayOfUniqueNumber.length; outerIndex++) {
+            int indexCount = 0;
+            tempNumber = arrayOfUniqueNumber[outerIndex];
+            for (int innerIndex = 0; innerIndex < arrayOfUniqueNumber.length; innerIndex++) {
+                if (tempNumber.doubleValue() > arrayOfUniqueNumber[innerIndex].doubleValue()) {
+                    indexCount++;
+                }
+            }
+            tempArray[indexCount] = tempNumber;
+        }
+        arrayOfUniqueNumber = tempArray;
+    }
+
+    //done
+    public void sortAsc(Number value) throws ClassNotFoundException {
+        int indexOfValue;
+        Number[] tempArray;
+        try {
+            indexOfValue = findIndexOfValue(value);
+            tempArray = new Number[arrayOfUniqueNumber.length - indexOfValue - 1];
+        } catch (ClassNotFoundException classNotFoundException) {
+            throw new ClassNotFoundException(classNotFoundException.getMessage());
+        }
+        Number tempNumber;
+        for (int outerIndex = indexOfValue + 1; outerIndex < arrayOfUniqueNumber.length; outerIndex++) {
+            int indexCount = 0;
+            tempNumber = arrayOfUniqueNumber[outerIndex];
+            for (int innerIndex = indexOfValue + 1; innerIndex < arrayOfUniqueNumber.length; innerIndex++) {
+                if (tempNumber.doubleValue() > arrayOfUniqueNumber[innerIndex].doubleValue()) {
+                    indexCount++;
+                }
+            }
+            tempArray[indexCount] = tempNumber;
+        }
+        for (int innerIndex = 0, outerIndex = indexOfValue + 1; innerIndex < tempArray.length; innerIndex++, outerIndex++) {
+            arrayOfUniqueNumber[outerIndex] = tempArray[innerIndex];
+        }
+    }
+
+    //done
+    public Number get(int index) {
+        return arrayOfUniqueNumber[index];
+    }
+
+    //done
+    public Number getMax() {
+        Number max = 0, temp;
+        for (int outerIndex = 0; outerIndex < arrayOfUniqueNumber.length; outerIndex++) {
+            temp = arrayOfUniqueNumber[outerIndex];
+            for (int innerIndex = 0; innerIndex < arrayOfUniqueNumber.length; innerIndex++) {
+                if (temp.doubleValue() > arrayOfUniqueNumber[innerIndex].doubleValue()) {
+                    if (temp.doubleValue() > max.doubleValue()) {
+                        max = temp;
+                    }
+                }
+            }
+
+        }
+        return max;
+    }
+
+    //done
+    public Number getMin() {
+        Number min = 0, temp;
+        for (int outerIndex = 0; outerIndex < arrayOfUniqueNumber.length; outerIndex++) {
+            temp = arrayOfUniqueNumber[outerIndex];
+            for (int innerIndex = 0; innerIndex < arrayOfUniqueNumber.length; innerIndex++) {
+                if (temp.doubleValue() < arrayOfUniqueNumber[innerIndex].doubleValue()) {
+                    if (temp.doubleValue() < min.doubleValue()) {
+                        min = temp;
+                    }
+                }
+            }
+
+        }
+        return min;
+    }
+
+    //done
+    public Number getAverage() {
+        Number average;
+        double temp = 0.00;
+        for (Number number : arrayOfUniqueNumber) {
+            temp += number.doubleValue();
+        }
+        average = temp / arrayOfUniqueNumber.length;
+        return average;
+    }
+
+    //done
+    public Number getMedian() {
+        Number median = 0;
+        sortAsc();
+        int middle = arrayOfUniqueNumber.length / 2;
+        if (arrayOfUniqueNumber.length % 2 == 0) {
+            median = arrayOfUniqueNumber[middle - 1].doubleValue() + arrayOfUniqueNumber[middle + 1].doubleValue() / 2;
+        } else {
+            median = arrayOfUniqueNumber[middle].doubleValue();
+        }
+        return median;
+    }
+
+    //done
+    public Number[] toArray() {
+        return arrayOfUniqueNumber;
+    }
+
+    //done
+    public Number[] toArray(int firstIndex, int lastIndex) {
+        Number[] numbers = new Number[lastIndex - firstIndex + 1];
+        for (int innerIndex = 0, outerIndex = firstIndex; innerIndex < numbers.length; innerIndex++, outerIndex++){
+            numbers[innerIndex] = arrayOfUniqueNumber[outerIndex];
+        }
+        return numbers;
     }
 
     /*
-     public void join(MathSet ms) {  //присоединить
-     }
+    public MathSet squash(int firstIndex, int lastIndex) {  //обрезать
+    }
 
-     public void join(MathSet... ms) { //присоединить массив
-     }
+    public void clear() {
+    }
 
-     public void sortDesc() {    //сортировать по убыванию
-     }
+    public void clear(Number[] numbers) {
+    }*/
 
-     public void sortDesc(int firstIndex, int lastIndex) {   //сортировать по цбыванию в диапазоне
-     }
-
-     public void sortDesc(Number value) {    //всё что меньше значения по убыванию
-     }
-
-     public void sortAsc() { //по возрастанию
-     }
-
-     public void sortAsc(int firstIndex, int lastIndex) {    //по возрастанию в диапазоне
-     }
-
-     public void sortAsc(Number value) { //всё что выше элемента
-     }
-
-     public Number get(int index) {  //получить индекс
-     }
-
-     public Number getMax() {    //максимально езначение
-     }
-
-     public Number getMin() {    //минимальное значение
-     }
-
-     public Number getAverage() {    //среднее значение
-     }
-
-     public Number getMedian() { // медиана — это такое число, что половина из элементов набора больше него, а другая половина меньше
-     }
-
-     public Number[] toArray() { //превратить в массив
-     }
-
-     public Number[] toArray(int firstIndex, int lastIndex) { //превратит в массив в диапазоне
-     }
-
-     public MathSet squash(int firstIndex, int lastIndex) {  //обрезать
-     }
-
-     public void clear() {
-     }
-
-     public void clear(Number[] numbers) {
-     }*/
     //done
-    public Number[] getAll() {
-        return arrayOfUniqueNumber;
+    private int findIndexOfValue(Number number) throws ClassNotFoundException {
+        for (int index = 0; index < arrayOfUniqueNumber.length; index++) {
+            if (number.equals(arrayOfUniqueNumber[index])) {
+                return index;
+            }
+        }
+        throw new ClassNotFoundException("Введённый Вами объект в метод сортировки по значению объекта не найден в коллекции. Проверьте Вводимый объект");
     }
 
     //done
@@ -158,22 +338,14 @@ public class MathSet {
     }
 
     public static void main(String[] args) {
-        Number[] array = new Number[]{1, 24, 45};
-        Number[] array1 = new Number[]{1, 24, 45, 18};
-        MathSet mathSet = new MathSet(array, array1);
-        mathSet.add(10);
-        mathSet.add((short) 10);
-        mathSet.add(24);
-        MathSet mathSet1 = new MathSet(mathSet);
-     /* mathSet.add(1);
-        mathSet.add(21);
-        mathSet.add(13);
-        mathSet.add(14);
-        mathSet.add(51);
-        mathSet.add(1);*/
-
+        Number[] array = new Number[]{28, 17, 4, 150, 15.1, 32, -1, 2};
+        Number[] array1 = new Number[]{28, 17, 4, 150, 32, -1, 2};
+        MathSet mathSet = new MathSet(array);
+        MathSet mathSet1 = new MathSet(array1);
+        System.out.println(mathSet);
         System.out.println(mathSet1);
-
+        for (Number number: mathSet1.toArray(3, 6)) {
+            System.out.println(number);
+        }
     }
-
 }
