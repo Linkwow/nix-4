@@ -1,9 +1,6 @@
-package ua.nix.orderedlist;
+package ua.nix.libs;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class OrderedList<E> implements List<E> {
 
@@ -72,7 +69,11 @@ public class OrderedList<E> implements List<E> {
             elements[0] = e;
         } else {
             Object[] arrayOfPreviousElements = elements;
-            elements = sort((Comparable<E>) e, arrayOfPreviousElements);
+            try {
+                elements = sort((Comparable<E>) e, arrayOfPreviousElements);
+            } catch (ClassCastException classNotFoundException) {
+                System.err.println("Объект должени быть Comparable типа, приведите свой объект к типу Comparable");
+            }
         }
         return true;
     }
@@ -129,8 +130,8 @@ public class OrderedList<E> implements List<E> {
     @Override
     public boolean containsAll(Collection<?> c) {
         boolean result = false;
-        for(Object o : c){
-            if(this.contains(o)){
+        for (Object o : c) {
+            if (this.contains(o)) {
                 result = true;
             } else {
                 result = false;
@@ -142,7 +143,7 @@ public class OrderedList<E> implements List<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        for(E o : c){
+        for (E o : c) {
             add(o);
         }
         return false;
@@ -164,8 +165,8 @@ public class OrderedList<E> implements List<E> {
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        for(Object o : c){
-            if(!contains(o)){
+        for (Object o : c) {
+            if (!contains(o)) {
                 remove(o);
             }
         }
@@ -196,21 +197,30 @@ public class OrderedList<E> implements List<E> {
         add(element);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public E remove(int index) {
+        Object value = null;
+        Optional<E> optional = Optional.empty();
         for (int i = 0; i < elements.length; i++) {
-            if(i == index){
+            if (i == index) {
+                value = elements[i];
+                optional = Optional.of((E) value);
                 remove(get(i));
                 break;
             }
         }
-        return null;
+        if (optional.isEmpty()) {
+            throw new NullPointerException("По данному индексу не обнаружено объекта для удаления.");
+        } else {
+            return (E) value;
+        }
     }
 
     @Override
     public int indexOf(Object o) {
         for (int i = 0; i < elements.length; i++) {
-            if(elements[i] == o){
+            if (elements[i] == o) {
                 return i;
             }
         }
@@ -220,7 +230,7 @@ public class OrderedList<E> implements List<E> {
     @Override
     public int lastIndexOf(Object o) {
         int index = -1;
-        while (contains(o)){
+        while (contains(o)) {
             index = indexOf(o);
         }
         return index;

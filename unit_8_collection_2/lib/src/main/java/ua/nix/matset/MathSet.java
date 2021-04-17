@@ -1,4 +1,6 @@
-package ua.nix.mathtest;
+package ua.nix.matset;
+
+import java.util.Optional;
 
 public class MathSet {
     private static final int BASE_CAPACITY = 0;
@@ -13,14 +15,36 @@ public class MathSet {
     }
 
     public MathSet(Number[] numbers) {
-        arrayOfUniqueNumber = new Number[BASE_CAPACITY];
-        parseArrayByElements(numbers);
+        Optional<Number[]> arrayCheck = Optional.of(numbers);
+        try {
+            if (arrayCheck.isPresent()) {
+                arrayOfUniqueNumber = new Number[BASE_CAPACITY];
+                parseArrayByElements(numbers);
+            }
+        } catch (NullPointerException nullPointerException) {
+            System.err.println("Массив или элемент массива null, проверьте пожалуйста значения");
+        }
     }
 
     public MathSet(Number[]... numbers) {
-        arrayOfUniqueNumber = new Number[BASE_CAPACITY];
-        for (Number[] array : numbers) {
-            parseArrayByElements(array);
+        Optional<Number[][]> arrayOfArrayCheck = Optional.of(numbers);
+        try {
+            if (arrayOfArrayCheck.isPresent()) {
+                arrayOfUniqueNumber = new Number[BASE_CAPACITY];
+                Optional<Number[]> arrayCheck;
+                for (Number[] array : numbers) {
+                    arrayCheck = Optional.of(array);
+                    try {
+                        if (arrayCheck.isPresent()) {
+                            parseArrayByElements(array);
+                        }
+                    } catch (NullPointerException nullPointerException){
+                        throw new NullPointerException();
+                    }
+                }
+            }
+        } catch (NullPointerException nullPointerException) {
+            System.err.println("Массив или элемент массива null, проверьте пожалуйста значения");
         }
     }
 
@@ -36,6 +60,7 @@ public class MathSet {
             add(mathSet.toArray());
         }
     }
+
 
     public void add(Number number) {
         if (number != null) {
@@ -250,7 +275,7 @@ public class MathSet {
 
     public Number[] toArray(int firstIndex, int lastIndex) {
         Number[] numbers = new Number[lastIndex - firstIndex + 1];
-        for (int innerIndex = 0, outerIndex = firstIndex; innerIndex < numbers.length; innerIndex++, outerIndex++){
+        for (int innerIndex = 0, outerIndex = firstIndex; innerIndex < numbers.length; innerIndex++, outerIndex++) {
             numbers[innerIndex] = arrayOfUniqueNumber[outerIndex];
         }
         return numbers;
@@ -258,7 +283,7 @@ public class MathSet {
 
     public MathSet squash(int firstIndex, int lastIndex) {
         Number[] tempArray = new Number[arrayOfUniqueNumber.length - (lastIndex - firstIndex + 1)];
-        for (int outerIndex = firstIndex, innerIndex = 0; outerIndex <= lastIndex; outerIndex++, innerIndex++){
+        for (int outerIndex = firstIndex, innerIndex = 0; outerIndex <= lastIndex; outerIndex++, innerIndex++) {
             tempArray[innerIndex] = arrayOfUniqueNumber[outerIndex];
         }
         MathSet mathSet = new MathSet(tempArray);
@@ -272,9 +297,9 @@ public class MathSet {
 
     public void clear(Number[] numbers) {
         Number[] tempArray = arrayOfUniqueNumber;
-        for (int outerIndex = 0; outerIndex < tempArray.length; outerIndex++){
-            for (int innerIndex = 0; innerIndex < numbers.length; innerIndex++){
-                if (tempArray[outerIndex].equals(numbers[innerIndex])){
+        for (int outerIndex = 0; outerIndex < tempArray.length; outerIndex++) {
+            for (int innerIndex = 0; innerIndex < numbers.length; innerIndex++) {
+                if (tempArray[outerIndex].equals(numbers[innerIndex])) {
                     tempArray[outerIndex] = null;
                     break;
                 }
@@ -313,8 +338,15 @@ public class MathSet {
     }
 
     private void parseArrayByElements(Number[] numbers) {
-        for (Number n : numbers) {
-            add(n);
+        Optional<Number> optional = Optional.empty();
+        for (Number number : numbers) {
+            try {
+                optional = Optional.of(number);
+                if (optional.isPresent())
+                    add(number);
+            } catch (NullPointerException nullPointerException){
+                throw new NullPointerException();
+            }
         }
     }
 

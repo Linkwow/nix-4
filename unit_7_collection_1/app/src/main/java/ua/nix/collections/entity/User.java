@@ -7,11 +7,11 @@ public class User extends AbstractUser implements Comparable<User> {
     @Override
     public int compareTo(User objectToCompare) {
         int i = -1;
-        if(this.stringValueCount() - objectToCompare.stringValueCount() == 0){
+        if(this.getName().equals(objectToCompare.getName())){
             i = 0;
-        } else if(this.stringValueCount() - objectToCompare.stringValueCount() < 0){
+        } else if(this.getName().compareToIgnoreCase(objectToCompare.getName()) < 0){
             i = -1;
-        } else if(this.stringValueCount() - objectToCompare.stringValueCount() > 0) {
+        } else if(this.getName().compareToIgnoreCase(objectToCompare.getName()) > 0) {
             i = 1;
         }
         return i;
@@ -27,14 +27,6 @@ public class User extends AbstractUser implements Comparable<User> {
         super(name);
     }
 
-    public void setId(int id){
-        this.id = id;
-    }
-
-    public int getId(){
-        return  id;
-    }
-
     public String getName(){
         return name;
     }
@@ -43,5 +35,4 @@ public class User extends AbstractUser implements Comparable<User> {
     public String toString() {
         return name;
     }
-
 }
