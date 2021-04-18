@@ -1,9 +1,23 @@
-Information about home task 6.
-As usual you run run.bat to start the application.You cann enter the text in 4 format 
-dd/mm/yy
-m/d/yyyy
-mmm-d-yy
-dd-mmm-yyyy
-If you didn't enter time value it will be added automatically
-The application can calculate the differnce between date in days, months, years, centurys, hours, minutes, seconds, milliseconds
-The start year is 1 because in humanity history never was year 0.
+Information about home task 7-8.
+In App represented a little demonstration of functional capabilities
+for uaing all functional capabilities you can add to your pon.file next row :
+    <repositories>
+        <repository>
+            <id>myMavenRepoNaumenko</id>
+            <url>https://mymavenrepo.com/repo/7wnBpde3TYZTcEWly27I/</url>
+        </repository>
+    </repositories>
+for using matset add dependency:
+        <dependency>
+            <groupId>ua.nix.libs</groupId>
+            <artifactId>mathset</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency> 
+for using matset add dependency:
+          <dependency>
+            <groupId>ua.nix.libs</groupId>
+            <artifactId>orderedlist</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+To see the demonstration run run bat.
+If it's necessary demo can updated.
