@@ -66,7 +66,17 @@ public class Controller {
         for (User u : userList) {
             System.out.print(u + " ");
         }
+        System.out.println();
         System.out.println("¬се остальные возможности библиотеки вы можете почувствовать ");
-
+        System.out.println("добавив в pom файл ");
+        System.out.println("<repository>");
+        System.out.println("   <id>myMavenRepoNaumenkoRead</id>");
+        System.out.println("   <url>https://mymavenrepo.com/repo/7wnBpde3TYZTcEWly27I/</url>");
+        System.out.println("</repository>");
+        System.out.println("<dependency>");
+        System.out.println("   <groupId>ua.nix.libs</groupId>");
+        System.out.println("   <artifactId>orderedlist</artifactId>");
+        System.out.println("   <version>1.0-SNAPSHOT</version>");
+        System.out.println("</dependency>");
     }
 }

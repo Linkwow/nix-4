@@ -4,18 +4,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>ua.nix.projects</groupId>
-        <artifactId>applicationlistdemo</artifactId>
+        <artifactId>mathsetdemo</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ua.nix.libs</groupId>
-    <artifactId>orderedlist</artifactId>
-    <packaging>jar</packaging><build><plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>11</source><target>11</target></configuration></plugin></plugins></build>
+    <groupId>ua.nix.app</groupId>
+    <artifactId>mathsetapp</artifactId>
 
     <properties>
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>ua.nix.libs</groupId>
+            <artifactId>mathset</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

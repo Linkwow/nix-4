@@ -1,4 +1,4 @@
-package ua.nix.matset;
+package ua.nix.libs;
 
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ public class MathSet {
                 parseArrayByElements(numbers);
             }
         } catch (NullPointerException nullPointerException) {
-            System.err.println("РњР°СЃСЃРёРІ РёР»Рё СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° null, РїСЂРѕРІРµСЂСЊС‚Рµ РїРѕР¶Р°Р»СѓР№СЃС‚Р° Р·РЅР°С‡РµРЅРёСЏ");
+            System.err.println("Массив или элемент массива null, проверьте пожалуйста значения");
         }
     }
 
@@ -44,7 +44,7 @@ public class MathSet {
                 }
             }
         } catch (NullPointerException nullPointerException) {
-            System.err.println("РњР°СЃСЃРёРІ РёР»Рё СЌР»РµРјРµРЅС‚ РјР°СЃСЃРёРІР° null, РїСЂРѕРІРµСЂСЊС‚Рµ РїРѕР¶Р°Р»СѓР№СЃС‚Р° Р·РЅР°С‡РµРЅРёСЏ");
+            System.err.println("Массив или элемент массива null, проверьте пожалуйста значения");
         }
     }
 
@@ -60,7 +60,6 @@ public class MathSet {
             add(mathSet.toArray());
         }
     }
-
 
     public void add(Number number) {
         if (number != null) {
@@ -317,7 +316,7 @@ public class MathSet {
                 return index;
             }
         }
-        throw new ClassNotFoundException("Р’РІРµРґС‘РЅРЅС‹Р№ Р’Р°РјРё РѕР±СЉРµРєС‚ РІ РјРµС‚РѕРґ СЃРѕСЂС‚РёСЂРѕРІРєРё РїРѕ Р·РЅР°С‡РµРЅРёСЋ РѕР±СЉРµРєС‚Р° РЅРµ РЅР°Р№РґРµРЅ РІ РєРѕР»Р»РµРєС†РёРё. РџСЂРѕРІРµСЂСЊС‚Рµ Р’РІРѕРґРёРјС‹Р№ РѕР±СЉРµРєС‚");
+        throw new ClassNotFoundException("Введённый Вами объект в метод сортировки по значению объекта не найден в коллекции. Проверьте Вводимый объект");
     }
 
     private boolean isUnique(Number n) {
@@ -338,7 +337,7 @@ public class MathSet {
     }
 
     private void parseArrayByElements(Number[] numbers) {
-        Optional<Number> optional = Optional.empty();
+        Optional<Number> optional;
         for (Number number : numbers) {
             try {
                 optional = Optional.of(number);
