@@ -14,12 +14,12 @@ public class BookFormat {
 
     public String setTitleFormat(String name){
         Formatter formatter = new Formatter();
-        return formatter.format("%-15s", name).toString();
+        return formatter.format("%-25s", name).toString();
     }
 
     public String setAuthorsFormat(String books){
         Formatter formatter = new Formatter();
-        return formatter.format("%-30s", books).toString();
+        return formatter.format("%-40s", books).toString();
     }
 
     public static BookFormat getInstance() {

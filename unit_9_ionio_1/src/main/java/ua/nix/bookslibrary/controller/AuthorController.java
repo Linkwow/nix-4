@@ -50,7 +50,9 @@ public class AuthorController implements BaseController {
 
     @Override
     public void findAll() {
-       AuthorServiceImpl.getInstance().findAll();
+        System.out.println("Введите идентификатор автора для получения всех книг");
+        Integer id = inputInt();
+       AuthorServiceImpl.getInstance().findAll(id);
     }
 
     @Override

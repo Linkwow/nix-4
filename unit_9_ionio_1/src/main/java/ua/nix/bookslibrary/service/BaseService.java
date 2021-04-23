@@ -1,10 +1,10 @@
 package ua.nix.bookslibrary.service;
 
-import java.util.List;
+import ua.nix.bookslibrary.entity.BaseEntity;
 
-public interface BaseService<T> {
+public interface BaseService<T extends BaseEntity> {
     void read(Integer id);
     void delete(Integer id);
     void printTable();
-    List<Class<? extends T>> findAll();
+    void findAll(Integer id);
 }

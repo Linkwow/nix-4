@@ -5,9 +5,9 @@ import static ua.nix.libs.Console.*;
 import ua.nix.bookslibrary.controller.*;
 
 public class UserInterface {
-    private boolean end;
 
-    public void run() {
+    public static void run() {
+        boolean end = false;
         while (!end) {
             System.out.println("Выберите действие с БД:");
             System.out.println("1. Создать книгу.");

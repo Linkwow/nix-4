@@ -42,7 +42,7 @@ public class BookWrite {
     private void addHeader() {
         header[0] = BookFormat.getInstance().setIdFormat("id");
         header[1] = BookFormat.getInstance().setTitleFormat("title");
-        header[3] = BookFormat.getInstance().setAuthorsFormat("authors");
+        header[2] = BookFormat.getInstance().setAuthorsFormat("authors");
         bookList.add(header);
     }
 

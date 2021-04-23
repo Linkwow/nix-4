@@ -2,7 +2,7 @@ package ua.nix.bookslibrary.entity;
 
 import java.util.*;
 
-public class Author extends LibraryEntity {
+public class Author extends BaseEntity {
     private Integer id;
     private String name;
     private String surname;
@@ -28,15 +28,11 @@ public class Author extends LibraryEntity {
 
     public void setBooks(String[] books) {
         this.books.clear();
-        String[] temp = new String[books.length];
-        for (int index = 0; index < books.length; index++) {
-            if (books[index].charAt(0) == ' ') {
-                temp[index] = books[index].substring(1, books[index].length() - 1);
-            } else {
-                temp[index] = books[index];
-            }
-        }
-        this.books.addAll(Arrays.asList(temp));
+        this.books.addAll(Arrays.asList(books));
+    }
+
+    public void setBookList(Book book){
+        bookList.add(book.getClass());
     }
 
     public Integer getId() {

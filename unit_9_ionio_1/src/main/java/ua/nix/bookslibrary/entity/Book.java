@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Book extends LibraryEntity {
+public class Book extends BaseEntity {
     private Integer id;
     private String title;
     private boolean visible = true;
@@ -23,17 +23,18 @@ public class Book extends LibraryEntity {
         this.visible = visible;
     }
 
-    public void setAuthors(String[] authors){
+    public void setAuthors(String[] authors){   //перенести в сервисы
         this.authors.clear();
-        String[] temp = new String[authors.length];
-        for (int index = 0; index < authors.length; index++) {
-            if (authors[index].charAt(0) == ' ') {
-                temp[index] = authors[index].substring(1, authors[index].length() - 1);
-            } else {
-                temp[index] = authors[index];
-            }
+        this.authors.addAll(Arrays.asList(authors));
+    }
+
+    public void setAuthorList(Author author){
+        authorList.add(author.getClass());
+        try {
+            authorList.get(0).getMethod(toString());
+        } catch (Exception e){
+            System.err.println();
         }
-        this.authors.addAll(Arrays.asList(temp));
     }
 
     public Integer getId() {

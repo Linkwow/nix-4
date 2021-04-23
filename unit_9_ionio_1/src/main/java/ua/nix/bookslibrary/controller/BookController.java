@@ -46,7 +46,9 @@ public class BookController implements BaseController {
 
     @Override
     public void findAll() {
-        BookServiceImpl.getInstance().findAll();
+        System.out.println("Введите идентификатор книги для получения всех авторов");
+        Integer id = inputInt();
+        BookServiceImpl.getInstance().findAll(id);
     }
 
     @Override
