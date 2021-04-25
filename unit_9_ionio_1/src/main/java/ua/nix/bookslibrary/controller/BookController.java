@@ -2,6 +2,8 @@ package ua.nix.bookslibrary.controller;
 
 import ua.nix.bookslibrary.service.impl.BookServiceImpl;
 
+import java.util.InputMismatchException;
+
 import static ua.nix.libs.Console.inputInt;
 import static ua.nix.libs.Console.inputString;
 
@@ -12,43 +14,71 @@ public class BookController implements BaseController {
 
     @Override
     public void create() {
-        System.out.println("Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РєРЅРёРіРё");
+        System.out.println("Введите название книги");
         String title = inputString();
-        System.out.println("Р’РІРµРґРёС‚Рµ РёРјСЏ Рё С„Р°РјРёР»РёСЋ Р°РІС‚РѕСЂР°, РµСЃР»Рё РёС… РЅРµСЃРєРѕР»СЊРєРѕ СЂР°Р·РґРµР»РёС‚Рµ РёС… Р·Р°РїСЏС‚РѕР№");
+        System.out.println("Введите имя и фамилию автора, если их несколько разделите их запятой");
         String authors = inputString();
         BookServiceImpl.getInstance().create(title, authors);
     }
 
     @Override
     public void read() {
-        System.out.println("Р’РІРµРґРёС‚Рµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєРЅРёРіРё РґР»СЏ РІС‹РІРѕРґР°");
-        Integer id = inputInt();
-        BookServiceImpl.getInstance().read(id);
+        System.out.println("Введите идентификатор книги для вывода");
+        try {
+            int id = inputInt();
+            if (id < 0) {
+                throw new InputMismatchException();
+            }
+            BookServiceImpl.getInstance().read(id);
+        } catch (InputMismatchException inputMismatchException) {
+            System.err.println("Пожалуйста введите валидный идентификатор в формате больше 0");
+        }
     }
 
     @Override
     public void update() {
-        System.out.println("Р’РІРµРґРёС‚Рµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєРЅРёРіРё РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ");
-        Integer id = inputInt();
-        System.out.println("Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РєРЅРёРіРё");
-        String title = inputString();
-        System.out.println("Р’РІРµРґРёС‚Рµ РёРјСЏ Рё С„Р°РјРёР»РёСЋ Р°РІС‚РѕСЂР°, РµСЃР»Рё РёС… РЅРµСЃРєРѕР»СЊРєРѕ СЂР°Р·РґРµР»РёС‚Рµ РёС… Р·Р°РїСЏС‚РѕР№");
-        String authors = inputString();
-        BookServiceImpl.getInstance().update(id, title, authors);
+        System.out.println("Введите идентификатор книги для обновления");
+        try {
+            int id = inputInt();
+            if (id < 0) {
+                throw new InputMismatchException();
+            }
+            System.out.println("Введите название книги");
+            String title = inputString();
+            System.out.println("Введите имя и фамилию автора, если их несколько разделите их запятой");
+            String authors = inputString();
+            BookServiceImpl.getInstance().update(id, title, authors);
+        } catch (InputMismatchException inputMismatchException) {
+            System.err.println("Пожалуйста введите валидный идентификатор в формате больше 0");
+        }
     }
 
     @Override
     public void delete() {
-        System.out.println("Р’РІРµРґРёС‚Рµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєРЅРёРіРё РґР»СЏ СѓРґР°Р»РµРЅРёСЏ");
-        Integer id = inputInt();
-        BookServiceImpl.getInstance().delete(id);
+        System.out.println("Введите идентификатор книги для удаления");
+        try {
+            int id = inputInt();
+            if (id < 0) {
+                throw new InputMismatchException();
+            }
+            BookServiceImpl.getInstance().delete(id);
+        } catch (InputMismatchException inputMismatchException) {
+            System.err.println("Пожалуйста введите валидный идентификатор в формате больше 0");
+        }
     }
 
     @Override
     public void findAll() {
-        System.out.println("Р’РІРµРґРёС‚Рµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєРЅРёРіРё РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РІСЃРµС… Р°РІС‚РѕСЂРѕРІ");
-        Integer id = inputInt();
-        BookServiceImpl.getInstance().findAll(id);
+        System.out.println("Введите идентификатор книги для получения всех авторов");
+        try {
+            int id = inputInt();
+            if (id < 0) {
+                throw new InputMismatchException();
+            }
+            BookServiceImpl.getInstance().findAll(id);
+        } catch (InputMismatchException inputMismatchException) {
+            System.err.println("Пожалуйста введите валидный идентификатор в формате больше 0");
+        }
     }
 
     @Override

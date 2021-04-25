@@ -1,14 +1,14 @@
 package ua.nix.bookslibrary.entity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Author extends BaseEntity {
-    private Integer id;
     private String name;
     private String surname;
-    private boolean visible = true;
     private final List<String> books = new ArrayList<>();
-    private final List<Class<? extends Book>> bookList = new ArrayList<>();
+    private boolean visible = true;
 
     public void setId(Integer id) {
         this.id = id;
@@ -31,10 +31,6 @@ public class Author extends BaseEntity {
         this.books.addAll(Arrays.asList(books));
     }
 
-    public void setBookList(Book book){
-        bookList.add(book.getClass());
-    }
-
     public Integer getId() {
         return id;
     }
@@ -51,12 +47,8 @@ public class Author extends BaseEntity {
         return books;
     }
 
-    public List<Class<? extends Book>> getBookList() {
-        return bookList;
-    }
-
-    public boolean isVisible() {
-        return visible;
+    public String isVisible() {
+        return String.valueOf(visible);
     }
 
     @Override
@@ -65,6 +57,8 @@ public class Author extends BaseEntity {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
+                ", books=" + books +
+                ", visible=" + visible +
                 '}';
     }
 }

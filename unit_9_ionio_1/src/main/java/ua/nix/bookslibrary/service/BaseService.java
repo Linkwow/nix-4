@@ -1,8 +1,6 @@
 package ua.nix.bookslibrary.service;
 
-import ua.nix.bookslibrary.entity.BaseEntity;
-
-public interface BaseService<T extends BaseEntity> {
+public interface BaseService {
     void read(Integer id);
     void delete(Integer id);
     void printTable();

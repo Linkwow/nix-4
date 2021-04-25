@@ -1,4 +1,4 @@
-package ua.nix.bookslibrary.service.format;
+package ua.nix.bookslibrary.dao.impl.format;
 
 import java.util.Formatter;
 
@@ -21,6 +21,12 @@ public class BookFormat {
         Formatter formatter = new Formatter();
         return formatter.format("%-40s", books).toString();
     }
+
+    public String setVisibleFormat(String visible){
+        Formatter formatter = new Formatter();
+        return formatter.format("%-8s", visible).toString();
+    }
+
 
     public static BookFormat getInstance() {
         if(instance == null){

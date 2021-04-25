@@ -1,15 +1,13 @@
 package ua.nix.bookslibrary.entity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Book extends BaseEntity {
-    private Integer id;
     private String title;
+    private final List<String> authors = new ArrayList<>();
     private boolean visible = true;
-    private final List<String> authors = new LinkedList<>();
-    private final List<Class<? extends Author>> authorList = new LinkedList<>();
 
     public void setId(Integer id) {
         this.id = id;
@@ -23,18 +21,9 @@ public class Book extends BaseEntity {
         this.visible = visible;
     }
 
-    public void setAuthors(String[] authors){   //перенести в сервисы
+    public void setAuthors(String[] authors){
         this.authors.clear();
         this.authors.addAll(Arrays.asList(authors));
-    }
-
-    public void setAuthorList(Author author){
-        authorList.add(author.getClass());
-        try {
-            authorList.get(0).getMethod(toString());
-        } catch (Exception e){
-            System.err.println();
-        }
     }
 
     public Integer getId() {
@@ -49,12 +38,8 @@ public class Book extends BaseEntity {
         return authors;
     }
 
-    public List<Class<? extends Author>> getAuthorList() {
-        return authorList;
-    }
-
-    public boolean isVisible() {
-        return visible;
+    public String isVisible() {
+        return String.valueOf(visible);
     }
 
     @Override
@@ -62,6 +47,8 @@ public class Book extends BaseEntity {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", authors=" + authors +
+                ", visible=" + visible +
                 '}';
     }
 }

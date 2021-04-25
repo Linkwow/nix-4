@@ -4,67 +4,77 @@ import static ua.nix.libs.Console.*;
 
 import ua.nix.bookslibrary.controller.*;
 
+import java.util.InputMismatchException;
+
 public class UserInterface {
 
     public static void run() {
         boolean end = false;
         while (!end) {
-            System.out.println("Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ СЃ Р‘Р”:");
-            System.out.println("1. РЎРѕР·РґР°С‚СЊ РєРЅРёРіСѓ.");
-            System.out.println("2. РЎРѕР·РґР°С‚СЊ Р°РІС‚РѕСЂР°.");
-            System.out.println("3. Р’С‹РІРµСЃС‚Рё РєРЅРёРіСѓ РїРѕ ID.");
-            System.out.println("4. Р’С‹РІРµСЃС‚Рё Р°РІС‚РѕСЂР° РїРѕ ID.");
-            System.out.println("5. РћР±РЅРѕРІРёС‚СЊ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РєРЅРёРіРµ РїРѕ ID.");
-            System.out.println("6. РћР±РЅРѕРІРёС‚СЊ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ Р°РІС‚РѕСЂРµ РїРѕ ID.");
-            System.out.println("7. РЈРґР°Р»РёС‚СЊ РєРЅРёРіСѓ.");
-            System.out.println("8. РЈРґР°Р»РёС‚СЊ Р°РІС‚РѕСЂР°.");
-            System.out.println("9. РџРѕР»СѓС‡РёС‚СЊ РІСЃРµС… Р°РІС‚РѕСЂРѕРІ РїРѕ РєРЅРёРіРµ.");
-            System.out.println("10. РџРѕР»СѓС‡РёС‚СЊ РІСЃРµ РєРЅРёРіРё РїРѕ Р°РІС‚РѕСЂСѓ");
-            System.out.println("11. Р’С‹РІРµСЃС‚Рё С‚Р°Р±Р»РёС†Сѓ РєРЅРёРі");
-            System.out.println("12. Р’С‹РІРµСЃС‚Рё С‚Р°Р±Р»РёС†Сѓ Р°РІС‚РѕСЂРѕРІ");
-            System.out.println("13. Р’С‹С…РѕРґ.");
-            switch (inputInt()) {
-                case 1:
-                    BookController.getInstance().create();
-                    break;
-                case 2:
-                    AuthorController.getInstance().create();
-                    break;
-                case 3:
-                    BookController.getInstance().read();
-                    break;
-                case 4:
-                    AuthorController.getInstance().read();
-                    break;
-                case 5:
-                    BookController.getInstance().update();
-                    break;
-                case 6:
-                    AuthorController.getInstance().update();
-                    break;
-                case 7:
-                    BookController.getInstance().delete();
-                    break;
-                case 8:
-                    AuthorController.getInstance().delete();
-                    break;
-                case 9:
-                    BookController.getInstance().findAll();
-                    break;
-                case 10:
-                    AuthorController.getInstance().findAll();
-                    break;
-                case 11:
-                    BookController.getInstance().printTable();
-                    break;
-                case 12:
-                    AuthorController.getInstance().printTable();
-                    break;
-                case 13:
-                    end = true;
-                    break;
-                default:
-                    break;
+            System.out.println("Выберите действие с БД:");
+            System.out.println("1. Создать книгу.");
+            System.out.println("2. Создать автора.");
+            System.out.println("3. Вывести книгу по ID.");
+            System.out.println("4. Вывести автора по ID.");
+            System.out.println("5. Обновить информацию о книге по ID.");
+            System.out.println("6. Обновить информацию о авторе по ID.");
+            System.out.println("7. Удалить книгу.");
+            System.out.println("8. Удалить автора.");
+            System.out.println("9. Получить всех авторов по книге.");
+            System.out.println("10. Получить все книги по автору");
+            System.out.println("11. Вывести таблицу книг");
+            System.out.println("12. Вывести таблицу авторов");
+            System.out.println("13. Выход.");
+            try {
+                int choice = inputInt();
+                if (choice < 0) {
+                    throw new InputMismatchException();
+                }
+                switch (choice) {
+                    case 1:
+                        BookController.getInstance().create();
+                        break;
+                    case 2:
+                        AuthorController.getInstance().create();
+                        break;
+                    case 3:
+                        BookController.getInstance().read();
+                        break;
+                    case 4:
+                        AuthorController.getInstance().read();
+                        break;
+                    case 5:
+                        BookController.getInstance().update();
+                        break;
+                    case 6:
+                        AuthorController.getInstance().update();
+                        break;
+                    case 7:
+                        BookController.getInstance().delete();
+                        break;
+                    case 8:
+                        AuthorController.getInstance().delete();
+                        break;
+                    case 9:
+                        BookController.getInstance().findAll();
+                        break;
+                    case 10:
+                        AuthorController.getInstance().findAll();
+                        break;
+                    case 11:
+                        BookController.getInstance().printTable();
+                        break;
+                    case 12:
+                        AuthorController.getInstance().printTable();
+                        break;
+                    case 13:
+                        end = true;
+                        break;
+                    default:
+                        break;
+                }
+            } catch (InputMismatchException inputMismatchException) {
+                System.err.println("Пожалуйста введите валыидный пункт в формате больше 0");
             }
         }
     }

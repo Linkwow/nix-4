@@ -1,4 +1,4 @@
-package ua.nix.bookslibrary.service.format;
+package ua.nix.bookslibrary.dao.impl.format;
 
 import java.util.Formatter;
 
@@ -19,12 +19,17 @@ public class AuthorFormat {
 
     public String setSurNameFormat(String surname){
         Formatter formatter = new Formatter();
-        return formatter.format("%-20s", surname).toString();
+        return formatter.format("%-25s", surname).toString();
     }
 
     public String setBooksFormat(String books){
         Formatter formatter = new Formatter();
         return formatter.format("%-30s", books).toString();
+    }
+
+    public String setVisibleFormat(String visible){
+        Formatter formatter = new Formatter();
+        return formatter.format("%-8s", visible).toString();
     }
 
     public static AuthorFormat getInstance() {
