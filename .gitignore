@@ -1,4 +1,5 @@
 .idea/
+*.json
 *.log
 *.class
 *.iml
