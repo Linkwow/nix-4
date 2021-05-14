@@ -7,19 +7,17 @@ public class RandomDate {
     private final int year;
     private final String month;
     private final String day;
-    private final String divider;
     private final String info;
 
     public RandomDate() {
         year = random.nextInt(1022) + 1000;
         month = randomMonth();
         day = randomDay(Integer.parseInt(month));
-        divider = String.valueOf((char) (random.nextInt(3) + 45));
         info = createInfo();
     }
 
     private String randomMonth(){
-        String month = "";
+        String month;
         int value = random.nextInt(12) + 1;
         if(value < 10){
             month = "0" + value;
@@ -47,18 +45,18 @@ public class RandomDate {
 
     private String createInfo() {
         String date = "";
-        switch (random.nextInt(3)) {
+        switch (random.nextInt(4)) {
             case 0:
-                date = year + divider + month + divider + day;
+                date = year + "/" + month + "/" + day;
                 break;
             case 1:
-                date = day + divider + month + divider + year;
+                date = day + "/" + month + "/" + year;
                 break;
             case 2:
-                date = month + divider + day + divider + year;
+                date = month + "-" + day + "-" + year;
                 break;
             case 3:
-                date = day + divider + year + divider + month;
+                date = day + "." + month + "." + year;
                 break;
             default:
                 break;

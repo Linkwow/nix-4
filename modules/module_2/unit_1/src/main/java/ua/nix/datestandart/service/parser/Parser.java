@@ -5,16 +5,20 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Arrays;
 
+import ua.nix.datestandart.service.checker.Checker;
+
 public class Parser {
     private static Parser instance;
     private final static String nullData = "Вы не ввели валидных данных. Попробуйте снова";
 
-    public List<String> receive(String inputString) {
+    public String receive(String inputString) {
+       List<String> inputData;
        if(inputString == null) {
-           return new ArrayList<>(Collections.singletonList(nullData));
+           inputData = new ArrayList<>(Collections.singletonList(nullData));
        } else {
-           return new ArrayList<>(Arrays.asList(inputString.split("\\s*[,\\s]+")));
+           inputData = new ArrayList<>(Arrays.asList(inputString.split("\\s*[,\\s]+")));
        }
+        return Checker.getInstance().parseInputString(inputData);
     }
 
     public static Parser getInstance() {
@@ -23,5 +27,4 @@ public class Parser {
         }
         return instance;
     }
-
 }
