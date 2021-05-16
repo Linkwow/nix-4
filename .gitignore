@@ -6,4 +6,3 @@
 *.csv
 /**/dependency-reduced-pom.xml
 target/
-resources/

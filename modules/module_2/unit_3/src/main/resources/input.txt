@@ -1,0 +1,34 @@
+6
+gdansk
+3
+2 7
+3 9
+6 14
+bydgoszcz
+3
+1 7
+3 10
+4 15
+torun
+4
+1 9
+2 10
+6 2
+4 11
+warszawa
+3
+3 11
+5 6
+2 15
+glogow
+2
+6 9
+4 6
+krakov
+3
+3 2
+1 14
+5 9
+2
+gdansk warszawa
+bydgoszcz warszawa
