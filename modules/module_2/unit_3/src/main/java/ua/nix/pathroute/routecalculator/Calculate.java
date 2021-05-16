@@ -1,12 +1,12 @@
 package ua.nix.pathroute.routecalculator;
 
 import ua.nix.pathroute.entity.Node;
+
 import java.util.List;
 
 public class Calculate {
     private static Calculate instance;
-    Integer[][] pathMatrix;
-
+    private Integer[][] pathMatrix;
 
     public void pathRouteCreate(List<Node> nodes) {
         pathMatrix = new Integer[nodes.size() + 1][nodes.size() + 1];
@@ -30,7 +30,7 @@ public class Calculate {
             for (int innerIndex = 1; innerIndex < pathMatrix.length; innerIndex++) {
                 if (pathMatrix[startIndex][innerIndex] != 0) {
                     temp = pathMatrix[startIndex][innerIndex];
-                    if(sum < temp){
+                    if (sum < temp) {
                         sum += temp;
                         break;
                     }
@@ -40,10 +40,10 @@ public class Calculate {
         return String.valueOf(sum);
     }
 
-        public static Calculate getInstance () {
-            if (instance == null) {
-                instance = new Calculate();
-            }
-            return instance;
+    public static Calculate getInstance() {
+        if (instance == null) {
+            instance = new Calculate();
         }
+        return instance;
     }
+}

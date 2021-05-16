@@ -4,6 +4,7 @@ import java.io.*;
 
 public class Reader {
     private final File file = new File("src\\main\\resources\\input.txt");
+    private final File outputFile = new File("src\\main\\resources\\output.txt");
     private String[] outputArray;
     private static Reader instance;
 
@@ -14,7 +15,7 @@ public class Reader {
                 outputArray = new String[Integer.parseInt(br.readLine()) + 1];
                 for (int index = 0; index < outputArray.length - 1; index++) {
                     outputArray[index] = br.readLine();
-                    if (outputArray[index].matches("[a-zA-zÐ°-ÑÐ-Ñ].*")) {
+                    if (outputArray[index].matches("[a-zA-zà-ÿÀ-ÿ].*")) {
                         int fieldsCount = Integer.parseInt(br.readLine());
                         outputArray[index] += "/" + fieldsCount;
                         for (int dataIndex = 0; dataIndex < fieldsCount; dataIndex++) {
@@ -22,11 +23,11 @@ public class Reader {
                             if (temp.matches("\\d+\\s\\d+")) {
                                 outputArray[index] += "/" + temp;
                             } else {
-                                throw new IOException("Ð’Ñ‹ Ð²Ð²ÐµÐ»Ð¸ Ð½ÐµÐ°Ð¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ðµ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð¿Ð¾ ÑÐµÑÐ¾Ð´ÐµÐ¼ ÑƒÐ·Ð»Ð°, Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑŒÑ‚Ðµ Ñ„Ð°Ð¹Ð»");
+                                throw new IOException("Âû ââåëè íåêîððåêòíûå äàííûå ïî ñåñîäåì óçëà, ïðîâåðüòå ôàéë");
                             }
                         }
                     } else {
-                        throw new IOException("ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð³Ð¾Ñ€Ð¾Ð´Ð° ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ñ‚ Ð½ÐµÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ðµ ÑÐ¸Ð¼Ð²Ð¾Ð»Ñ‹, Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑŒÑ‚Ðµ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾ÑÑ‚ÑŒ Ñ„Ð°Ð¹Ð»Ð°");
+                        throw new IOException("Íàçâàíèå ãîðîäà ñîäåðæèò íåêîððåêòíûå ñèìâîëû, ïðîâåðüòå êîððåêòíîñòü ôàéëà");
                     }
                 }
                 int routePath = Integer.parseInt(br.readLine());
@@ -35,26 +36,32 @@ public class Reader {
                     outputArray[outputArray.length - 1] += br.readLine() + "/";
                 }
             } catch (NumberFormatException numberFormatException) {
-                System.err.println("Ð’Ñ‹ Ð½Ðµ Ð²Ð²ÐµÐ»Ð¸ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð³Ð¾Ñ€Ð¾Ð´Ð¾Ð², Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑŒÑ‚Ðµ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾ÑÑ‚ÑŒ Ñ„Ð°Ð¹Ð»Ð°.");
+                System.err.println("Âû íå ââåëè êîëè÷åñòâî ãîðîäîâ, ïðîâåðüòå êîððåêòíîñòü ôàéëà.");
             } catch (IOException ioException) {
                 System.err.println(ioException.getMessage());
             }
         } catch (FileNotFoundException fileNotFoundException) {
-            System.err.println("ÐŸÑ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ð° Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð¿Ñ€Ð¾Ñ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ Ñ„Ð°Ð¹Ð». ÐŸÑ€Ð¾Ð²ÐµÑ€ÑŒÑ‚Ðµ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ÑÑ‚ÑŒ Ð²Ð²ÐµÐ´ÐµÐ½Ð½Ð¾Ð³Ð¾ Ð¿ÑƒÑ‚Ð¸");
+            System.err.println("Ïðîãðàììà íå ìîæåò ïðî÷èòàòü ôàéë. Ïðîâåðüòå ïðàâèëüíîñòü ââåäåííîãî ïóòè");
         }
         return outputArray;
     }
 
+    public void readInput() {
+        read(file);
+    }
     public void readOutput() {
-        File outputFile = new File("src\\main\\resources\\output.txt");
+      read(outputFile);
+    }
+
+    private void read(File file){
         String s;
         try {
-            BufferedReader br = new BufferedReader(new FileReader(outputFile));
+            BufferedReader br = new BufferedReader(new FileReader(file));
             while ((s = br.readLine()) != null) {
                 System.out.println(s);
             }
         } catch (FileNotFoundException fileNotFoundException) {
-            System.err.println("ÐŸÑ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ð° Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð¿Ñ€Ð¾Ñ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ Ñ„Ð°Ð¹Ð». ÐŸÑ€Ð¾Ð²ÐµÑ€ÑŒÑ‚Ðµ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ÑÑ‚ÑŒ Ð²Ð²ÐµÐ´ÐµÐ½Ð½Ð¾Ð³Ð¾ Ð¿ÑƒÑ‚Ð¸");
+            System.err.println("Ïðîãðàììà íå ìîæåò ïðî÷èòàòü ôàéë. Ïðîâåðüòå ïðàâèëüíîñòü ââåäåííîãî ïóòè");
         } catch (IOException ioException) {
             System.err.println(ioException.getMessage());
         }

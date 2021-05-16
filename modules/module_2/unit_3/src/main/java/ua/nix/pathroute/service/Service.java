@@ -6,17 +6,16 @@ import ua.nix.pathroute.dao.impl.NodeDaoImpl;
 import ua.nix.pathroute.routecalculator.Calculate;
 import ua.nix.pathroute.service.fileinteractions.Writer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Service {
     private static Service instance;
-    static List<Node> list = new ArrayList<>();
 
     public void start() {
+        Reader.getInstance().readInput();
         String[] dataFromFile = Reader.getInstance().readFile();
         String findTown = dataFromFile[dataFromFile.length - 1];
-        list = NodeDaoImpl.getInstance().generate(dataFromFile);
+        List<Node> list = NodeDaoImpl.getInstance().generate(dataFromFile);
         Calculate.getInstance().pathRouteCreate(list);
         String[] towns = findTown.split("/");
         Node firstNode = new Node();

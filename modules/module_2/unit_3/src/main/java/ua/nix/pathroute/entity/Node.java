@@ -10,8 +10,6 @@ public class Node {
     Integer neighborsNumber;
     List<Integer> neighbors = new ArrayList<>();
     List<Integer> routeCost = new ArrayList<>();
-    private boolean visited = false;
-    private Integer weight = 200000;
 
     public Integer getIndex() {
         return index;
@@ -21,24 +19,12 @@ public class Node {
         return townName;
     }
 
-    public Integer getNeighborsNumber() {
-        return neighborsNumber;
-    }
-
     public List<Integer> getNeighbors() {
         return neighbors;
     }
 
     public List<Integer> getRouteCost() {
         return routeCost;
-    }
-
-    public boolean isVisited() {
-        return visited;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
     }
 
     public void setTownName(String townName) {
@@ -55,9 +41,5 @@ public class Node {
 
     public void setRouteCost(Integer routeCost) {
         this.routeCost.add(routeCost);
-    }
-
-    public void setVisited(boolean visited) {
-        this.visited = visited;
     }
 }

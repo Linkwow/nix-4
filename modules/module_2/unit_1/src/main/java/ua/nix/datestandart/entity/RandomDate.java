@@ -3,7 +3,7 @@ package ua.nix.datestandart.entity;
 import java.util.Random;
 
 public class RandomDate {
-    Random random = new Random();
+    private final Random random = new Random();
     private final int year;
     private final String month;
     private final String day;

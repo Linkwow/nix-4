@@ -16,11 +16,9 @@ public class Writer {
             writer.write(" ");
             writer.close();
         } catch (IOException ioException){
-            System.err.println("Р¤Р°Р№Р» РЅРµ Р±С‹Р» СЃРѕР·РґР°РЅ.");
+            System.err.println("Файл не был создан.");
         }
     }
-
-
 
     public static Writer getInstance(){
         if(instance == null){
