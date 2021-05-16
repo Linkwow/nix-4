@@ -16,6 +16,5 @@ public class Controller {
                 System.out.println("¬ведите строковую последовательность дат");
                 Service.getInstance().manualRun(Console.inputLine());
         }
-
     }
 }
