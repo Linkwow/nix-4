@@ -1,11 +1,13 @@
 package ua.nix.pathroute.service;
 
+import ua.nix.pathroute.entity.Graph;
 import ua.nix.pathroute.entity.Node;
 import ua.nix.pathroute.service.fileinteractions.Reader;
 import ua.nix.pathroute.dao.impl.NodeDaoImpl;
 import ua.nix.pathroute.routecalculator.Calculate;
 import ua.nix.pathroute.service.fileinteractions.Writer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Service {
@@ -14,32 +16,23 @@ public class Service {
     public void start() {
         Reader.getInstance().readInput();
         String[] dataFromFile = Reader.getInstance().readFile();
+        List<Node> list;
         String findTown = dataFromFile[dataFromFile.length - 1];
-        List<Node> list = NodeDaoImpl.getInstance().generate(dataFromFile);
-        Calculate.getInstance().pathRouteCreate(list);
         String[] towns = findTown.split("/");
-        Node firstNode = new Node();
-        Node lastNode = new Node();
-        String s = "";
-        for (int index = 0; index < towns.length; index++) {
-            String[] name = towns[index].split(" ");
-            for (Node node : list) {
-                if (node.getTownName().equals(name[0])) {
-                    firstNode = node;
-                } else if (node.getTownName().equals(name[1])) {
-                    lastNode = node;
-                }
-            }
-            s += Calculate.getInstance().pathCount(firstNode, lastNode) + " ";
+        StringBuilder sb = new StringBuilder();
+        for (int j = 1; j < towns.length; j++) {
+            list = NodeDaoImpl.getInstance().generate(dataFromFile);
+            String[] name = towns[j].split(" ");
+            Graph graph = new Graph(list);
+            sb.append(graph.start(name));
+            sb.append(" ");
         }
-        for (String write : s.split(" ")) {
-            Writer.getInstance().writeFile(write);
-        }
+        Writer.getInstance().writeFile(sb.toString());
         Reader.getInstance().readOutput();
     }
 
     public static Service getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new Service();
         }
         return instance;

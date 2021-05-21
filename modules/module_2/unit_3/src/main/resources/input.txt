@@ -1,34 +1,34 @@
 6
-New-York
+poltava
 3
-2 7
-3 9
 6 14
-Los-Angeles
+3 9
+2 7
+kiev
 3
 1 7
-3 10
 4 15
-Moscow
+3 10
+kharkov
 4
 1 9
 2 10
-6 2
 4 11
-Paris
+6 2
+lvov
 3
+2 15
 3 11
 5 6
-2 15
-London
+odessa
 2
-6 9
 4 6
-Kiev
+6 9
+luck
 3
-3 2
 1 14
 5 9
+3 2
 2
-Moscow Kiev
-New-York London
+poltava luck
+kharkov odessa

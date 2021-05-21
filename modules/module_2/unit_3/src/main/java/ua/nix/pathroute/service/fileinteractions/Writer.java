@@ -11,7 +11,7 @@ public class Writer {
 
     public void writeFile(String output) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(output);
             writer.write(" ");
             writer.close();

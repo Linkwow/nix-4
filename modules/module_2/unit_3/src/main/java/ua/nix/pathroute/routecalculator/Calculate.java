@@ -11,8 +11,8 @@ public class Calculate {
     public void pathRouteCreate(List<Node> nodes) {
         pathMatrix = new Integer[nodes.size() + 1][nodes.size() + 1];
         for (Node node : nodes) {
-            for (int i = 0; i < node.getNeighbors().size(); i++) {
-                pathMatrix[node.getIndex()][node.getNeighbors().get(i)] = node.getRouteCost().get(i);
+            for (int i = 0; i < node.getRoute().size(); i++) {
+                pathMatrix[node.getVertex()][1] = node.getRoute().get(i);
             }
         }
         for (int i = 0; i < pathMatrix.length; i++) {
@@ -22,11 +22,18 @@ public class Calculate {
                 }
             }
         }
+
+        for(int i = 1; i < pathMatrix.length; i++){
+            for (int j = 1; j < pathMatrix.length; j++) {
+                System.out.print(pathMatrix[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     public String pathCount(Node start, Node finish) {
         Integer sum = 0, temp;
-        for (int startIndex = start.getIndex(); startIndex < finish.getIndex() - 1; startIndex++) {
+        for (int startIndex = start.getVertex(); startIndex < finish.getVertex() - 1; startIndex++) {
             for (int innerIndex = 1; innerIndex < pathMatrix.length; innerIndex++) {
                 if (pathMatrix[startIndex][innerIndex] != 0) {
                     temp = pathMatrix[startIndex][innerIndex];
