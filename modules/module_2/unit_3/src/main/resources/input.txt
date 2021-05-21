@@ -31,4 +31,4 @@ luck
 3 2
 2
 poltava luck
-kharkov odessa
+lvov luck

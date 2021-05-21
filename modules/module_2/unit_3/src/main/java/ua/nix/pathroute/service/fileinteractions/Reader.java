@@ -31,7 +31,7 @@ public class Reader {
                     }
                 }
                 int routePath = Integer.parseInt(br.readLine());
-                outputArray[outputArray.length - 1] = String.valueOf(routePath) + "/";
+                outputArray[outputArray.length - 1] = routePath + "/";
                 for (int i = 0; i < routePath; i++) {
                     outputArray[outputArray.length - 1] += br.readLine() + "/";
                 }

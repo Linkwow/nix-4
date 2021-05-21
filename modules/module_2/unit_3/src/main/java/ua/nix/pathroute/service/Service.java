@@ -4,10 +4,8 @@ import ua.nix.pathroute.entity.Graph;
 import ua.nix.pathroute.entity.Node;
 import ua.nix.pathroute.service.fileinteractions.Reader;
 import ua.nix.pathroute.dao.impl.NodeDaoImpl;
-import ua.nix.pathroute.routecalculator.Calculate;
 import ua.nix.pathroute.service.fileinteractions.Writer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Service {

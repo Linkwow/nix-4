@@ -22,8 +22,6 @@ public class NodeDaoImpl implements Dao<Node> {
         Node node = new Node();
         node.setVertex(vertex);
         node.setTownName(input[0]);
-        int neighborsNumber = Integer.parseInt(input[1]);
-        node.setNeighborsNumber(neighborsNumber);
         String[] neighborRouteCost;
         for (int index = 2; index < input.length; index++) {
             neighborRouteCost = input[index].split(" ");

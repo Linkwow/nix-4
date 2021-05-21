@@ -1,15 +1,14 @@
 package ua.nix.pathroute.entity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class Graph {
-    private List<Node> nodes = new ArrayList<>();
+    private final List<Node> nodes;
     private Integer startIndex;
     private Integer finishIndex;
-    private ListIterator<Node> nodesIterator;
+    private final PriorityQueue<Node> priorityVertex = new PriorityQueue<>(idComparator);
+    private final PriorityQueue<Node> temporaryQueue = new PriorityQueue<>(idComparator);
+    private static final Comparator<Node> idComparator = Comparator.comparingInt(Node::getWeight);
 
     public Graph(List<Node> nodes) {
         this.nodes = nodes;
@@ -18,13 +17,14 @@ public class Graph {
     public int start(String[] townsName) {
         findRouteVertex(townsName);
         nodes.get(startIndex - 1).setWeight(0);
+        priorityVertex.addAll(nodes);
         linksVertex();
-        return nodes.get(finishIndex-1).getWeight();
+        return nodes.get(finishIndex - 1).getWeight();
     }
 
     private void findRouteVertex(String[] townsName) {
         Node node;
-        nodesIterator = nodes.listIterator();
+        ListIterator<Node> nodesIterator = nodes.listIterator();
         while (nodesIterator.hasNext()) {
             node = nodesIterator.next();
             if (townsName[0].equals(node.getTownName())) {
@@ -42,21 +42,23 @@ public class Graph {
     private void linksVertex() {
         Node currentNode;
         Node neighborNode;
-        Integer neighborVertex = 0;
-        nodesIterator = nodes.listIterator();
-        while (nodesIterator.hasNext()) {
-            currentNode = nodesIterator.next();
-            Iterator<Integer> currentNodeNeighborIterator = currentNode.getRoute().keySet().iterator();
-            while (currentNodeNeighborIterator.hasNext()) {
-                neighborVertex = currentNodeNeighborIterator.next();
+        Integer neighborVertex;
+        for (int index = 0; index < priorityVertex.size(); index++) {
+            currentNode = priorityVertex.poll();
+            for (Integer integer : currentNode.getRoute().keySet()) {
+                neighborVertex = integer;
                 neighborNode = nodes.get(neighborVertex - 1);
                 if (!neighborNode.isVisited()) {
-                    if (currentNode.getWeight() + currentNode.getRoute().get(neighborVertex) < neighborNode.getWeight()){
+                    if (currentNode.getWeight() + currentNode.getRoute().get(neighborVertex) < neighborNode.getWeight()) {
                         neighborNode.setWeight(currentNode.getWeight() + currentNode.getRoute().get(neighborVertex));
                     }
                 }
             }
             currentNode.setVisited(true);
+            temporaryQueue.addAll(priorityVertex);
+            priorityVertex.clear();
+            priorityVertex.addAll(temporaryQueue);
+            temporaryQueue.clear();
         }
     }
 }
