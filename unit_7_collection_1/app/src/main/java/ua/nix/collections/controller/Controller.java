@@ -36,7 +36,7 @@ public class Controller {
         System.out.println();
         integerList = new OrderedList<>();
         System.out.println("ѕопробуйте сами, введите целочисленные значени€(дл€ демонстрации выбран упор€доченный список целочисленных значений, раздел€€ их пробелом.");
-        String[] input = Console.inputString().split(" ");
+        String[] input = Console.inputString(" ");
         try {
             for (String string : input) {
                 Integer integer = Integer.parseInt(string);

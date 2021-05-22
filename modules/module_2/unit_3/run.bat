@@ -3,4 +3,4 @@
 @echo *********Путевая задача**************
 @echo *************************************
 @call mvn clean install
-@java -jar target\unit_3-1.0-SNAPSHOT.jar
+@java -jar graphapp\target\graphapp-1.0-SNAPSHOT.jar
