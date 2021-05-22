@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Writer {
-    private final File file = new File("src\\main\\resources\\output.txt");
+    private final File file = new File("graphapp\\src\\main\\resources\\output.txt");
     private static Writer instance;
 
     public void writeFile(String output) {

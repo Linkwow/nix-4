@@ -1,4 +1,4 @@
-package ua.nix.pathroute.entity;
+package ua.nix.libs.entity;
 
 import java.util.HashMap;
 import java.util.Map;

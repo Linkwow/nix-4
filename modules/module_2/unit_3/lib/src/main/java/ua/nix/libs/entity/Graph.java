@@ -1,4 +1,4 @@
-package ua.nix.pathroute.entity;
+package ua.nix.libs.entity;
 
 import java.util.*;
 
@@ -24,16 +24,11 @@ public class Graph {
 
     private void findRouteVertex(String[] townsName) {
         Node node;
-        ListIterator<Node> nodesIterator = nodes.listIterator();
-        while (nodesIterator.hasNext()) {
-            node = nodesIterator.next();
+        for (Node value : nodes) {
+            node = value;
             if (townsName[0].equals(node.getTownName())) {
                 startIndex = node.getVertex();
-            }
-        }
-        while (nodesIterator.hasPrevious()) {
-            node = nodesIterator.previous();
-            if (townsName[1].equals(node.getTownName())) {
+            } else if (townsName[1].equals(node.getTownName())) {
                 finishIndex = node.getVertex();
             }
         }

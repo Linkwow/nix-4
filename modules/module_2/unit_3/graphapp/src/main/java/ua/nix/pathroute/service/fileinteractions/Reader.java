@@ -3,8 +3,8 @@ package ua.nix.pathroute.service.fileinteractions;
 import java.io.*;
 
 public class Reader {
-    private final File file = new File("src\\main\\resources\\input.txt");
-    private final File outputFile = new File("src\\main\\resources\\output.txt");
+    private final File file = new File("graphapp\\src\\main\\resources\\input.txt");
+    private final File outputFile = new File("graphapp\\src\\main\\resources\\output.txt");
     private String[] outputArray;
     private static Reader instance;
 
