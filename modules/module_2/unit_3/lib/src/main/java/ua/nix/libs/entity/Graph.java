@@ -56,4 +56,8 @@ public class Graph {
             temporaryQueue.clear();
         }
     }
+
+    public List<Node> getNodes(){
+        return nodes;
+    }
 }

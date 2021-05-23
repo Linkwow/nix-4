@@ -9,7 +9,7 @@ public class RouteCost {
 
     private static RouteCost instance;
 
-    public StringBuilder startCountRouteCost(String[] input){
+    public StringBuilder startCountRouteCost(String[] input) {
         List<Node> nodes;
         String findTown = input[input.length - 1];
         String[] towns = findTown.split("/");
@@ -24,7 +24,7 @@ public class RouteCost {
         return sb;
     }
 
-    private List<Node> generate(String[] input) {
+    public List<Node> generate(String[] input) {
         List<Node> nodes = new ArrayList<>();
         int countNodes = input.length - 1;
         for (int index = 0, vertex = 1; index < countNodes; index++, vertex++) {
@@ -33,7 +33,7 @@ public class RouteCost {
         return nodes;
     }
 
-    private int result(List<Node> nodes, String[] cityNames) {
+    public int result(List<Node> nodes, String[] cityNames) {
         Graph graph = new Graph(nodes);
         return graph.start(cityNames);
     }
