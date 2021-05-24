@@ -1,0 +1,34 @@
+CREATE DATABASE PathRouts;
+
+CREATE TABLE Locations(
+    id  integer NOT NULL PRIMARY KEY ,
+    name  text NOT NULL
+);
+
+CREATE TABLE Locations
+(
+    id   integer NOT NULL PRIMARY KEY,
+    name text    NOT NULL
+);
+
+CREATE TABLE Routes
+(
+    id      integer NOT NULL PRIMARY KEY,
+    from_id integer NOT NULL REFERENCES locations (id),
+    to_id   integer NOT NULL REFERENCES locations (id),
+    cost    integer NOT NULL
+);
+
+CREATE TABLE problems
+(
+    id      integer PRIMARY KEY,
+    from_id integer NOT NULL REFERENCES locations (id),
+    to_id   integer NOT NULL REFERENCES locations (id)
+);
+
+CREATE TABLE solutions
+(
+    id         integer,
+    problem_id integer NOT NULL PRIMARY KEY REFERENCES problems (id),
+    cost       integer
+);
