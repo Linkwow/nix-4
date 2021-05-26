@@ -1,10 +1,5 @@
 CREATE DATABASE PathRouts;
 
-CREATE TABLE Locations(
-    id  integer NOT NULL PRIMARY KEY ,
-    name  text NOT NULL
-);
-
 CREATE TABLE Locations
 (
     id   integer NOT NULL PRIMARY KEY,
