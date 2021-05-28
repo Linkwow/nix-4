@@ -17,6 +17,17 @@
         <maven.compiler.target>16</maven.compiler.target>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>myMavenRepoNaumenkoWrite</id>
+            <url>https://mymavenrepo.com/repo/rt2AHfbDgw5fdvAev0gl/</url>
+        </repository>
+        <snapshotRepository>
+            <id>myMavenRepoNaumenkoWrite</id>
+            <url>https://mymavenrepo.com/repo/rt2AHfbDgw5fdvAev0gl/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>ua.nix.libs</groupId>

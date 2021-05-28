@@ -14,6 +14,17 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <distributionManagement>
+        <repository>
+            <id>myMavenRepoNaumenkoWrite</id>
+            <url>${myMavenRepoNaumenkoWriteUrl}</url>
+        </repository>
+        <snapshotRepository>
+            <id>myMavenRepoNaumenkoWrite</id>
+            <url>${myMavenRepoNaumenkoWriteUrl}</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>

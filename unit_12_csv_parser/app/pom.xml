@@ -16,6 +16,13 @@
         <maven.compiler.target>16</maven.compiler.target>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>myMavenRepoNaumenkoRead</id>
+            <url>https://mymavenrepo.com/repo/7wnBpde3TYZTcEWly27I/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>ua.nix.libs</groupId>
