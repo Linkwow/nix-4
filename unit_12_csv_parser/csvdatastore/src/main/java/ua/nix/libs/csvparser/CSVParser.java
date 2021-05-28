@@ -4,8 +4,8 @@ import java.util.*;
 
 public class CSVParser {
 
-    private List<String> dataList;
-    private String parsePattern;
+    private final List<String> dataList;
+    private final String parsePattern;
 
     public CSVParser(List<String> dataList, String parsePattern) {
         this.dataList = dataList;

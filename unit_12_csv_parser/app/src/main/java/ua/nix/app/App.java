@@ -14,7 +14,7 @@ public class App {
         CSVDataStore csvDataStore = new CSVDataStore(App.class, "person.csv");
         csvDataStore.readFile();
         csvDataStore.parseFile(",");
-        CSVMapper<Person> csvMapper = new CSVMapper<Person>(Person.class, csvDataStore, PersonAnnotation.class);
+        CSVMapper<Person> csvMapper = new CSVMapper<>(Person.class, csvDataStore, PersonAnnotation.class);
         try {
             csvMapper.mapping();
         } catch (Exception exception){

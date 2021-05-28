@@ -17,6 +17,7 @@ public class CSVMapper<T> {
     private final Field[] fields;
     private final List<T> objectList = new ArrayList<>();
 
+    @SuppressWarnings("unchecked")
     public CSVMapper(Class<T> type, CSVDataStore csvDataStore, Class<? extends Annotation> annotationClass) {
         this.type = type;
         this.fields = type.getDeclaredFields();
@@ -24,7 +25,7 @@ public class CSVMapper<T> {
         this.annotation = (Class<Annotation>) annotationClass;
     }
 
-    public void mapping() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+    public void mapping() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         for (int key : csvDataStore.getAllData().keySet()) {
             object = type.getDeclaredConstructor().newInstance();
             for (Field field : fields) {
@@ -46,7 +47,6 @@ public class CSVMapper<T> {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void setField(Field field, int row, String columnName) throws IllegalAccessException {
         String result = csvDataStore.getData(row, columnName);
         try {
