@@ -15,13 +15,13 @@ public class CSVDataStore {
     private List<String> nonParsedDataFromFile;
     private List<String> header;
 
-    public CSVDataStore(Class<?> objectRef, String fileName) {
-        this.csvReader = new CSVReader(objectRef, fileName);
+    public CSVDataStore(Class<?> objectRef) {
+        this.csvReader = new CSVReader(objectRef);
     }
 
-    public void readFile() throws IOException {
+    public void readFile(String fileName) throws IOException {
         try {
-            this.csvReader.readFile();
+            this.csvReader.readFile(fileName);
         } catch (IOException ioException){
             ioException.printStackTrace();
             throw new IOException(ioException.getMessage());

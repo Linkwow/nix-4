@@ -7,14 +7,13 @@ import java.util.List;
 public class CSVReader {
     private final List<String> dataList = new ArrayList<>();
     private final ClassLoader classLoader;
-    private final String fileNameFromResources;
 
-    public CSVReader(Class<?> objectReference, String fileNameFromResources) {
+
+    public CSVReader(Class<?> objectReference) {
         classLoader = objectReference.getClassLoader();
-        this.fileNameFromResources = fileNameFromResources;
     }
 
-    public void readFile() throws IOException{
+    public void readFile(String fileNameFromResources) throws IOException{
         String temp;
         try (InputStream inputStream = classLoader.getResourceAsStream(fileNameFromResources)) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);

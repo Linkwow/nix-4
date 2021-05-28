@@ -23,9 +23,14 @@ public class CSVMapper<T> {
         this.fields = type.getDeclaredFields();
         this.csvDataStore = csvDataStore;
         this.annotation = (Class<Annotation>) annotationClass;
+        try {
+            mapping();
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void mapping() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+    private void mapping() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
         for (int key : csvDataStore.getAllData().keySet()) {
             object = type.getDeclaredConstructor().newInstance();
             for (Field field : fields) {
