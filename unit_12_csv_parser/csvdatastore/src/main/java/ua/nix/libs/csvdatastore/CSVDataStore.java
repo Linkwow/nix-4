@@ -1,16 +1,16 @@
 package ua.nix.libs.csvdatastore;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import ua.nix.libs.csvreader.CSVReader;
 import ua.nix.libs.csvparser.CSVParser;
 
 public class CSVDataStore {
 
-    private final Map<Integer, List<String>> data = new TreeMap<>();
+    private final Map<Integer, List<String>> data = new HashMap<>();
     private final CSVReader csvReader;
     private List<String> nonParsedDataFromFile;
     private List<String> header;
