@@ -11,10 +11,10 @@ public class Course extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "academy_generator")
     @SequenceGenerator(name = "academy_generator", sequenceName = "academy_sequence", allocationSize = 5)
-    @Column(name = "id", updatable = false)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "course_number", unique = true, nullable = false, updatable = false)
+    @Column(name = "course_number", unique = true)
     private Integer courseNumber;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
@@ -24,17 +24,5 @@ public class Course extends AbstractEntity {
 
     public Course(Integer courseNumber){
         this.courseNumber = courseNumber;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Integer getCourseNumber() {
-        return courseNumber;
-    }
-
-    public List<Group> getGroupList() {
-        return groupList;
     }
 }

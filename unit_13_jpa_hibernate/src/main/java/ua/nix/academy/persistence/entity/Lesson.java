@@ -2,6 +2,7 @@ package ua.nix.academy.persistence.entity;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "Lessons")
@@ -12,14 +13,26 @@ public class Lesson extends AbstractEntity {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme")
     private Theme theme;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "professor")
     private Professor professor;
 
     @Column(name = "date_time")
-    private ZonedDateTime zonedDateTime;
+    private ZonedDateTime zonedDateTime ;
+
+    @ManyToMany(mappedBy = "lessons", fetch = FetchType.LAZY)
+    private List<Student> students;
+
+    public Lesson(){}
+
+    public Lesson(ZonedDateTime zonedDateTime, Theme theme){
+        this.zonedDateTime = zonedDateTime;
+        this.theme = theme;
+    }
+
+
 }

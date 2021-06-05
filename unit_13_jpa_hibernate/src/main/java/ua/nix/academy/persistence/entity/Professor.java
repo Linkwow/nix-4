@@ -16,14 +16,15 @@ public class Professor extends AbstractEntity {
     @Column(name = "initials")
     private String initials;
 
-    @ManyToMany
-    @JoinTable(
-            name = "professors_groups",
-            joinColumns = @JoinColumn(name = "professor_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id")
-    )
-    private List<Group> groups = new ArrayList<>();
+    @OneToMany(mappedBy = "professor",fetch = FetchType.LAZY)
+    private List<Group> groups;
 
-    @OneToMany(mappedBy = "professor")
+    @OneToMany(mappedBy = "professor", fetch = FetchType.LAZY)
     private List<Lesson> lessons = new ArrayList<>();
+
+    public Professor(){}
+
+    public Professor(String initials) {
+        this.initials = initials;
+    }
 }

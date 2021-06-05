@@ -1,22 +1,34 @@
 package ua.nix.academy.service.impl;
 
-import ua.nix.academy.excepton.MyCustomSQLException;
+import org.hibernate.SessionFactory;
 import ua.nix.academy.persistence.dto.CourseDto;
-import ua.nix.academy.repository.impl.CourseRepository;
+import ua.nix.academy.repository.impl.CourseRepositoryImpl;
+import ua.nix.academy.service.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CourseService {
-    private CourseRepository course = CourseRepository.getInstance();
+public class CourseService implements Service<CourseDto> {
+    private static CourseService instance;
+    private final CourseRepositoryImpl course;
 
-    public void create(Integer[] courseNumbers) throws MyCustomSQLException {
-        List<CourseDto> courseDtos = new ArrayList<>();
-        for (Integer courseNumber : courseNumbers) {
-            CourseDto courseDto = new CourseDto();
-            courseDto.setCourseNumber(courseNumber);
-            courseDtos.add(courseDto);
+    private CourseService(SessionFactory sessionFactory){
+        course = CourseRepositoryImpl.getInstance(sessionFactory);
+    }
+
+    @Override
+    public void create(List<CourseDto> dtoList) throws Exception {
+        try {
+            course.create(dtoList);
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
         }
-        course.create(courseDtos);
+    }
+
+    public static CourseService getInstance(SessionFactory sessionFactory) {
+        if(instance == null){
+            instance = new CourseService(sessionFactory);
+        }
+        return instance;
     }
 }
