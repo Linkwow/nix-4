@@ -40,6 +40,10 @@ public class Controller {
         LessonRepositoryImpl.getInstance(sessionFactory).create(lessonDtoList);
     }
 
+    public void createGrade(List<GradeDto> gradeDtoList) throws Exception {
+        GradeRepositoryImpl.getInstance(sessionFactory).create(gradeDtoList);
+    }
+
     public static Controller getInstance(SessionFactory sessionfactory) {
         if(instance == null){
             instance = new Controller(sessionfactory);

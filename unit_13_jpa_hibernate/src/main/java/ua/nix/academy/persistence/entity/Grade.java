@@ -1,10 +1,11 @@
 package ua.nix.academy.persistence.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "grades")
-public class Grade {
+public class Grade extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,6 +13,15 @@ public class Grade {
     private Long id;
 
     @Column(name = "value", nullable = true)
-    private Long value;
+    private Integer value;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "grades")
+    private List<Student> student;
+
+    public Grade(){}
+
+    public Grade(Integer value){
+        this.value = value;
+    }
 
 }

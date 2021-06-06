@@ -24,8 +24,8 @@ public class GroupRepositoryImpl implements Repository<Group, GroupDto, String> 
     @Override
     public void create(List<GroupDto> groupDtoList) throws Exception {
         try (Session session = sessionFactory.openSession()) {
-            session.getTransaction().begin();
             try {
+                session.getTransaction().begin();
                 for (GroupDto groupDto : groupDtoList) {
                     Course course = CourseRepositoryImpl.getInstance(sessionFactory).getByCriteria(groupDto.getCourse());
                     Professor professor = ProfessorRepositoryImpl.getInstance(sessionFactory).getByCriteria(groupDto.getProfessor());

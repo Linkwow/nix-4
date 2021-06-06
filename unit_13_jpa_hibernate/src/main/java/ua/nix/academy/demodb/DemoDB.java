@@ -63,6 +63,14 @@ public class DemoDB {
             new LessonDto("2021-07-11 12:00", "Hibernate")
     ));
 
+    private static final List<GradeDto> gradeDtoList = new ArrayList<>(Arrays.asList(
+           new GradeDto(0),
+           new GradeDto(6),
+           new GradeDto(7),
+           new GradeDto(8),
+           new GradeDto(9),
+           new GradeDto(10)));
+
     public static List<CourseDto> getCourseDtoList() {
         return courseDtoList;
     }
@@ -85,5 +93,9 @@ public class DemoDB {
 
     public static List<LessonDto> getLessonDtoList() {
         return lessonDtoList;
+    }
+
+    public static List<GradeDto> getGradeDtoList() {
+        return gradeDtoList;
     }
 }

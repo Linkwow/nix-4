@@ -21,6 +21,7 @@ public class ProgrammingCourses {
             controller.createStudent(DemoDB.getStudentDtoList());
             controller.createTheme(DemoDB.getThemeDtoList());
             controller.createLesson(DemoDB.getLessonDtoList());
+            controller.createGrade(DemoDB.getGradeDtoList());
 
         }
     }

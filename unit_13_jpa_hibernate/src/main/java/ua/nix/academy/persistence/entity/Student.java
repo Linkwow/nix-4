@@ -1,6 +1,7 @@
 package ua.nix.academy.persistence.entity;
 
 import javax.persistence.*;
+import javax.persistence.criteria.Fetch;
 import java.util.List;
 
 @Entity
@@ -27,9 +28,18 @@ public class Student extends AbstractEntity {
     )
     private List<Lesson> lessons;
 
-    public Student(){}
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "grades_id", referencedColumnName = "id")
+    )
+    private List<Grade> grades;
 
-    public Student(String initials, Group group){
+
+    public Student() {
+    }
+
+    public Student(String initials, Group group) {
         this.initials = initials;
         this.group = group;
     }
