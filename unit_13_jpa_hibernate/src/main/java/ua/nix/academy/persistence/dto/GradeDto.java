@@ -1,13 +1,13 @@
 package ua.nix.academy.persistence.dto;
 
 public class GradeDto extends AbstractDto{
-    private Integer value;
+    private final String value;
 
-    public GradeDto(Integer value){
+    public GradeDto(String value){
         this.value = value;
     }
 
-    public Integer getValue() {
+    public String getValue() {
         return value;
     }
 }

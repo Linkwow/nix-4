@@ -1,6 +1,7 @@
 package ua.nix.academy.persistence.entity;
 
 import javax.persistence.*;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -29,9 +30,10 @@ public class Lesson extends AbstractEntity {
 
     public Lesson(){}
 
-    public Lesson(ZonedDateTime zonedDateTime, Theme theme){
-        this.zonedDateTime = zonedDateTime;
+    public Lesson(ZonedDateTime zonedDateTime, Theme theme, Professor professor){
+        this.zonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC"));
         this.theme = theme;
+        this.professor = professor;
     }
 
 

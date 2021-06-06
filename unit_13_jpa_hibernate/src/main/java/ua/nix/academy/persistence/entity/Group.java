@@ -34,4 +34,12 @@ public class Group extends AbstractEntity {
         this.course = course;
         this.professor = professor;
     }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }

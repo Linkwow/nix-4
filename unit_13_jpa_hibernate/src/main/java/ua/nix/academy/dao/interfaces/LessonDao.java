@@ -11,5 +11,5 @@ import java.time.ZonedDateTime;
 
 public interface LessonDao <ENTITY extends AbstractEntity, DTO extends AbstractDto> {
 
-    ENTITY create(ZonedDateTime zonedDateTime, Theme theme);
+    ENTITY create(ZonedDateTime zonedDateTime, Theme theme, Professor professor);
 }

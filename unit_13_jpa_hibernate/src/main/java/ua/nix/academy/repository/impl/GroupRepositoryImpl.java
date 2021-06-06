@@ -12,8 +12,9 @@ import ua.nix.academy.repository.interfaces.Repository;
 
 
 import java.util.List;
+import java.util.Scanner;
 
-public class GroupRepositoryImpl implements Repository<Group, GroupDto, String> {
+public class GroupRepositoryImpl implements Repository<Group, GroupDto> {
     private static GroupRepositoryImpl instance;
     private final SessionFactory sessionFactory;
 
@@ -42,9 +43,46 @@ public class GroupRepositoryImpl implements Repository<Group, GroupDto, String> 
     @Override
     public Group getByCriteria(String criteria) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Group> groupQuery = session.createQuery("from Group where name = ?1", Group.class).
-                    setParameter(1, criteria);
+            Query<Group> groupQuery = session.createQuery("select g from Group g where g.name = ?1", Group.class).setParameter(1, criteria);
             return groupQuery.getSingleResult();
+        }
+    }
+
+    @Override
+    public Group getById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Group> groupQuery = session.createQuery("select g from Group g where g.id = ?1", Group.class).setParameter(1, id);
+            return groupQuery.getSingleResult();
+        }
+    }
+
+    @Override
+    public List<Group> getAllByCriteria(String criteria) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Group> groupQuery = session.createQuery("select g from Group g where g.name = ?1", Group.class).setParameter(1, criteria);
+            return groupQuery.getResultList();
+        }
+    }
+
+    @Override
+    public void updateById(Long id) {
+        System.out.println("Enter a new professor value, or press the enter to left old value");
+        Scanner scanner = new Scanner(System.in);
+        String value = scanner.nextLine();
+        if (value != null) {
+            try (Session session = sessionFactory.openSession()) {
+                Query<Group> gradeQuery = session.createQuery("update Group g set g.professor = ?1 where g.id = ?2", Group.class).
+                        setParameter("1", value).setParameter(2, id);
+                gradeQuery.executeUpdate();
+            }
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Group> courseQuery = session.createQuery("delete from Group g where g.id = ?1", Group.class).setParameter(1, id);
+            courseQuery.executeUpdate();
         }
     }
 

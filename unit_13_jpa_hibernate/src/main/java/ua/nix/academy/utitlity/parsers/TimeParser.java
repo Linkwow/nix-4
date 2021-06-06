@@ -12,6 +12,7 @@ public class TimeParser {
         stringBuilder.append("[");
         stringBuilder.append(zonedDateTime.getZone());
         stringBuilder.append("]");
-        return zonedDateTime = ZonedDateTime.parse(stringBuilder.toString(), DateTimeFormatter.ISO_ZONED_DATE_TIME);
+        zonedDateTime = ZonedDateTime.parse(stringBuilder.toString(), DateTimeFormatter.ISO_ZONED_DATE_TIME);
+        return zonedDateTime;
     }
 }

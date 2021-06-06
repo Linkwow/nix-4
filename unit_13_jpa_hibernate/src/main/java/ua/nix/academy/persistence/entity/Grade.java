@@ -13,14 +13,14 @@ public class Grade extends AbstractEntity {
     private Long id;
 
     @Column(name = "value", nullable = true)
-    private Integer value;
+    private String value;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "grades")
     private List<Student> student;
 
     public Grade(){}
 
-    public Grade(Integer value){
+    public Grade(String value){
         this.value = value;
     }
 

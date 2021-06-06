@@ -5,7 +5,11 @@ import ua.nix.academy.persistence.entity.AbstractEntity;
 
 import java.util.List;
 
-public interface Repository<ENTITY extends AbstractEntity, DTO extends AbstractDto, T extends Object> {
+public interface Repository<ENTITY extends AbstractEntity, DTO extends AbstractDto> {
     void create(List<DTO> dtoList) throws Exception;
-    ENTITY getByCriteria(T criteria);
+    ENTITY getByCriteria(String criteria);
+    ENTITY getById(Long id);
+    List<ENTITY> getAllByCriteria(String criteria);
+    void updateById(Long id);
+    void deleteById(Long id);
 }

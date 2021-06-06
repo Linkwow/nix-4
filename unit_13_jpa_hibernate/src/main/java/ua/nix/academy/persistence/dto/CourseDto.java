@@ -1,13 +1,13 @@
 package ua.nix.academy.persistence.dto;
 
 public class CourseDto extends AbstractDto {
-    private final Integer courseNumber;
+    private final String courseNumber;
 
-    public CourseDto(Integer courseNumber){
+    public CourseDto(String courseNumber){
         this.courseNumber = courseNumber;
     }
 
-    public Integer getCourseNumber() {
+    public String getCourseNumber() {
         return courseNumber;
     }
 }

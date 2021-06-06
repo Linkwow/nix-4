@@ -43,4 +43,8 @@ public class Student extends AbstractEntity {
         this.initials = initials;
         this.group = group;
     }
+
+    public void setInitials(String initials) {
+        this.initials = initials;
+    }
 }
