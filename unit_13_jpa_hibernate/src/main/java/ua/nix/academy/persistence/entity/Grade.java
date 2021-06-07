@@ -24,4 +24,7 @@ public class Grade extends AbstractEntity {
         this.value = value;
     }
 
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

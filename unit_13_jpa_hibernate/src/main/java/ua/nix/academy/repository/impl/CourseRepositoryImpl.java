@@ -40,24 +40,24 @@ public class CourseRepositoryImpl implements Repository<Course, CourseDto> {
     @Override
     public Course getByCriteria(String criteria) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Course> courseQuery = session.createQuery("select c from Course c where c.courseNumber = ?1", Course.class).setParameter(1, criteria);
-            return courseQuery.getSingleResult();
+            Query<Course> query = session.createQuery("select c from Course c where c.courseNumber = ?1", Course.class).setParameter(1, criteria);
+            return query.getSingleResult();
         }
     }
 
     @Override
     public Course getById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Course> courseQuery = session.createQuery("select c from Course c where c.id = ?1", Course.class).setParameter(1, id);
-            return courseQuery.getSingleResult();
+            Query<Course> query = session.createQuery("select c from Course c where c.id = ?1", Course.class).setParameter(1, id);
+            return query.getSingleResult();
         }
     }
 
     @Override
     public List<Course> getAllByCriteria(String criteria) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Course> courseQuery = session.createQuery("select c from Course c where c.courseNumber = ?1", Course.class).setParameter(1, criteria);
-            return courseQuery.getResultList();
+            Query<Course> query = session.createQuery("select c from Course c where c.courseNumber = ?1", Course.class).setParameter(1, criteria);
+            return query.getResultList();
         }
     }
 
@@ -66,20 +66,36 @@ public class CourseRepositoryImpl implements Repository<Course, CourseDto> {
         System.out.println("Enter a new course number, or press the enter to left old value");
         Scanner scanner = new Scanner(System.in);
         String value = scanner.nextLine();
-        if(value != null){
-            try(Session session = sessionFactory.openSession()){
-                Query<Course> courseQuery = session.createQuery("update Course c set c.courseNumber = ?1 where c.id = ?2", Course.class).
-                        setParameter("1", value).setParameter(2, id);
-                courseQuery.executeUpdate();
+        if (value != null) {
+            try (Session session = sessionFactory.openSession()) {
+                try {
+                    session.getTransaction().begin();
+                    Query<Course> query = session.createQuery("select c from Course c where c.id = ?1", Course.class). setParameter(1, id);
+                    Course course = query.getSingleResult();
+                    course.setCourseNumber(value);
+                    session.saveOrUpdate(course);
+                    session.getTransaction().commit();
+                } catch (Exception e) {
+                    session.getTransaction().rollback();
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     @Override
     public void deleteById(Long id) {
-        try(Session session = sessionFactory.openSession()){
-            Query<Course> courseQuery = session.createQuery("delete from Course c where c.id = ?1", Course.class).setParameter(1, id);
-            courseQuery.executeUpdate();
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.getTransaction().begin();
+                Query<Course> query = session.createQuery("select c from Course c where c.id = ?1", Course.class).setParameter(1, id);
+                Course course = query.getSingleResult();
+                session.remove(course);
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+            }
         }
     }
 

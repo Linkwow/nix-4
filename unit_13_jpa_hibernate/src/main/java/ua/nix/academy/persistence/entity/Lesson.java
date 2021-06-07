@@ -36,5 +36,7 @@ public class Lesson extends AbstractEntity {
         this.professor = professor;
     }
 
-
+    public void setDateTime(ZonedDateTime zonedDateTime) {
+        this.zonedDateTime = zonedDateTime;
+    }
 }

@@ -27,4 +27,8 @@ public class Professor extends AbstractEntity {
     public Professor(String initials) {
         this.initials = initials;
     }
+
+    public void setInitials(String initials) {
+        this.initials = initials;
+    }
 }

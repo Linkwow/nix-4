@@ -43,37 +43,45 @@ public class GroupRepositoryImpl implements Repository<Group, GroupDto> {
     @Override
     public Group getByCriteria(String criteria) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Group> groupQuery = session.createQuery("select g from Group g where g.name = ?1", Group.class).setParameter(1, criteria);
-            return groupQuery.getSingleResult();
+            Query<Group> query = session.createQuery("select g from Group g where g.name = ?1", Group.class).setParameter(1, criteria);
+            return query.getSingleResult();
         }
     }
 
     @Override
     public Group getById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Group> groupQuery = session.createQuery("select g from Group g where g.id = ?1", Group.class).setParameter(1, id);
-            return groupQuery.getSingleResult();
+            Query<Group> query = session.createQuery("select g from Group g where g.id = ?1", Group.class).setParameter(1, id);
+            return query.getSingleResult();
         }
     }
 
     @Override
     public List<Group> getAllByCriteria(String criteria) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Group> groupQuery = session.createQuery("select g from Group g where g.name = ?1", Group.class).setParameter(1, criteria);
-            return groupQuery.getResultList();
+            Query<Group> query = session.createQuery("select g from Group g where g.name = ?1", Group.class).setParameter(1, criteria);
+            return query.getResultList();
         }
     }
 
     @Override
     public void updateById(Long id) {
-        System.out.println("Enter a new professor value, or press the enter to left old value");
+        System.out.println("Enter a new group name, or press the enter to left old value");
         Scanner scanner = new Scanner(System.in);
         String value = scanner.nextLine();
         if (value != null) {
             try (Session session = sessionFactory.openSession()) {
-                Query<Group> gradeQuery = session.createQuery("update Group g set g.professor = ?1 where g.id = ?2", Group.class).
-                        setParameter("1", value).setParameter(2, id);
-                gradeQuery.executeUpdate();
+                try {
+                    session.getTransaction().begin();
+                    Query<Group> query = session.createQuery("select g from Group g where g.id = ?1", Group.class).setParameter(1, id);
+                   Group group = query.getSingleResult();
+                   group.setName(value);
+                   session.saveOrUpdate(group);
+                   session.getTransaction().commit();
+                } catch (Exception e){
+                    e.printStackTrace();
+                    session.getTransaction().rollback();
+                }
             }
         }
     }
@@ -81,8 +89,16 @@ public class GroupRepositoryImpl implements Repository<Group, GroupDto> {
     @Override
     public void deleteById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Group> courseQuery = session.createQuery("delete from Group g where g.id = ?1", Group.class).setParameter(1, id);
-            courseQuery.executeUpdate();
+            try {
+                session.getTransaction().begin();
+                Query<Group> query = session.createQuery("select g from Group g where g.id = ?1", Group.class).setParameter(1, id);
+                Group group = query.getSingleResult();
+                session.remove(group);
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+            }
         }
     }
 

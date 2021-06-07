@@ -34,6 +34,10 @@ public class Course extends AbstractEntity {
         return courseNumber;
     }
 
+    public void setCourseNumber(String courseNumber) {
+        this.courseNumber = courseNumber;
+    }
+
     public List<Group> getGroupList() {
         return groupList;
     }

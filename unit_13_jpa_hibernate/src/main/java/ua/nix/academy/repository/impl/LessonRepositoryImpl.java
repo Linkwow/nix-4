@@ -65,23 +65,39 @@ public class LessonRepositoryImpl implements Repository<Lesson, LessonDto> {
 
     @Override
     public void updateById(Long id) {
-        System.out.println("Enter a new theme, or press the enter to left old value");
+        System.out.println("Enter a new time in format yyyy-mm-dd hh:mm, or press the enter to left old value");
         Scanner scanner = new Scanner(System.in);
         String value = scanner.nextLine();
-        if(value != null){
-            try(Session session = sessionFactory.openSession()){
-                Query<Lesson> courseQuery = session.createQuery("update Lesson l set l.theme = ?1 where l.id = ?2", Lesson.class).
-                        setParameter("1", value).setParameter(2, id);
-                courseQuery.executeUpdate();
+        if (value != null) {
+            try (Session session = sessionFactory.openSession()) {
+                try {
+                    session.getTransaction().begin();
+                    Query<Lesson> query = session.createQuery("select l from Lesson l where l.id = ?1", Lesson.class).setParameter(1, id);
+                    Lesson lesson = query.getSingleResult();
+                    lesson.setDateTime(TimeParser.timeDateGetFromString(value));
+                    session.saveOrUpdate(lesson);
+                    session.getTransaction().commit();
+                } catch (Exception e) {
+                    session.getTransaction().rollback();
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     @Override
     public void deleteById(Long id) {
-        try(Session session = sessionFactory.openSession()){
-            Query<Lesson> courseQuery = session.createQuery("delete from Lesson l where l.id = ?1", Lesson.class).setParameter(1, id);
-            courseQuery.executeUpdate();
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.getTransaction().begin();
+                Query<Lesson> query = session.createQuery("select l from Lesson l where l.id = ?1", Lesson.class).setParameter(1, id);
+                Lesson lesson = query.getSingleResult();
+                session.remove(lesson);
+                session.getTransaction().commit();
+            } catch (Exception e){
+                session.getTransaction().rollback();
+                e.printStackTrace();
+            }
         }
     }
 

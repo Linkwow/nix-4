@@ -38,24 +38,24 @@ public class GradeRepositoryImpl implements Repository<Grade, GradeDto> {
     @Override
     public Grade getByCriteria(String criteria) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Grade> gradeQuery = session.createQuery("select g from Grade g where g.value = ?1", Grade.class).setParameter(1, criteria);
-            return gradeQuery.getSingleResult();
+            Query<Grade> query = session.createQuery("select g from Grade g where g.value = ?1", Grade.class).setParameter(1, criteria);
+            return query.getSingleResult();
         }
     }
 
     @Override
     public Grade getById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Grade> gradeQuery = session.createQuery("select g from Grade g where g.id = ?1", Grade.class).setParameter(1, id);
-            return gradeQuery.getSingleResult();
+            Query<Grade> query = session.createQuery("select g from Grade g where g.id = ?1", Grade.class).setParameter(1, id);
+            return query.getSingleResult();
         }
     }
 
     @Override
     public List<Grade> getAllByCriteria(String criteria) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Grade> gradeQuery = session.createQuery("select g from Grade g where g.value = ?1", Grade.class).setParameter(1, criteria);
-            return gradeQuery.getResultList();
+            Query<Grade> query = session.createQuery("select g from Grade g where g.value = ?1", Grade.class).setParameter(1, criteria);
+            return query.getResultList();
         }
     }
 
@@ -66,9 +66,17 @@ public class GradeRepositoryImpl implements Repository<Grade, GradeDto> {
         String value = scanner.nextLine();
         if (value != null) {
             try (Session session = sessionFactory.openSession()) {
-                Query<Grade> gradeQuery = session.createQuery("update Grade g set g.value = ?1 where g.id = ?2", Grade.class).
-                        setParameter("1", value).setParameter(2, id);
-                gradeQuery.executeUpdate();
+                try {
+                    session.getTransaction().begin();
+                    Query<Grade> query = session.createQuery("select g from Grade g where g.id = ?1", Grade.class).setParameter(1, id);
+                    Grade grade = query.getSingleResult();
+                    grade.setValue(value);
+                    session.saveOrUpdate(grade);
+                    session.getTransaction().commit();
+                } catch (Exception e) {
+                    session.getTransaction().rollback();
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -76,8 +84,16 @@ public class GradeRepositoryImpl implements Repository<Grade, GradeDto> {
     @Override
     public void deleteById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Grade> courseQuery = session.createQuery("delete from Grade g where g.id = ?1", Grade.class).setParameter(1, id);
-            courseQuery.executeUpdate();
+            try {
+                session.getTransaction().begin();
+                Query<Grade> query = session.createQuery("select g from Grade g where g.id = ?1", Grade.class).setParameter(1, id);
+                Grade grade = query.getSingleResult();
+                session.remove(grade);
+                session.getTransaction().commit();
+            } catch (Exception e){
+                session.getTransaction().rollback();
+                e.printStackTrace();
+            }
         }
     }
 

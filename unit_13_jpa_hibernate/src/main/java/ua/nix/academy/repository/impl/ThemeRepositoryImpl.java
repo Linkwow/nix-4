@@ -69,18 +69,34 @@ public class ThemeRepositoryImpl implements Repository<Theme, ThemeDto> {
         String value = scanner.nextLine();
         if (value != null) {
             try (Session session = sessionFactory.openSession()) {
-                Query<Theme> courseQuery = session.createQuery("update Theme t set t.name = ?1 where t.id = ?2", Theme.class).setParameter("1", value).
-                        setParameter(2, id);
-                courseQuery.executeUpdate();
+                try {
+                    session.getTransaction().begin();
+                    Query<Theme> query = session.createQuery("select t from Theme t where t.id = ?1", Theme.class).setParameter(1, id);
+                    Theme theme = query.getSingleResult();
+                    theme.setName(value);
+                    session.saveOrUpdate(theme);
+                    session.getTransaction().commit();
+                } catch (Exception e) {
+                    session.getTransaction().rollback();
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     @Override
     public void deleteById(Long id) {
-        try(Session session = sessionFactory.openSession()){
-            Query<Theme> courseQuery = session.createQuery("delete from Theme t where t.id = ?1", Theme.class).setParameter(1, id);
-            courseQuery.executeUpdate();
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.getTransaction().begin();
+                Query<Theme> query = session.createQuery("select t from Theme t where t.id = ?1", Theme.class).setParameter(1, id);
+                Theme theme = query.getSingleResult();
+                session.remove(theme);
+                session.getTransaction().commit();
+            } catch (Exception e){
+                session.getTransaction().rollback();
+                e.printStackTrace();
+            }
         }
     }
 

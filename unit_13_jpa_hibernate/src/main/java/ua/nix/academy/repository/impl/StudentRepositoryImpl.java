@@ -70,14 +70,13 @@ public class StudentRepositoryImpl implements Repository<Student, StudentDto> {
             try (Session session = sessionFactory.openSession()) {
                 try {
                     session.getTransaction().begin();
-                    Query<Student> studentQuery = session.createQuery("select s from Student s where s.id = ?1", Student.class).
+                    Query<Student> query = session.createQuery("select s from Student s where s.id = ?1", Student.class).
                             setParameter(1, id);
-                    Student student = studentQuery.getSingleResult();
-                    session.evict(student);
+                    Student student = query.getSingleResult();
                     student.setInitials(value);
-                    session.update(student);
+                    session.saveOrUpdate(student);
                     session.getTransaction().commit();
-                } catch (Exception e){
+                } catch (Exception e) {
                     session.getTransaction().rollback();
                     e.printStackTrace();
                 }
@@ -88,8 +87,17 @@ public class StudentRepositoryImpl implements Repository<Student, StudentDto> {
     @Override
     public void deleteById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Student> courseQuery = session.createQuery("delete from Student s where s.id = ?1", Student.class).setParameter(1, id);
-            courseQuery.executeUpdate();
+            session.getTransaction().begin();
+            try {
+                Query<Student> query = session.createQuery("select s from Student s where s.id = ?1", Student.class).
+                        setParameter(1, id);
+                Student student = query.getSingleResult();
+                session.remove(student);
+                session.getTransaction().commit();
+            } catch (Exception e){
+                session.getTransaction().rollback();
+                e.printStackTrace();
+            }
         }
     }
 

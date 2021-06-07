@@ -77,7 +77,7 @@ public class UserInterface {
                 5. Lesson.
                 6. Theme.
                 7. Grade.
-                8.Return to previous menu.""");
+                8. Exit.""");
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
     }
