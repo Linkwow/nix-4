@@ -36,7 +36,41 @@ public class Lesson extends AbstractEntity {
         this.professor = professor;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Theme getTheme() {
+        return theme;
+    }
+
     public void setDateTime(ZonedDateTime zonedDateTime) {
         this.zonedDateTime = zonedDateTime;
+    }
+
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setStudents(Student student) {
+        students.add(student);
+    }
+
+    @Override
+    public String toString() {
+        return "Lesson{" + "\n" +
+                "id=" + id + "\n" +
+                ", theme=" + theme + "\n" +
+                ", professor=" + professor + "\n" +
+                ", zonedDateTime=" + zonedDateTime +
+                '}' + "\n";
     }
 }

@@ -47,15 +47,17 @@ public class UserInterface {
                                 Controller.readOneByCriteria();
                                 break;
                             case 4:
-                                Controller.readAllByCriteria();
-                                break;
-                            case 5:
                                 Controller.updateById();
                                 break;
-                            case 6:
+                            case 5:
                                 Controller.deleteById();
                                 break;
+                            case 6:
+                                Controller.getInfo(sessionFactory);
+                                break;
                             case 7:
+                                break;
+                            case 8:
                                 innerMenu = false;
                                 logger.info("Exit from the inner menu.");
                                 break;
@@ -88,10 +90,11 @@ public class UserInterface {
                 1.Create.
                 2.Read one by id (Find one by id).
                 3.Read one by criteria(Find one by criteria).
-                4.Read all by criteria(Find all by criteria).
-                5.Update by id;
-                6.Delete by id.
-                7.End.
+                4.Update by id;
+                5.Delete by id.
+                6.Get information about lesson by student id;
+                7.
+                8.End.
                 """);
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();

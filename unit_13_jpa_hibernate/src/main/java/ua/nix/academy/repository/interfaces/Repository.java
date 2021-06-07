@@ -9,7 +9,6 @@ public interface Repository<ENTITY extends AbstractEntity, DTO extends AbstractD
     void create(List<DTO> dtoList) throws Exception;
     ENTITY getByCriteria(String criteria);
     ENTITY getById(Long id);
-    List<ENTITY> getAllByCriteria(String criteria);
     void updateById(Long id);
     void deleteById(Long id);
 }

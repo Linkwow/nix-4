@@ -7,16 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ua.nix.academy.persistence.dto.*;
-import ua.nix.academy.persistence.entity.Course;
-import ua.nix.academy.persistence.entity.Group;
+import ua.nix.academy.persistence.entity.*;
 import ua.nix.academy.repository.impl.*;
-import ua.nix.academy.ui.UserInterface;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class DemoDB {
+    private static Logger logger = LoggerFactory.getLogger(DemoDB.class);
     private static final List<CourseDto> courseDtoList = new ArrayList<>(Arrays.asList(
             new CourseDto("1"),
             new CourseDto("2")));
@@ -109,8 +109,7 @@ public class DemoDB {
         return gradeDtoList;
     }
 
-    private static void updateCourse(SessionFactory sessionFactory) {
-        Logger logger = LoggerFactory.getLogger(DemoDB.class);
+    private static void createRelationCourseToGroup(SessionFactory sessionFactory) {
         try (Session session = sessionFactory.openSession()) {
             session.getTransaction().begin();
             try {
@@ -118,17 +117,170 @@ public class DemoDB {
                 List<Group> groupList = session.createQuery("select g from Group g", Group.class).getResultList();
                 for (Course course : courseList) {
                     for (Group group : groupList) {
-                        if (course.getCourseNumber().equals(group.getCourse().getCourseNumber())) {
+                        if (course.getId().equals(group.getCourse().getId())) {
                             course.setGroupList(group);
+                            session.saveOrUpdate(group);
                         }
                     }
+                    session.saveOrUpdate(course);
                 }
                 session.getTransaction().commit();
-                logger.info("Update course and groups table successful");
+                logger.info("Create relations between courses and groups successful");
             } catch (Exception exception) {
                 session.getTransaction().rollback();
                 exception.printStackTrace();
-                logger.error("Update course and groups table was failed");
+                logger.error("Create relations between courses and groups was failed");
+            }
+        }
+    }
+
+    private static void createRelationStudentsToGrades(SessionFactory sessionFactory) {
+        Random random = new Random(12);
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.getTransaction().begin();
+                List<Student> studentList = session.createQuery("select s from Student s", Student.class).getResultList();
+                List<Grade> gradeList = session.createQuery("select g from Grade g", Grade.class).getResultList();
+                List<Theme> themeList = session.createQuery("select t from Theme t", Theme.class).getResultList();
+                for (Theme theme : themeList) {
+                    for (Student student : studentList) {
+                        Grade grade = gradeList.get(random.nextInt(gradeList.size()));
+                        theme.setGrades(grade);
+                        student.setThemes(theme);
+                        session.saveOrUpdate(grade);
+                        session.saveOrUpdate(student);
+                    }
+                    session.saveOrUpdate(theme);
+                }
+                session.getTransaction().commit();
+                logger.info("Create relations between students and grades successful");
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                logger.error("Create relations between students and grades was failed");
+            }
+        }
+    }
+
+    private static void createRelationGroupStudent(SessionFactory sessionFactory) {
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            List<Student> studentList = session.createQuery("select s from Student s", Student.class).getResultList();
+            List<Group> groupList = session.createQuery("select g from Group g", Group.class).getResultList();
+            try {
+                for (Group group : groupList) {
+                    for (Student student : studentList) {
+                        if (group.getId().equals(student.getGroup().getId())) {
+                            group.setStudents(student);
+                            session.saveOrUpdate(student);
+                        }
+                    }
+                    session.saveOrUpdate(group);
+                }
+                session.getTransaction().commit();
+                logger.info("Create relations between students and groups successful");
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                logger.error("Create relations between students and groups was failed");
+            }
+        }
+    }
+
+    private static void createRelationGroupProfessor(SessionFactory sessionFactory) {
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            List<Professor> professorList = session.createQuery("select p from Professor p", Professor.class).getResultList();
+            List<Group> groupList = session.createQuery("select g from Group g", Group.class).getResultList();
+            try {
+                for (Group group : groupList) {
+                    for (Professor professor : professorList) {
+                        if (group.getProfessor().getId().equals(professor.getId())) {
+                            professor.setGroups(group);
+                            session.saveOrUpdate(professor);
+                        }
+                    }
+                    session.saveOrUpdate(group);
+                }
+                session.getTransaction().commit();
+                logger.info("Create relations between groups and professors successful");
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                logger.error("Create relations between groups and professors was failed");
+            }
+        }
+    }
+
+    private static void createRelationLessonTheme(SessionFactory sessionFactory) {
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            List<Lesson> lessonList = session.createQuery("select l from Lesson l", Lesson.class).getResultList();
+            List<Theme> themeList = session.createQuery("select t from Theme t", Theme.class).getResultList();
+            try {
+                for (Lesson lesson : lessonList) {
+                    for (Theme theme : themeList) {
+                        if (lesson.getTheme().getId().equals(theme.getId())) {
+                            theme.setLessons(lesson);
+                            session.saveOrUpdate(theme);
+                        }
+                    }
+                    session.saveOrUpdate(lesson);
+                }
+                session.getTransaction().commit();
+                logger.info("Create relations between lessons and themes successful");
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                logger.error("Create relations between lessons and themes was failed");
+            }
+        }
+    }
+
+    private static void createRelationLessonProfessor(SessionFactory sessionFactory) {
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            List<Lesson> lessonList = session.createQuery("select l from Lesson l", Lesson.class).getResultList();
+            List<Professor> professorList = session.createQuery("select p from Professor p", Professor.class).getResultList();
+            try {
+                for (Lesson lesson : lessonList) {
+                    for (Professor professor : professorList) {
+                        if (lesson.getProfessor().getId().equals(professor.getId())) {
+                            professor.setLessons(lesson);
+                            session.saveOrUpdate(professor);
+                        }
+                    }
+                    session.saveOrUpdate(lesson);
+                }
+                session.getTransaction().commit();
+                logger.info("Create relations between lessons and professors successful");
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                logger.error("Create relations between lessons and professors was failed");
+            }
+        }
+    }
+
+    private static void createRelationLessonStudent(SessionFactory sessionFactory) {
+        try (Session session = sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            List<Lesson> lessonList = session.createQuery("select l from Lesson l", Lesson.class).getResultList();
+            List<Student> studentList = session.createQuery("select s from Student s", Student.class).getResultList();
+            try {
+                for (Lesson lesson : lessonList) {
+                    for (Student student : studentList) {
+                        student.setLessons(lesson);
+                        session.saveOrUpdate(student);
+                    }
+                    session.saveOrUpdate(lesson);
+                }
+                session.getTransaction().commit();
+                logger.info("Create relations between lessons and students successful");
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                logger.error("Create relations between lessons and students was failed");
             }
         }
     }
@@ -141,8 +293,12 @@ public class DemoDB {
         ThemeRepositoryImpl.getInstance(sessionFactory).create(DemoDB.getThemeDtoList());
         LessonRepositoryImpl.getInstance(sessionFactory).create(DemoDB.getLessonDtoList());
         GradeRepositoryImpl.getInstance(sessionFactory).create(DemoDB.getGradeDtoList());
-        updateCourse(sessionFactory);
+        createRelationCourseToGroup(sessionFactory);
+        createRelationStudentsToGrades(sessionFactory);
+        createRelationGroupStudent(sessionFactory);
+        createRelationGroupProfessor(sessionFactory);
+        createRelationLessonTheme(sessionFactory);
+        createRelationLessonProfessor(sessionFactory);
+        createRelationLessonStudent(sessionFactory);
     }
-
-
 }

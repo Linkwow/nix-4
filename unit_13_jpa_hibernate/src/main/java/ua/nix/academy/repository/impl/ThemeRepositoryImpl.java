@@ -54,15 +54,6 @@ public class ThemeRepositoryImpl implements Repository<Theme, ThemeDto> {
     }
 
     @Override
-    public List<Theme> getAllByCriteria(String criteria) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Theme> query = session.createQuery("select t from Theme t where t.name = ?1", Theme.class).
-                    setParameter(1, criteria);
-            return query.getResultList();
-        }
-    }
-
-    @Override
     public void updateById(Long id) {
         System.out.println("Enter a new theme name, or press the enter to left old value");
         Scanner scanner = new Scanner(System.in);

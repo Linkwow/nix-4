@@ -52,14 +52,6 @@ public class GradeRepositoryImpl implements Repository<Grade, GradeDto> {
     }
 
     @Override
-    public List<Grade> getAllByCriteria(String criteria) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Grade> query = session.createQuery("select g from Grade g where g.value = ?1", Grade.class).setParameter(1, criteria);
-            return query.getResultList();
-        }
-    }
-
-    @Override
     public void updateById(Long id) {
         System.out.println("Enter a new grade value, or press the enter to left old value");
         Scanner scanner = new Scanner(System.in);

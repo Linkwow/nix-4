@@ -6,9 +6,11 @@ import org.hibernate.query.Query;
 import ua.nix.academy.dao.impl.StudentDaoImpl;
 import ua.nix.academy.persistence.dto.StudentDto;
 import ua.nix.academy.persistence.entity.Group;
+import ua.nix.academy.persistence.entity.Lesson;
 import ua.nix.academy.persistence.entity.Student;
 import ua.nix.academy.repository.interfaces.Repository;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -54,14 +56,6 @@ public class StudentRepositoryImpl implements Repository<Student, StudentDto> {
     }
 
     @Override
-    public List<Student> getAllByCriteria(String criteria) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Student> query = session.createQuery("select s from Student s where s.initials = ?1", Student.class).setParameter(1, criteria);
-            return query.getResultList();
-        }
-    }
-
-    @Override
     public void updateById(Long id) {
         System.out.println("Enter a new initials, or press the enter to left old value");
         Scanner scanner = new Scanner(System.in);
@@ -94,10 +88,20 @@ public class StudentRepositoryImpl implements Repository<Student, StudentDto> {
                 Student student = query.getSingleResult();
                 session.remove(student);
                 session.getTransaction().commit();
-            } catch (Exception e){
+            } catch (Exception e) {
                 session.getTransaction().rollback();
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void takeInfoAboutLesson(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Lesson> lessonQuery = session.createQuery("select l from Lesson l, Student s where l.id = (select l.id from Lesson l group by l.id having l.zonedDateTime = " +
+                    "(select max(p.zonedDateTime) from Lesson p) and s.id = ?1)", Lesson.class).setParameter(1, id);
+            Lesson lesson = lessonQuery.getSingleResult();
+            System.out.println(lesson);
+
         }
     }
 

@@ -15,7 +15,6 @@ import java.util.Scanner;
 public class Controller {
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
     private static Repository repository;
-    private static AbstractDto abstractDto;
 
     public static void repositoryCreate(int repositoryNum, SessionFactory sessionFactory) {
         switch (repositoryNum) {
@@ -76,10 +75,10 @@ public class Controller {
         repository.getByCriteria(scanner.nextLine());
     }
 
-    public static void readAllByCriteria(){
+    public static void getInfo(SessionFactory sessionFactory){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the criteria of entity");
-        repository.getAllByCriteria(scanner.nextLine());
+        System.out.println("Enter the id of student to find a lesson");
+       StudentRepositoryImpl.getInstance(sessionFactory).takeInfoAboutLesson(scanner.nextLong());
     }
 
     public static void updateById(){

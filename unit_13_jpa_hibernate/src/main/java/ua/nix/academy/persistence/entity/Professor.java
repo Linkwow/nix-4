@@ -31,4 +31,26 @@ public class Professor extends AbstractEntity {
     public void setInitials(String initials) {
         this.initials = initials;
     }
+
+    public void setGroups(Group group) {
+        groups.add(group);
+        group.setProfessor(this);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setLessons(Lesson lesson) {
+        lessons.add(lesson);
+        lesson.setProfessor(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Professor{" + "\n" +
+                "id=" + id + "\n" +
+                ", initials='" + initials + "\n" +
+                '}' + "\n";
+    }
 }

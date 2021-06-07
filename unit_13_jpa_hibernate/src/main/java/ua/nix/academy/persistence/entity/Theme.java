@@ -19,6 +19,16 @@ public class Theme extends AbstractEntity {
     @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
     List<Lesson> lessons = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "grades", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "themes", referencedColumnName = "id")
+    )
+    private List<Grade> grades;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "themes")
+    private List<Student> students;
+
     public Theme(){}
 
     public Theme(String name){
@@ -27,5 +37,31 @@ public class Theme extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setLessons(Lesson lesson) {
+        lessons.add(lesson);
+        lesson.setTheme(this);
+    }
+
+    public void setGrades(Grade grade) {
+        grades.add(grade);
+        grade.setThemes(this);
+    }
+
+    public void setStudents(Student student) {
+        students.add(student);
+    }
+
+    @Override
+    public String toString() {
+        return "Theme{" + "\n" +
+                "id=" + id + "\n" +
+                ", name='" + name + "\n" +
+                '}' + "\n";
     }
 }

@@ -56,14 +56,6 @@ public class LessonRepositoryImpl implements Repository<Lesson, LessonDto> {
     }
 
     @Override
-    public List<Lesson> getAllByCriteria(String criteria) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Lesson> query = session.createQuery("select l from Lesson l where l.theme = ?1", Lesson.class).setParameter(1, criteria);
-            return query.getResultList();
-        }
-    }
-
-    @Override
     public void updateById(Long id) {
         System.out.println("Enter a new time in format yyyy-mm-dd hh:mm, or press the enter to left old value");
         Scanner scanner = new Scanner(System.in);

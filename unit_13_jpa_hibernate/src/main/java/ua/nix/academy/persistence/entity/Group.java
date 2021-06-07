@@ -46,4 +46,30 @@ public class Group extends AbstractEntity {
     public void setCourse(Course course) {
         this.course = course;
     }
+
+    public void setStudents(Student student) {
+       students.add(student);
+       student.setGroup(this);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" + "\n" +
+                "id=" + id + "\n" +
+                ", name='" + name + "\n" +
+                ", course=" + course + "\n" +
+                '}' + "\n";
+    }
 }

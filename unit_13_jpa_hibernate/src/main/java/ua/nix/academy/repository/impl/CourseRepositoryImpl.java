@@ -54,14 +54,6 @@ public class CourseRepositoryImpl implements Repository<Course, CourseDto> {
     }
 
     @Override
-    public List<Course> getAllByCriteria(String criteria) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Course> query = session.createQuery("select c from Course c where c.courseNumber = ?1", Course.class).setParameter(1, criteria);
-            return query.getResultList();
-        }
-    }
-
-    @Override
     public void updateById(Long id) {
         System.out.println("Enter a new course number, or press the enter to left old value");
         Scanner scanner = new Scanner(System.in);

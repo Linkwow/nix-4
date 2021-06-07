@@ -54,14 +54,6 @@ public class ProfessorRepositoryImpl implements Repository<Professor, ProfessorD
     }
 
     @Override
-    public List<Professor> getAllByCriteria(String criteria) {
-        try(Session session = sessionFactory.openSession()){
-            Query<Professor> query = session.createQuery("select p from Professor p where p.initials = ?1", Professor.class).setParameter(1, criteria);
-            return query.getResultList();
-        }
-    }
-
-    @Override
     public void updateById(Long id) {
         System.out.println("Enter a new professor initials, or press the enter to left old value");
         Scanner scanner = new Scanner(System.in);
