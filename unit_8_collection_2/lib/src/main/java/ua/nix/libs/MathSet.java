@@ -3,8 +3,8 @@ package ua.nix.libs;
 import java.util.Optional;
 
 public class MathSet {
-    private static final int BASE_CAPACITY = 0;
-    private Number[] arrayOfUniqueNumber;
+    private static final int BASE_CAPACITY = 1;
+    private Number[] arrayOfUniqueNumber = new Number[BASE_CAPACITY];
 
     public MathSet() {
         arrayOfUniqueNumber = new Number[BASE_CAPACITY];
@@ -38,7 +38,7 @@ public class MathSet {
                         if (arrayCheck.isPresent()) {
                             parseArrayByElements(array);
                         }
-                    } catch (NullPointerException nullPointerException){
+                    } catch (NullPointerException nullPointerException) {
                         throw new NullPointerException();
                     }
                 }
@@ -259,12 +259,17 @@ public class MathSet {
     public Number getMedian() {
         Number median;
         sortAsc();
-        int middle = arrayOfUniqueNumber.length / 2;
-        if (arrayOfUniqueNumber.length % 2 == 0) {
-            median = arrayOfUniqueNumber[middle - 1].doubleValue() + arrayOfUniqueNumber[middle + 1].doubleValue() / 2;
-        } else {
-            median = arrayOfUniqueNumber[middle].doubleValue();
-        }
+        if (this.arrayOfUniqueNumber.length > 2) {
+            int middle = arrayOfUniqueNumber.length / 2;
+            if (arrayOfUniqueNumber.length % 2 == 0) {
+                median = (arrayOfUniqueNumber[middle - 1].doubleValue() + arrayOfUniqueNumber[middle + 1].doubleValue()) / 2;
+            } else {
+                median = arrayOfUniqueNumber[middle].doubleValue();
+            }
+        } else if (this.arrayOfUniqueNumber.length == 2) {
+            median = (arrayOfUniqueNumber[0].doubleValue() + arrayOfUniqueNumber[1].doubleValue()) / 2;
+        } else
+            median = arrayOfUniqueNumber[arrayOfUniqueNumber.length -1];
         return median;
     }
 
@@ -343,7 +348,7 @@ public class MathSet {
                 optional = Optional.of(number);
                 if (optional.isPresent())
                     add(number);
-            } catch (NullPointerException nullPointerException){
+            } catch (NullPointerException nullPointerException) {
                 throw new NullPointerException();
             }
         }

@@ -1,13 +1,10 @@
 package ua.nix.academy.demodb;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ua.nix.academy.exception.AcademyDataAccessException;
-import ua.nix.academy.exception.AcademyDataCreateException;
 import ua.nix.academy.exception.AcademyDataException;
 import ua.nix.academy.persistence.dto.*;
 import ua.nix.academy.persistence.entity.*;
@@ -16,23 +13,25 @@ import ua.nix.academy.repository.impl.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class DemoDB {
-    private static Logger logger = LoggerFactory.getLogger(DemoDB.class);
+    private static final Logger logger = LoggerFactory.getLogger(DemoDB.class);
     private static final List<CourseDto> courseDtoList = new ArrayList<>(Arrays.asList(
             new CourseDto("1"),
-            new CourseDto("2")));
+            new CourseDto("2")
+    ));
 
     private static final List<GroupDto> groupDtoList = new ArrayList<>(Arrays.asList(
             new GroupDto("nix-11", "1", "Mikhail Horbunov"),
             new GroupDto("nix-21", "1", "Iegor Funtusov"),
             new GroupDto("nix-12", "2", "Mikhail Horbunov"),
-            new GroupDto("nix-22", "2", "Iegor Funtusov")));
+            new GroupDto("nix-22", "2", "Iegor Funtusov")
+    ));
 
     private static final List<ProfessorDto> professorDtoList = new ArrayList<>(Arrays.asList(
             new ProfessorDto("Mikhail Horbunov"),
-            new ProfessorDto("Iegor Funtusov")));
+            new ProfessorDto("Iegor Funtusov")
+    ));
 
     private static final List<StudentDto> studentDtoList = new ArrayList<>(Arrays.asList(
             new StudentDto("Garmash Daria", "nix-11"),
@@ -83,6 +82,7 @@ public class DemoDB {
             new LessonDto("2021-09-13 12:00", "Hibernate", "nix-12"),
             new LessonDto("2021-09-14 12:00", "Hibernate", "nix-22")
     ));
+
     private static final List<GradeDto> gradeDtoList = new ArrayList<>(Arrays.asList(
             new GradeDto("5", "Garmash Daria", "Exam"),
             new GradeDto("4", "Goncharenko Evgeniya", "Exam"),
@@ -100,7 +100,9 @@ public class DemoDB {
             new GradeDto("5", "Kharakhaichuk Ivan", "Exam"),
             new GradeDto("4", "Chuiko Anastasia", "Exam"),
             new GradeDto("2", "Shirkov Andrey", "Exam"),
-            new GradeDto("4", "Shchebetovsky Evgeny", "Exam")));
+            new GradeDto("4", "Shchebetovsky Evgeny", "Exam"),
+            new GradeDto("4", "Shchebetovsky Evgeny", "Spring")
+    ));
 
     private static void create(Session session) throws AcademyDataAccessException {
         try {
@@ -151,6 +153,13 @@ public class DemoDB {
             logger.info("Create relations successful");
         } catch (Exception exception) {
             logger.error("Create relations between courses and groups was failed");
+            throw new AcademyDataAccessException(exception.getMessage(), exception);
+        }
+    }
+
+    private static void create() throws AcademyDataAccessException {
+        try {
+        } catch (Exception exception) {
             throw new AcademyDataAccessException(exception.getMessage(), exception);
         }
     }

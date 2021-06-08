@@ -14,7 +14,7 @@ import ua.nix.academy.persistence.entity.Lesson;
 import java.util.Scanner;
 
 public class UserInterface {
-    private Logger logger;
+    private final Logger logger;
     private static UserInterface instance;
     private boolean stillWorking = true;
 
@@ -29,15 +29,14 @@ public class UserInterface {
             logger.info("Session factory initialize successful. Session open correctly");
             try {
                 session.getTransaction().begin();
-                //DemoDB.createEntities(session);
+                DemoDB.createEntities(session);
                 logger.info("Create Demo data base was successful.");
                 session.getTransaction().commit();
                 while (stillWorking) {
-                    Scanner scanner = new Scanner(System.in);
                     switch (operation()) {
                         case 1:
                             System.out.println("Enter id of student");
-                            Lesson lesson = Controller.studentInfo(session, scanner.nextLong());
+                            Lesson lesson = Controller.studentInfo(session, new Scanner(System.in).nextLong());
                             System.out.println("lesson id " + lesson.getId() +
                                     " lesson date and time " + lesson.getZonedDateTime().toString() +
                                     " theme " + lesson.getTheme().getName() + " professor " +
@@ -45,15 +44,17 @@ public class UserInterface {
                             break;
                         case 2:
                             System.out.println("Enter id of professor");
-                            //Group group = Controller
+                            Long professorId = new Scanner(System.in).nextLong();
+                            Long themeID = new Scanner(System.in).nextLong();
+                            Group group = Controller.groupInfo(session,professorId, themeID);
+                            System.out.println("group name " + group.getName() + " course " + group.getCourse().getCourseNumber());
                         break;
                         default:
                             stillWorking = false;
                             break;
                     }
-
                 }
-            } catch (RuntimeException academyDataException) {
+            } catch (AcademyDataException academyDataException) {
                 academyDataException.printStackTrace();
                 session.getTransaction().rollback();
             }
@@ -62,7 +63,7 @@ public class UserInterface {
 
     private int operation() {
         System.out.println("""
-                Choose operation on entity (or press the enter to exit:
+                Choose operation on entity (or enter 3 to exit):
                 1. Get information about lesson by student id;
                 2. Get information about the most success group by professor id.
                 """);

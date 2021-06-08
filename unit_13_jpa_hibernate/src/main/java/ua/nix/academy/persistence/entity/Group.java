@@ -22,14 +22,14 @@ public class Group extends AbstractEntity {
     private Course course;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-    private List<Student> students = new ArrayList<>();
+    private final List<Student> students = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "professor")
     private Professor professor;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-    private List<Lesson> lessons = new ArrayList<>();
+    private final List<Lesson> lessons = new ArrayList<>();
 
     public Group(){}
 
@@ -68,5 +68,11 @@ public class Group extends AbstractEntity {
        lesson.setGroup(this);
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
 
+    public String getName() {
+        return name;
+    }
 }

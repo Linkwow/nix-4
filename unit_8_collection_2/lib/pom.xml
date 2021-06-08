@@ -17,4 +17,15 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>myMavenRepoNaumenkoWrite</id>
+            <url>${myMavenRepoNaumenkoWriteUrl}</url>
+        </repository>
+        <snapshotRepository>
+            <id>myMavenRepoNaumenkoWrite</id>
+            <url>${myMavenRepoNaumenkoWriteUrl}</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>

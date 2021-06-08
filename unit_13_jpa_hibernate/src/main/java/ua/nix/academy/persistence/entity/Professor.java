@@ -17,7 +17,7 @@ public class Professor extends AbstractEntity {
     private String initials;
 
     @OneToMany(mappedBy = "professor",fetch = FetchType.LAZY)
-    private List<Group> groups = new ArrayList<>();
+    private final List<Group> groups = new ArrayList<>();
 
     public Professor(){}
 

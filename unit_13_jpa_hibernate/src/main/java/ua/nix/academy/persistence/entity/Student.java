@@ -22,7 +22,7 @@ public class Student extends AbstractEntity {
     private Group group;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")
-    private List<Grade> grades = new ArrayList<>();
+    private final List<Grade> grades = new ArrayList<>();
 
     public Student() {
 
@@ -48,5 +48,9 @@ public class Student extends AbstractEntity {
 
     public void setGrades(Grade grade) {
         grades.add(grade);
+    }
+
+    public List<Grade> getGrades() {
+        return grades;
     }
 }

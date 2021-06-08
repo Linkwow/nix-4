@@ -18,7 +18,7 @@ public class Course extends AbstractEntity {
     private String courseNumber;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
-    private List<Group> groupList = new ArrayList<>();
+    private final List<Group> groupList = new ArrayList<>();
 
     public Course() {
 
@@ -35,5 +35,9 @@ public class Course extends AbstractEntity {
     public void setGroupList(Group group) {
         this.groupList.add(group);
         group.setCourse(this);
+    }
+
+    public String getCourseNumber() {
+        return courseNumber;
     }
 }

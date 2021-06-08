@@ -20,7 +20,7 @@ public class Theme extends AbstractEntity {
     List<Lesson> lessons = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "theme")
-    private List<Grade> grades = new ArrayList<>();
+    private final List<Grade> grades = new ArrayList<>();
 
     public Theme() {
     }

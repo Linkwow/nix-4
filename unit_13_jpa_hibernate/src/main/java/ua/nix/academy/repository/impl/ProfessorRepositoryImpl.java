@@ -2,7 +2,10 @@ package ua.nix.academy.repository.impl;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ua.nix.academy.dao.ProfessorDao;
+import ua.nix.academy.exception.AcademyDataAccessException;
 import ua.nix.academy.exception.AcademyDataCreateException;
 import ua.nix.academy.persistence.dto.ProfessorDto;
 import ua.nix.academy.persistence.entity.Professor;
@@ -13,32 +16,38 @@ import java.util.List;
 public class ProfessorRepositoryImpl implements Repository<Professor, ProfessorDto> {
     private static ProfessorRepositoryImpl instance;
     private final Session session;
+    private final Logger logger;
 
     private ProfessorRepositoryImpl(Session session) {
         this.session = session;
+        logger = LoggerFactory.getLogger(ProfessorRepositoryImpl.class);
     }
 
     @Override
     public void create(List<ProfessorDto> professorDtoList) throws AcademyDataCreateException {
         try {
+            logger.info("Start creating Professor entity.");
             for (ProfessorDto professorDto : professorDtoList) {
                 session.persist(ProfessorDao.getInstance().create(professorDto));
             }
+            logger.info("Create was successful.");
         } catch (RuntimeException runtimeException) {
+            logger.info("Error while created.");
             throw new AcademyDataCreateException(runtimeException.getMessage(), runtimeException);
         }
     }
 
     @Override
-    public Professor getByCriteria(String criteria) {
-        Query<Professor> query = session.createQuery("select p from Professor p where p.initials = ?1", Professor.class).
-                setParameter(1, criteria);
-        return query.getSingleResult();
-    }
-
-    public Professor getById(Long id) {
-        Query<Professor> query = session.createQuery("select p from Professor p where p.id = ?1", Professor.class).setParameter(1, id);
-        return query.getSingleResult();
+    public Professor getByCriteria(String criteria) throws AcademyDataAccessException {
+        try {
+            Query<Professor> query = session.createQuery("select p from Professor p where p.initials = ?1", Professor.class).
+                    setParameter(1, criteria);
+            logger.info("Entity was taken successful.");
+            return query.getSingleResult();
+        } catch (RuntimeException runtimeException) {
+            logger.info("Entity was taken unsuccessful.");
+            throw new AcademyDataAccessException(runtimeException.getMessage(), runtimeException);
+        }
     }
 
     public static ProfessorRepositoryImpl getInstance(Session session) {
