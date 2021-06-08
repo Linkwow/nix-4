@@ -1,17 +1,15 @@
-package ua.nix.academy.dao.impl;
+package ua.nix.academy.dao;
 
-import ua.nix.academy.dao.interfaces.GroupDao;
 import ua.nix.academy.persistence.dto.GroupDto;
 import ua.nix.academy.persistence.entity.Course;
 import ua.nix.academy.persistence.entity.Group;
 import ua.nix.academy.persistence.entity.Professor;
 
-public class GroupDaoImpl implements GroupDao<Group, GroupDto> {
-    private static GroupDaoImpl instance;
+public class GroupDao {
+    private static GroupDao instance;
 
-    private GroupDaoImpl(){}
+    private GroupDao(){}
 
-    @Override
     public Group create(GroupDto dto, Course course, Professor professor) {
         return new Group(
                 dto.getName(),
@@ -20,9 +18,9 @@ public class GroupDaoImpl implements GroupDao<Group, GroupDto> {
         );
     }
 
-    public static GroupDaoImpl getInstance() {
+    public static GroupDao getInstance() {
         if(instance == null){
-            instance = new GroupDaoImpl();
+            instance = new GroupDao();
         }
         return instance;
     }

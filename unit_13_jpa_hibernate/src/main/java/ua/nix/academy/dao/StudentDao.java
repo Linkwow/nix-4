@@ -1,25 +1,23 @@
-package ua.nix.academy.dao.impl;
+package ua.nix.academy.dao;
 
-import ua.nix.academy.dao.interfaces.StudentDao;
 import ua.nix.academy.persistence.dto.StudentDto;
 import ua.nix.academy.persistence.entity.Group;
 import ua.nix.academy.persistence.entity.Student;
 
-public class StudentDaoImpl implements StudentDao<Student, StudentDto> {
-    private static StudentDaoImpl instance;
+public class StudentDao {
+    private static StudentDao instance;
 
-    private StudentDaoImpl(){}
+    private StudentDao(){}
 
-    @Override
     public Student create(StudentDto studentDto, Group group) {
         return new Student(
                 studentDto.getInitials(),
                 group);
     }
 
-    public static StudentDaoImpl getInstance(){
+    public static StudentDao getInstance(){
         if(instance == null){
-            instance = new StudentDaoImpl();
+            instance = new StudentDao();
         }
         return instance;
     }

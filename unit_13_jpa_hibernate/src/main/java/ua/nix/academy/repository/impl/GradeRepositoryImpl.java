@@ -1,97 +1,45 @@
 package ua.nix.academy.repository.impl;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import ua.nix.academy.dao.impl.GradeDaoImpl;
+import ua.nix.academy.dao.GradeDao;
+import ua.nix.academy.exception.AcademyDataCreateException;
 import ua.nix.academy.persistence.dto.GradeDto;
 import ua.nix.academy.persistence.entity.Grade;
 import ua.nix.academy.repository.interfaces.Repository;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class GradeRepositoryImpl implements Repository<Grade, GradeDto> {
     private static GradeRepositoryImpl instance;
-    private final SessionFactory sessionFactory;
+    private Session session;
 
-    private GradeRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    private GradeRepositoryImpl(Session session) {
+        this.session = session;
     }
 
     @Override
-    public void create(List<GradeDto> gradeDtoList) throws Exception {
-        try (Session session = sessionFactory.openSession()) {
-            session.getTransaction().begin();
-            try {
-                for (GradeDto gradeDto : gradeDtoList) {
-                    session.persist(GradeDaoImpl.getInstance().create(gradeDto));
-                }
-                session.getTransaction().commit();
-            } catch (Exception sqlException) {
-                session.getTransaction().rollback();
-                throw new Exception(sqlException.getMessage());
+    public void create(List<GradeDto> gradeDtoList) throws AcademyDataCreateException {
+        try {
+            for (GradeDto gradeDto : gradeDtoList) {
+                session.persist(GradeDao.getInstance().create(gradeDto,
+                        StudentRepositoryImpl.getInstance(session).getByCriteria(gradeDto.getStudent()),
+                        ThemeRepositoryImpl.getInstance(session).getByCriteria(gradeDto.getTheme())));
             }
+        } catch (RuntimeException runtimeException) {
+            throw new AcademyDataCreateException(runtimeException.getMessage(), runtimeException);
         }
     }
 
     @Override
     public Grade getByCriteria(String criteria) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Grade> query = session.createQuery("select g from Grade g where g.value = ?1", Grade.class).setParameter(1, criteria);
-            return query.getSingleResult();
-        }
+        Query<Grade> query = session.createQuery("select g from Grade g where g.value = ?1", Grade.class).setParameter(1, criteria);
+        return query.getSingleResult();
     }
 
-    @Override
-    public Grade getById(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Grade> query = session.createQuery("select g from Grade g where g.id = ?1", Grade.class).setParameter(1, id);
-            return query.getSingleResult();
-        }
-    }
-
-    @Override
-    public void updateById(Long id) {
-        System.out.println("Enter a new grade value, or press the enter to left old value");
-        Scanner scanner = new Scanner(System.in);
-        String value = scanner.nextLine();
-        if (value != null) {
-            try (Session session = sessionFactory.openSession()) {
-                try {
-                    session.getTransaction().begin();
-                    Query<Grade> query = session.createQuery("select g from Grade g where g.id = ?1", Grade.class).setParameter(1, id);
-                    Grade grade = query.getSingleResult();
-                    grade.setValue(value);
-                    session.saveOrUpdate(grade);
-                    session.getTransaction().commit();
-                } catch (Exception e) {
-                    session.getTransaction().rollback();
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-            try {
-                session.getTransaction().begin();
-                Query<Grade> query = session.createQuery("select g from Grade g where g.id = ?1", Grade.class).setParameter(1, id);
-                Grade grade = query.getSingleResult();
-                session.remove(grade);
-                session.getTransaction().commit();
-            } catch (Exception e){
-                session.getTransaction().rollback();
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static GradeRepositoryImpl getInstance(SessionFactory sessionFactory) {
+    public static GradeRepositoryImpl getInstance(Session session) {
         if (instance == null) {
-            instance = new GradeRepositoryImpl(sessionFactory);
+            instance = new GradeRepositoryImpl(session);
         }
         return instance;
     }

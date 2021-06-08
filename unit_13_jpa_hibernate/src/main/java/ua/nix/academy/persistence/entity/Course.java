@@ -32,28 +32,8 @@ public class Course extends AbstractEntity {
         return id;
     }
 
-    public String getCourseNumber() {
-        return courseNumber;
-    }
-
-    public void setCourseNumber(String courseNumber) {
-        this.courseNumber = courseNumber;
-    }
-
-    public List<Group> getGroupList() {
-        return groupList;
-    }
-
     public void setGroupList(Group group) {
         this.groupList.add(group);
         group.setCourse(this);
-    }
-
-    @Override
-    public String toString() {
-        return "Course{" + "\n" +
-                "id=" + id + "\n" +
-                ", courseNumber='" + courseNumber + "\n" +
-                '}' + "\n";
     }
 }

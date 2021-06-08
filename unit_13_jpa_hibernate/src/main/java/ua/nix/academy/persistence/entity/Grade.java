@@ -15,32 +15,32 @@ public class Grade extends AbstractEntity {
     @Column(name = "value", nullable = true)
     private Integer value;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "grades")
-    private List<Theme> themes;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theme")
+    private Theme theme;
 
-    public Grade(){}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "students")
+    private Student student;
 
-    public Grade(String value){
+    public Grade() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Grade(String value, Student student, Theme theme) {
         this.value = Integer.parseInt(value);
+        this.student = student;
+        this.theme = theme;
     }
 
-    public void setValue(String value) {
-        this.value = Integer.parseInt(value);
+    public Theme getTheme() {
+        return theme;
     }
 
-    public String getValue() {
-        return String.valueOf(this.value);
-    }
-
-    public void setThemes(Theme theme) {
-        themes.add(theme);
-    }
-
-    @Override
-    public String toString() {
-        return "Grade{" + "\n" +
-                "id=" + id + "\n" +
-                ", value='" + value + "\n" +
-                '}' + "\n";
+    public Student getStudent() {
+        return student;
     }
 }

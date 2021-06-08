@@ -3,12 +3,13 @@ package ua.nix.academy.persistence.dto;
 public class LessonDto extends AbstractDto {
     private final String time;
     private final String theme;
-    private final String professor;
+    private final String group;
 
-    public LessonDto(String time, String theme, String professor){
+
+    public LessonDto(String time, String theme, String group){
         this.time = time;
         this.theme = theme;
-        this.professor = professor;
+        this.group = group;
     }
 
     public String getTime() {
@@ -19,7 +20,7 @@ public class LessonDto extends AbstractDto {
         return theme;
     }
 
-    public String getProfessor() {
-        return professor;
+    public String getGroup() {
+        return group;
     }
 }

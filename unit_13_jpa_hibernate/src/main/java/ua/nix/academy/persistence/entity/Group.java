@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Table(name = "Groups")
 public class Group extends AbstractEntity {
@@ -27,6 +28,9 @@ public class Group extends AbstractEntity {
     @JoinColumn(name = "professor")
     private Professor professor;
 
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+    private List<Lesson> lessons = new ArrayList<>();
+
     public Group(){}
 
     public Group(String name, Course course, Professor professor){
@@ -35,12 +39,16 @@ public class Group extends AbstractEntity {
         this.professor = professor;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Long getId() {
+        return id;
     }
 
     public Course getCourse() {
         return course;
+    }
+
+    public Professor getProfessor() {
+        return professor;
     }
 
     public void setCourse(Course course) {
@@ -49,27 +57,16 @@ public class Group extends AbstractEntity {
 
     public void setStudents(Student student) {
        students.add(student);
-       student.setGroup(this);
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void setProfessor(Professor professor) {
         this.professor = professor;
     }
 
-    public Professor getProfessor() {
-        return professor;
+    public void setLessons(Lesson lesson) {
+       lessons.add(lesson);
+       lesson.setGroup(this);
     }
 
-    @Override
-    public String toString() {
-        return "Group{" + "\n" +
-                "id=" + id + "\n" +
-                ", name='" + name + "\n" +
-                ", course=" + course + "\n" +
-                '}' + "\n";
-    }
+
 }

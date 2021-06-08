@@ -1,9 +1,9 @@
 package ua.nix.academy.repository.impl;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import ua.nix.academy.dao.impl.StudentDaoImpl;
+import ua.nix.academy.dao.StudentDao;
+import ua.nix.academy.exception.AcademyDataCreateException;
 import ua.nix.academy.persistence.dto.StudentDto;
 import ua.nix.academy.persistence.entity.Group;
 import ua.nix.academy.persistence.entity.Lesson;
@@ -12,102 +12,52 @@ import ua.nix.academy.repository.interfaces.Repository;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Scanner;
 
 public class StudentRepositoryImpl implements Repository<Student, StudentDto> {
     private static StudentRepositoryImpl instance;
-    private final SessionFactory sessionFactory;
+    private final Session session;
 
-    private StudentRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    private StudentRepositoryImpl(Session session) {
+        this.session = session;
     }
 
     @Override
-    public void create(List<StudentDto> studentDtoList) throws Exception {
-        try (Session session = sessionFactory.openSession()) {
-            session.getTransaction().begin();
-            try {
-                for (StudentDto studentDto : studentDtoList) {
-                    Group group = GroupRepositoryImpl.getInstance(sessionFactory).getByCriteria(studentDto.getGroupName());
-                    session.persist(StudentDaoImpl.getInstance().create(studentDto, group));
-                }
-                session.getTransaction().commit();
-            } catch (Exception sqlException) {
-                session.getTransaction().rollback();
-                throw new Exception(sqlException.getMessage());
+    public void create(List<StudentDto> studentDtoList) throws AcademyDataCreateException {
+        try {
+            for (StudentDto studentDto : studentDtoList) {
+                Group group = GroupRepositoryImpl.getInstance(session).getByCriteria(studentDto.getGroupName());
+                session.persist(StudentDao.getInstance().create(studentDto, group));
             }
+        } catch (RuntimeException runtimeException) {
+            throw new AcademyDataCreateException(runtimeException.getMessage(), runtimeException);
         }
     }
 
     @Override
     public Student getByCriteria(String criteria) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Student> query = session.createQuery("select s from Student s where s.initials = ?1", Student.class).setParameter(1, criteria);
-            return query.getSingleResult();
-        }
+        Query<Student> query = session.createQuery("select s from Student s where s.initials = ?1", Student.class).setParameter(1, criteria);
+        return query.getSingleResult();
     }
 
-    @Override
     public Student getById(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Student> query = session.createQuery("select s from Student s where s.id = ?1", Student.class).setParameter(1, id);
-            return query.getSingleResult();
-        }
+        Query<Student> query = session.createQuery("select s from Student s where s.id = ?1", Student.class).setParameter(1, id);
+        return query.getSingleResult();
     }
 
-    @Override
-    public void updateById(Long id) {
-        System.out.println("Enter a new initials, or press the enter to left old value");
-        Scanner scanner = new Scanner(System.in);
-        String value = scanner.nextLine();
-        if (value != null) {
-            try (Session session = sessionFactory.openSession()) {
-                try {
-                    session.getTransaction().begin();
-                    Query<Student> query = session.createQuery("select s from Student s where s.id = ?1", Student.class).
-                            setParameter(1, id);
-                    Student student = query.getSingleResult();
-                    student.setInitials(value);
-                    session.saveOrUpdate(student);
-                    session.getTransaction().commit();
-                } catch (Exception e) {
-                    session.getTransaction().rollback();
-                    e.printStackTrace();
-                }
-            }
-        }
+    public Lesson takeInfoAboutLesson(Long id) {
+        ZonedDateTime currentTime = ZonedDateTime.now();
+        Group group = session.createQuery("select g from Group g join Student s on s.group.id = g.id and s.id = ?1", Group.class).
+                setParameter(1, id).getSingleResult();
+        Query<Lesson> lessons = session.createQuery("select l from Lesson l join Group g on l.group.id = g.id and g.id = ?1 " +
+                "where l.zonedDateTime > ?2 order by l.zonedDateTime desc ", Lesson.class).
+                setParameter(1,group.getId()).setParameter(2, currentTime);
+        List<Lesson> lessonList = lessons.getResultList();
+        return lessonList.get(0);
     }
 
-    @Override
-    public void deleteById(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-            session.getTransaction().begin();
-            try {
-                Query<Student> query = session.createQuery("select s from Student s where s.id = ?1", Student.class).
-                        setParameter(1, id);
-                Student student = query.getSingleResult();
-                session.remove(student);
-                session.getTransaction().commit();
-            } catch (Exception e) {
-                session.getTransaction().rollback();
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void takeInfoAboutLesson(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Lesson> lessonQuery = session.createQuery("select l from Lesson l, Student s where l.id = (select l.id from Lesson l group by l.id having l.zonedDateTime = " +
-                    "(select max(p.zonedDateTime) from Lesson p) and s.id = ?1)", Lesson.class).setParameter(1, id);
-            Lesson lesson = lessonQuery.getSingleResult();
-            System.out.println(lesson);
-
-        }
-    }
-
-    public static StudentRepositoryImpl getInstance(SessionFactory sessionFactory) {
+    public static StudentRepositoryImpl getInstance(Session session) {
         if (instance == null) {
-            instance = new StudentRepositoryImpl(sessionFactory);
+            instance = new StudentRepositoryImpl(session);
         }
         return instance;
     }
