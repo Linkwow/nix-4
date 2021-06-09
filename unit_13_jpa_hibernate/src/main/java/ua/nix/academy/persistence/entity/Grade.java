@@ -1,6 +1,8 @@
 package ua.nix.academy.persistence.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "grades")
@@ -18,9 +20,7 @@ public class Grade extends AbstractEntity {
     @JoinColumn(name = "theme")
     private Theme theme;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "students")
-    private Student student;
+
 
     public Grade() {
     }
@@ -29,21 +29,16 @@ public class Grade extends AbstractEntity {
         return id;
     }
 
-    public Grade(String value, Student student, Theme theme) {
+    public Grade(String value, Theme theme) {
         this.value = Integer.parseInt(value);
-        this.student = student;
         this.theme = theme;
-    }
-
-    public Theme getTheme() {
-        return theme;
-    }
-
-    public Student getStudent() {
-        return student;
     }
 
     public Integer getValue() {
         return value;
+    }
+
+    public Theme getTheme() {
+        return theme;
     }
 }

@@ -21,11 +21,7 @@ public class Student extends AbstractEntity {
     @JoinColumn(name = "groups")
     private Group group;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")
-    private final List<Grade> grades = new ArrayList<>();
-
     public Student() {
-
     }
 
     public Long getId() {
@@ -44,13 +40,5 @@ public class Student extends AbstractEntity {
     public void setGroup(Group group) {
         this.group = group;
         group.setStudents(this);
-    }
-
-    public void setGrades(Grade grade) {
-        grades.add(grade);
-    }
-
-    public List<Grade> getGrades() {
-        return grades;
     }
 }

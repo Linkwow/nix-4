@@ -30,8 +30,7 @@ public class GradeRepositoryImpl implements Repository<Grade, GradeDto> {
             logger.info("Start creating Grade entity.");
             for (GradeDto gradeDto : gradeDtoList) {
                 session.persist(GradeDao.getInstance().create(gradeDto,
-                        StudentRepositoryImpl.getInstance(session).getByCriteria(gradeDto.getStudent()),
-                        ThemeRepositoryImpl.getInstance(session).getByCriteria(gradeDto.getTheme())));
+                       ThemeRepositoryImpl.getInstance(session).getByCriteria(gradeDto.getTheme())));
             }
             logger.info("Create was successful.");
         } catch (RuntimeException runtimeException) {

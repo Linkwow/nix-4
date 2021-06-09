@@ -12,7 +12,6 @@ import ua.nix.academy.persistence.dto.GroupDto;
 import ua.nix.academy.persistence.entity.*;
 import ua.nix.academy.repository.interfaces.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GroupRepositoryImpl implements Repository<Group, GroupDto> {
@@ -57,41 +56,16 @@ public class GroupRepositoryImpl implements Repository<Group, GroupDto> {
     }
 
     public Group getInfoGroup(Long professorId, Long themeId) {
-        List<Group> groups = session.createQuery("select g from Group g join Professor p on g.professor.id = p.id where p.id = ?1", Group.class).
-                setParameter(1, professorId).getResultList();
-        List<Integer> tempList = new ArrayList<>();
+        List<Theme> themes = session.createQuery("select t from Theme t " +
+                "join Lesson l on l.theme.id = t.id and t.id = ?1 " +
+                "join Group g on g.id = l.group.id " +
+                "join Professor p on p.id = g.professor.id and p.id = ?2", Theme.class).
+                setParameter(1, themeId).setParameter(2, professorId).getResultList();
+        for (Theme theme : themes) {
 
-
-
-
-
-        Integer mediana = null;
-        Group resultGroup = null;
-        for (Group group : groups) {
-            for (Student student : group.getStudents()) {
-                for (Grade grade : student.getGrades()) {
-                    tempList.add(grade.getValue());
-                }
-            }
-            if (tempList.size() % 2 == 0) {
-                if (mediana == null) {
-                    mediana = tempList.get(tempList.size() / 2 - 1) + tempList.get(tempList.size() / 2);
-                    resultGroup = group;
-                } else if (mediana < tempList.get(tempList.size() / 2 - 1) + tempList.get(tempList.size() / 2)) {
-                    mediana = tempList.get(tempList.size() / 2 - 1) + tempList.get(tempList.size() / 2);
-                    resultGroup = group;
-                }
-            } else {
-                if (mediana == null) {
-                    mediana = tempList.get(tempList.size() / 2 + 1);
-                    resultGroup = group;
-                } else if (mediana < tempList.get(tempList.size() / 2 + 1)) {
-                    mediana = tempList.get(tempList.size() / 2 + 1);
-                    resultGroup = group;
-                }
-            }
         }
-        return resultGroup;
+
+        return null;
     }
 
     public static GroupRepositoryImpl getInstance(Session session) {

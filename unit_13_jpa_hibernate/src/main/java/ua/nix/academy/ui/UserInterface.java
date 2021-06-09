@@ -45,6 +45,7 @@ public class UserInterface {
                         case 2:
                             System.out.println("Enter id of professor");
                             Long professorId = new Scanner(System.in).nextLong();
+                            System.out.println("Enter id of theme");
                             Long themeID = new Scanner(System.in).nextLong();
                             Group group = Controller.groupInfo(session,professorId, themeID);
                             System.out.println("group name " + group.getName() + " course " + group.getCourse().getCourseNumber());

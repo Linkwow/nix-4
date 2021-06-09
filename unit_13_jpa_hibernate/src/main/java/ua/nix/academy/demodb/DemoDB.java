@@ -84,24 +84,40 @@ public class DemoDB {
     ));
 
     private static final List<GradeDto> gradeDtoList = new ArrayList<>(Arrays.asList(
-            new GradeDto("5", "Garmash Daria", "Exam"),
-            new GradeDto("4", "Goncharenko Evgeniya", "Exam"),
-            new GradeDto("3", "Gorbachova Lyudmila", "Exam"),
-            new GradeDto("2", "Grinko Nikita", "Exam"),
-            new GradeDto("5", "Dorenskaya Daria", "Exam"),
-            new GradeDto("3", "Kuzmin Artem", "Exam"),
-            new GradeDto("3", "Kushik Mikhail", "Exam"),
-            new GradeDto("2", "Naumenko Sergey", "Exam"),
-            new GradeDto("4", "Petko Ilya", "Exam"),
-            new GradeDto("5", "Pooh Artem", "Exam"),
-            new GradeDto("5", "Dmitry Senkovenko", "Exam"),
-            new GradeDto("4", "Sidora Yaroslav", "Exam"),
-            new GradeDto("3", "Halamay Sofia", "Exam"),
-            new GradeDto("5", "Kharakhaichuk Ivan", "Exam"),
-            new GradeDto("4", "Chuiko Anastasia", "Exam"),
-            new GradeDto("2", "Shirkov Andrey", "Exam"),
-            new GradeDto("4", "Shchebetovsky Evgeny", "Exam"),
-            new GradeDto("4", "Shchebetovsky Evgeny", "Spring")
+            new GradeDto("5", "Exam"),
+            new GradeDto("4", "Exam"),
+            new GradeDto("3", "Exam"),
+            new GradeDto("2", "Exam"),
+            new GradeDto("5", "Exam"),
+            new GradeDto("3", "Exam"),
+            new GradeDto("3", "Exam"),
+            new GradeDto("2", "Exam"),
+            new GradeDto("4", "Exam"),
+            new GradeDto("5", "Exam"),
+            new GradeDto("5", "Exam"),
+            new GradeDto("4", "Exam"),
+            new GradeDto("3", "Exam"),
+            new GradeDto("5", "Exam"),
+            new GradeDto("4", "Exam"),
+            new GradeDto("2", "Exam"),
+            new GradeDto("4", "Exam"),
+            new GradeDto("5", "Spring"),
+            new GradeDto("4", "Spring"),
+            new GradeDto("3", "Spring"),
+            new GradeDto("2", "Spring"),
+            new GradeDto("5", "Spring"),
+            new GradeDto("3", "Spring"),
+            new GradeDto("3", "Spring"),
+            new GradeDto("2", "Spring"),
+            new GradeDto("4", "Spring"),
+            new GradeDto("5", "Spring"),
+            new GradeDto("5", "Spring"),
+            new GradeDto("4", "Spring"),
+            new GradeDto("3", "Spring"),
+            new GradeDto("5", "Spring"),
+            new GradeDto("4", "Spring"),
+            new GradeDto("2", "Spring"),
+            new GradeDto("4", "Spring")
     ));
 
     private static void create(Session session) throws AcademyDataAccessException {
@@ -138,44 +154,37 @@ public class DemoDB {
             }
             for (Theme theme : themeList) {
                 for (Grade grade : gradeList) {
-                    if(grade.getTheme().getId().equals(theme.getId())){
+                    if (grade.getTheme().getId().equals(theme.getId())) {
                         theme.setGrades(grade);
                     }
                 }
             }
-            for(Student student : studentList){
-                for(Grade grade : gradeList){
-                    if(grade.getStudent().getId().equals(student.getId())) {
-                        student.setGrades(grade);
-                    }
-                }
+                logger.info("Create relations successful");
+            } catch(Exception exception) {
+                logger.error("Create relations between courses and groups was failed");
+                throw new AcademyDataAccessException(exception.getMessage(), exception);
             }
-            logger.info("Create relations successful");
-        } catch (Exception exception) {
-            logger.error("Create relations between courses and groups was failed");
-            throw new AcademyDataAccessException(exception.getMessage(), exception);
         }
-    }
 
-    private static void create() throws AcademyDataAccessException {
-        try {
-        } catch (Exception exception) {
-            throw new AcademyDataAccessException(exception.getMessage(), exception);
+        public static void createEntities () throws AcademyDataAccessException {
+            try {
+            } catch (Exception exception) {
+                throw new AcademyDataAccessException(exception.getMessage(), exception);
+            }
         }
-    }
 
-    public static void createEntities(Session session) throws AcademyDataException {
-        try {
-            CourseRepositoryImpl.getInstance(session).create(courseDtoList);
-            ProfessorRepositoryImpl.getInstance(session).create(professorDtoList);
-            GroupRepositoryImpl.getInstance(session).create(groupDtoList);
-            StudentRepositoryImpl.getInstance(session).create(studentDtoList);
-            ThemeRepositoryImpl.getInstance(session).create(themeDtoList);
-            LessonRepositoryImpl.getInstance(session).create(lessonDtoList);
-            GradeRepositoryImpl.getInstance(session).create(gradeDtoList);
-            create(session);
-        } catch (AcademyDataException academyDataException) {
-            throw new AcademyDataException(academyDataException.getMessage(), academyDataException);
+        public static void createEntities (Session session) throws AcademyDataException {
+            try {
+                CourseRepositoryImpl.getInstance(session).create(courseDtoList);
+                ProfessorRepositoryImpl.getInstance(session).create(professorDtoList);
+                GroupRepositoryImpl.getInstance(session).create(groupDtoList);
+                StudentRepositoryImpl.getInstance(session).create(studentDtoList);
+                ThemeRepositoryImpl.getInstance(session).create(themeDtoList);
+                LessonRepositoryImpl.getInstance(session).create(lessonDtoList);
+                GradeRepositoryImpl.getInstance(session).create(gradeDtoList);
+                create(session);
+            } catch (AcademyDataException academyDataException) {
+                throw new AcademyDataException(academyDataException.getMessage(), academyDataException);
+            }
         }
     }
-}
