@@ -37,7 +37,7 @@ public class HibernateService {
     public Transaction createTransaction(Long id, String[] entityParameters) throws FinanceExceptions {
         try {
             logger.info("Starting create Transaction");
-            TransactionDto transactionDto = DtoCreate.getInstance().createTransactionDto(entityParameters);
+            TransactionDto transactionDto = DtoService.getInstance().createTransactionDto(entityParameters);
             Account account = AccountRepository.getInstance(session).getById(id);
             List<Category> categoryList = CategoryRepository.getInstance(session).getCategoryForTransaction(transactionDto.getCategories());
             if(!categoryList.isEmpty()) {

@@ -1,15 +1,13 @@
 package ua.nix.finance.persistence;
 
 import java.time.Instant;
-import java.time.ZonedDateTime;;
 import java.util.List;
 
 public class TransactionDto {
 
-    private Double amount;
-    private Instant dateTime;
-    private List<String> categories;
-    private ZonedDateTime zonedDateTime = ZonedDateTime.now();
+    private final Double amount;
+    private final Instant dateTime;
+    private final List<String> categories;
 
     public TransactionDto(Double amount, String dateTime, List<String> categories) {
         this.amount = amount;

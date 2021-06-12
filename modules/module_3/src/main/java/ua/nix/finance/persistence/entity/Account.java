@@ -6,15 +6,13 @@ import javax.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import ua.nix.finance.persistence.AbstractEntity;
-
 
 @Entity
 @Table(name = "Accounts")
-public class Account extends AbstractEntity {
+public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "account_generator", sequenceName = "finance_sequence", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
@@ -34,28 +32,7 @@ public class Account extends AbstractEntity {
 
     }
 
-    public Account(String accountNumber, User user) {
-        this.accountNumber = accountNumber;
-        this.user = user;
-    }
-
     public Long getId() {
         return id;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public List<Transaction> getTransactionList() {
-        return transactionList;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
     }
 }

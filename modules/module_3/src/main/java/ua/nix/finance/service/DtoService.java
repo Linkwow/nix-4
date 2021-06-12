@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-public class DtoCreate {
+public class DtoService {
 
-    private static DtoCreate instance;
+    private static DtoService instance;
     private Double amount;
     private String dateTime;
     private List<String> categories = new ArrayList<>();
 
-    private DtoCreate() {
+    private DtoService() {
 
     }
 
@@ -32,9 +32,9 @@ public class DtoCreate {
         return new TransactionDto(amount, dateTime, categories);
     }
 
-    public static DtoCreate getInstance() {
+    public static DtoService getInstance() {
         if (instance == null) {
-            instance = new DtoCreate();
+            instance = new DtoService();
         }
         return instance;
     }

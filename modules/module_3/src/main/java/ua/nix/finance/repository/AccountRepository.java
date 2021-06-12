@@ -10,7 +10,7 @@ import ua.nix.finance.persistence.entity.Account;
 public class AccountRepository {
     private static AccountRepository instance;
     private final Session session;
-    private Logger logger;
+    private final Logger logger;
 
     private AccountRepository(Session session){
         this.session = session;

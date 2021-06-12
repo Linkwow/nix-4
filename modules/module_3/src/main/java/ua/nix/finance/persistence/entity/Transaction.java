@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ua.nix.finance.annotations.NotValidDigit;
-import ua.nix.finance.persistence.AbstractEntity;
 
 @Entity
 @Table(name = "Transactions")
-public class Transaction extends AbstractEntity {
+public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "transaction_generator", sequenceName = "finance_sequence", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
@@ -34,8 +34,8 @@ public class Transaction extends AbstractEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            joinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "transaction_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "transaction_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id")
     )
     List<Category> categoryList = new ArrayList<>();
 
@@ -57,31 +57,4 @@ public class Transaction extends AbstractEntity {
         return id;
     }
 
-    public Double getAmount() {
-        return amount;
-    }
-
-    public Instant getDateTime() {
-        return dateTime;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public List<Category> getCategoryList() {
-        return categoryList;
-    }
-
-    public void setAmount(Double funds) {
-        this.amount = funds;
-    }
-
-    public void setDateTime(Instant dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
 }

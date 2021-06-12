@@ -5,12 +5,10 @@ import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.annotations.TypeDef;
-import ua.nix.finance.persistence.AbstractEntity;
 
 @Entity
 @Table(name = "Categories")
-public class Category extends AbstractEntity {
+public class Category {
 
     public enum CategoryType {
         DEBET("DEBET"), CREDIT("CREDIT");
@@ -23,7 +21,8 @@ public class Category extends AbstractEntity {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "category_generator", sequenceName = "finance_sequence", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
@@ -43,11 +42,6 @@ public class Category extends AbstractEntity {
 
     }
 
-    public Category(String name, CategoryType categoryType){
-        this.name = name;
-        this.categoryType = categoryType;
-    }
-
     public Long getId() {
         return id;
     }
@@ -58,18 +52,6 @@ public class Category extends AbstractEntity {
 
     public CategoryType getCategoryType() {
         return categoryType;
-    }
-
-    public List<Transaction> getTransactionList() {
-        return transactionList;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCategoryType(CategoryType categoryType) {
-        this.categoryType = categoryType;
     }
 
     public void setTransactionList(Transaction transaction) {
