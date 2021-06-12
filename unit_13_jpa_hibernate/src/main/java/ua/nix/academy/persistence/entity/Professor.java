@@ -37,4 +37,12 @@ public class Professor extends AbstractEntity {
     public String getInitials() {
         return initials;
     }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setInitials(String initials) {
+        this.initials = initials;
+    }
 }

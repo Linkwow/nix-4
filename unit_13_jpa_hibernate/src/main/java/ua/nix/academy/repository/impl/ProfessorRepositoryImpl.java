@@ -11,8 +11,6 @@ import ua.nix.academy.persistence.dto.ProfessorDto;
 import ua.nix.academy.persistence.entity.Professor;
 import ua.nix.academy.repository.interfaces.Repository;
 
-import java.util.List;
-
 public class ProfessorRepositoryImpl implements Repository<Professor, ProfessorDto> {
     private static ProfessorRepositoryImpl instance;
     private final Session session;
@@ -24,13 +22,13 @@ public class ProfessorRepositoryImpl implements Repository<Professor, ProfessorD
     }
 
     @Override
-    public void create(List<ProfessorDto> professorDtoList) throws AcademyDataCreateException {
+    public Professor create(ProfessorDto professorDto) throws AcademyDataCreateException {
         try {
             logger.info("Start creating Professor entity.");
-            for (ProfessorDto professorDto : professorDtoList) {
-                session.persist(ProfessorDao.getInstance().create(professorDto));
-            }
+            Professor professor = ProfessorDao.getInstance().create(professorDto);
+            session.persist(professor);
             logger.info("Create was successful.");
+            return professor;
         } catch (RuntimeException runtimeException) {
             logger.info("Error while created.");
             throw new AcademyDataCreateException(runtimeException.getMessage(), runtimeException);

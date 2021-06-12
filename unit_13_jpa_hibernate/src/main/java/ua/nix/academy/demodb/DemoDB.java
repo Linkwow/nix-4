@@ -4,7 +4,6 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ua.nix.academy.exception.AcademyDataAccessException;
 import ua.nix.academy.exception.AcademyDataException;
 import ua.nix.academy.persistence.dto.*;
 import ua.nix.academy.persistence.entity.*;
@@ -84,52 +83,72 @@ public class DemoDB {
     ));
 
     private static final List<GradeDto> gradeDtoList = new ArrayList<>(Arrays.asList(
-            new GradeDto("5", "Exam"),
-            new GradeDto("4", "Exam"),
-            new GradeDto("3", "Exam"),
-            new GradeDto("2", "Exam"),
-            new GradeDto("5", "Exam"),
-            new GradeDto("3", "Exam"),
-            new GradeDto("3", "Exam"),
-            new GradeDto("2", "Exam"),
-            new GradeDto("4", "Exam"),
-            new GradeDto("5", "Exam"),
-            new GradeDto("5", "Exam"),
-            new GradeDto("4", "Exam"),
-            new GradeDto("3", "Exam"),
-            new GradeDto("5", "Exam"),
-            new GradeDto("4", "Exam"),
-            new GradeDto("2", "Exam"),
-            new GradeDto("4", "Exam"),
-            new GradeDto("5", "Spring"),
-            new GradeDto("4", "Spring"),
-            new GradeDto("3", "Spring"),
-            new GradeDto("2", "Spring"),
-            new GradeDto("5", "Spring"),
-            new GradeDto("3", "Spring"),
-            new GradeDto("3", "Spring"),
-            new GradeDto("2", "Spring"),
-            new GradeDto("4", "Spring"),
-            new GradeDto("5", "Spring"),
-            new GradeDto("5", "Spring"),
-            new GradeDto("4", "Spring"),
-            new GradeDto("3", "Spring"),
-            new GradeDto("5", "Spring"),
-            new GradeDto("4", "Spring"),
-            new GradeDto("2", "Spring"),
-            new GradeDto("4", "Spring")
+            new GradeDto("5", "Exam", "Garmash Daria"),
+            new GradeDto("4", "Exam", "Goncharenko Evgeniya"),
+            new GradeDto("3", "Exam", "Gorbachova Lyudmila"),
+            new GradeDto("2", "Exam", "Grinko Nikita"),
+            new GradeDto("5", "Exam", "Dorenskaya Daria"),
+            new GradeDto("3", "Exam", "Kuzmin Artem"),
+            new GradeDto("3", "Exam", "Naumenko Sergey"),
+            new GradeDto("2", "Exam", "Petko Ilya"),
+            new GradeDto("4", "Exam", "Pooh Artem"),
+            new GradeDto("5", "Exam", "Dmitry Senkovenko"),
+            new GradeDto("5", "Exam", "Sidora Yaroslav"),
+            new GradeDto("4", "Exam", "Halamay Sofia"),
+            new GradeDto("3", "Exam", "Kharakhaichuk Ivan"),
+            new GradeDto("5", "Exam", "Chuiko Anastasia"),
+            new GradeDto("4", "Exam", "Shirkov Andrey"),
+            new GradeDto("2", "Exam", "Shchebetovsky Evgeny"),
+            new GradeDto("4", "Exam", "Kushik Mikhail"),
+            new GradeDto("5", "Spring", "Garmash Daria"),
+            new GradeDto("4", "Spring", "Goncharenko Evgeniya"),
+            new GradeDto("3", "Spring", "Gorbachova Lyudmila"),
+            new GradeDto("2", "Spring", "Grinko Nikita"),
+            new GradeDto("5", "Spring", "Dorenskaya Daria"),
+            new GradeDto("3", "Spring", "Kuzmin Artem"),
+            new GradeDto("3", "Spring", "Naumenko Sergey"),
+            new GradeDto("2", "Spring", "Petko Ilya"),
+            new GradeDto("4", "Spring", "Pooh Artem"),
+            new GradeDto("5", "Spring", "Dmitry Senkovenko"),
+            new GradeDto("5", "Spring", "Sidora Yaroslav"),
+            new GradeDto("4", "Spring", "Halamay Sofia"),
+            new GradeDto("3", "Spring", "Kharakhaichuk Ivan"),
+            new GradeDto("5", "Spring", "Chuiko Anastasia"),
+            new GradeDto("4", "Spring", "Shirkov Andrey"),
+            new GradeDto("2", "Spring", "Shchebetovsky Evgeny"),
+            new GradeDto("4", "Spring", "Kushik Mikhail")
     ));
 
-    private static void create(Session session) throws AcademyDataAccessException {
+    public static void createEntities(Session session) throws AcademyDataException {
         try {
-            logger.info("Start create relations.");
-            List<Course> courseList = session.createQuery("select c from Course c", Course.class).getResultList();
-            List<Grade> gradeList = session.createQuery("select g from Grade g", Grade.class).getResultList();
-            List<Group> groupList = session.createQuery("select g from Group g", Group.class).getResultList();
-            List<Lesson> lessonList = session.createQuery("select l from Lesson l", Lesson.class).getResultList();
-            List<Professor> professorList = session.createQuery("select p from Professor p", Professor.class).getResultList();
-            List<Student> studentList = session.createQuery("select s from Student s", Student.class).getResultList();
-            List<Theme> themeList = session.createQuery("select t from Theme t", Theme.class).getResultList();
+            List<Course> courseList = new ArrayList<>();
+            for (CourseDto courseDto : courseDtoList) {
+                courseList.add(CourseRepositoryImpl.getInstance(session).create(courseDto));
+            }
+            List<Professor> professorList = new ArrayList<>();
+            for (ProfessorDto professorDto : professorDtoList) {
+                professorList.add(ProfessorRepositoryImpl.getInstance(session).create(professorDto));
+            }
+            List<Group> groupList = new ArrayList<>();
+            for (GroupDto groupDto : groupDtoList) {
+                groupList.add(GroupRepositoryImpl.getInstance(session).create(groupDto));
+            }
+            List<Student> studentList = new ArrayList<>();
+            for (StudentDto studentDto : studentDtoList) {
+                studentList.add(StudentRepositoryImpl.getInstance(session).create(studentDto));
+            }
+            List<Theme> themeList = new ArrayList<>();
+            for (ThemeDto themeDto : themeDtoList) {
+                themeList.add(ThemeRepositoryImpl.getInstance(session).create(themeDto));
+            }
+            List<Lesson> lessonList = new ArrayList<>();
+            for (LessonDto lessonDto : lessonDtoList){
+                lessonList.add(LessonRepositoryImpl.getInstance(session).create(lessonDto));
+            }
+            List<Grade> gradeList = new ArrayList<>();
+            for(GradeDto gradeDto : gradeDtoList){
+                gradeList.add(GradeRepositoryImpl.getInstance(session).create(gradeDto));
+            }
             for (Group group : groupList) {
                 for (Course course : courseList) {
                     if (group.getCourse().getId().equals(course.getId())) {
@@ -159,32 +178,17 @@ public class DemoDB {
                     }
                 }
             }
-                logger.info("Create relations successful");
-            } catch(Exception exception) {
-                logger.error("Create relations between courses and groups was failed");
-                throw new AcademyDataAccessException(exception.getMessage(), exception);
+            for(Student student : studentList){
+                for(Grade grade : gradeList){
+                    if(grade.getStudent().getId().equals(student.getId())){
+                        student.setGrades(grade);
+                    }
+                }
             }
-        }
-
-        public static void createEntities () throws AcademyDataAccessException {
-            try {
-            } catch (Exception exception) {
-                throw new AcademyDataAccessException(exception.getMessage(), exception);
-            }
-        }
-
-        public static void createEntities (Session session) throws AcademyDataException {
-            try {
-                CourseRepositoryImpl.getInstance(session).create(courseDtoList);
-                ProfessorRepositoryImpl.getInstance(session).create(professorDtoList);
-                GroupRepositoryImpl.getInstance(session).create(groupDtoList);
-                StudentRepositoryImpl.getInstance(session).create(studentDtoList);
-                ThemeRepositoryImpl.getInstance(session).create(themeDtoList);
-                LessonRepositoryImpl.getInstance(session).create(lessonDtoList);
-                GradeRepositoryImpl.getInstance(session).create(gradeDtoList);
-                create(session);
-            } catch (AcademyDataException academyDataException) {
-                throw new AcademyDataException(academyDataException.getMessage(), academyDataException);
-            }
+            logger.info("Create relations successful");
+        } catch (AcademyDataException academyDataException) {
+            throw new AcademyDataException(academyDataException.getMessage(), academyDataException);
         }
     }
+
+}

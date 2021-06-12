@@ -56,7 +56,6 @@ public class UserInterface {
                     }
                 }
             } catch (AcademyDataException academyDataException) {
-                academyDataException.printStackTrace();
                 session.getTransaction().rollback();
             }
         }

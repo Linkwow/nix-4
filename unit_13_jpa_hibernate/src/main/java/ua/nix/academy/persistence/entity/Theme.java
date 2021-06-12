@@ -43,5 +43,20 @@ public class Theme extends AbstractEntity {
 
     public void setGrades(Grade grade) {
         grades.add(grade);
+        grade.setTheme(this);
+    }
+
+    public List<Grade> getGrades() {
+        return grades;
+    }
+
+    public List<Lesson> getLessons() {
+        return lessons;
+    }
+
+
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
     }
 }

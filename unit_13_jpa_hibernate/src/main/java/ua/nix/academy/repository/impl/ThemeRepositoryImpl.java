@@ -24,13 +24,13 @@ public class ThemeRepositoryImpl implements Repository<Theme, ThemeDto> {
     }
 
     @Override
-    public void create(List<ThemeDto> themeDtoList) throws AcademyDataCreateException {
+    public Theme create(ThemeDto themeDto) throws AcademyDataCreateException {
         try {
             logger.info("Start creating Theme entity.");
-            for (ThemeDto themeDto : themeDtoList) {
-                session.persist(ThemeDao.getInstance().create(themeDto));
-            }
+            Theme theme = ThemeDao.getInstance().create(themeDto);
+            session.persist(theme);
             logger.info("Create was successful.");
+            return theme;
         } catch (RuntimeException runtimeException) {
             logger.info("Error while created.");
             throw new RuntimeException(runtimeException.getMessage(), runtimeException);

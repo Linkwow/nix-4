@@ -7,6 +7,6 @@ import ua.nix.academy.persistence.entity.AbstractEntity;
 import java.util.List;
 
 public interface Repository<ENTITY extends AbstractEntity, DTO extends AbstractDto> {
-    void create(List<DTO> dtoList) throws AcademyDataException;
+    ENTITY create(DTO dtoList) throws AcademyDataException;
     ENTITY getByCriteria(String criteria) throws AcademyDataException;
 }

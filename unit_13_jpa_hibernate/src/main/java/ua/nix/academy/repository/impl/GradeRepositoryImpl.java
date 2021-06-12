@@ -12,8 +12,6 @@ import ua.nix.academy.persistence.dto.GradeDto;
 import ua.nix.academy.persistence.entity.Grade;
 import ua.nix.academy.repository.interfaces.Repository;
 
-import java.util.List;
-
 public class GradeRepositoryImpl implements Repository<Grade, GradeDto> {
     private static GradeRepositoryImpl instance;
     private final Session session;
@@ -25,14 +23,15 @@ public class GradeRepositoryImpl implements Repository<Grade, GradeDto> {
     }
 
     @Override
-    public void create(List<GradeDto> gradeDtoList) throws AcademyDataException {
+    public Grade create(GradeDto gradeDto) throws AcademyDataException {
         try {
             logger.info("Start creating Grade entity.");
-            for (GradeDto gradeDto : gradeDtoList) {
-                session.persist(GradeDao.getInstance().create(gradeDto,
-                       ThemeRepositoryImpl.getInstance(session).getByCriteria(gradeDto.getTheme())));
-            }
+            Grade grade = GradeDao.getInstance().create(gradeDto,
+                    ThemeRepositoryImpl.getInstance(session).getByCriteria(gradeDto.getTheme()),
+                    StudentRepositoryImpl.getInstance(session).getByCriteria(gradeDto.getStudent()));
+                session.persist(grade);
             logger.info("Create was successful.");
+            return grade;
         } catch (RuntimeException runtimeException) {
             logger.info("Error while created.");
             throw new AcademyDataCreateException(runtimeException.getMessage(), runtimeException);

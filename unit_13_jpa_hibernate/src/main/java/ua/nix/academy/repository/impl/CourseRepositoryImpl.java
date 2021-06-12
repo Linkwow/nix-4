@@ -3,8 +3,6 @@ package ua.nix.academy.repository.impl;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.nix.academy.dao.CourseDao;
@@ -25,13 +23,13 @@ public class CourseRepositoryImpl implements Repository<Course, CourseDto> {
     }
 
     @Override
-    public void create(List<CourseDto> courseDtoList) throws AcademyDataCreateException {
+    public Course create(CourseDto courseDto) throws AcademyDataCreateException {
         try {
             logger.info("Start creating Course entity.");
-            for (CourseDto courseDto : courseDtoList) {
-                session.persist(CourseDao.getInstance().create(courseDto));
-            }
+            Course course = CourseDao.getInstance().create(courseDto);
+            session.persist(course);
             logger.info("Create was successful.");
+            return course;
         } catch (RuntimeException runtimeException) {
             logger.info("Error while created.");
             throw new AcademyDataCreateException(runtimeException.getMessage(), runtimeException);

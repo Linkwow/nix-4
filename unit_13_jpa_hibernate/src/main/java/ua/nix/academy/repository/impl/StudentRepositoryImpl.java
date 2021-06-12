@@ -13,6 +13,7 @@ import ua.nix.academy.persistence.entity.Group;
 import ua.nix.academy.persistence.entity.Lesson;
 import ua.nix.academy.persistence.entity.Student;
 import ua.nix.academy.repository.interfaces.Repository;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -27,13 +28,14 @@ public class StudentRepositoryImpl implements Repository<Student, StudentDto> {
     }
 
     @Override
-    public void create(List<StudentDto> studentDtoList) throws AcademyDataException {
+    public Student create(StudentDto studentDto) throws AcademyDataException {
         try {
             logger.info("Start creating Student entity.");
-            for (StudentDto studentDto : studentDtoList) {
-                Group group = GroupRepositoryImpl.getInstance(session).getByCriteria(studentDto.getGroupName());
-                session.persist(StudentDao.getInstance().create(studentDto, group));
-            }
+            Group group = GroupRepositoryImpl.getInstance(session).getByCriteria(studentDto.getGroupName());
+            Student student = StudentDao.getInstance().create(studentDto, group);
+            session.persist(student);
+            logger.info("Create was successful.");
+            return student;
         } catch (RuntimeException runtimeException) {
             logger.info("Error while created.");
             throw new AcademyDataCreateException(runtimeException.getMessage(), runtimeException);
