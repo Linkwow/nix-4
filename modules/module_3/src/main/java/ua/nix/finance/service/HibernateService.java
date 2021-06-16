@@ -55,8 +55,7 @@ public class HibernateService {
             logger.info("Transaction was create successful");
             return transaction;
         } catch (FinanceExceptions | RuntimeException exception) {
-            logger.error("Transaction was create unsuccessful");
-            exception.printStackTrace();
+            logger.error("Transaction was create unsuccessful", exception);
             throw new TransactionCreatedException(exception.getMessage(), exception);
         }
     }

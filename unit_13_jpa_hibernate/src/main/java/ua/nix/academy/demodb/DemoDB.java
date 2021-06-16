@@ -122,32 +122,39 @@ public class DemoDB {
     public static void createEntities(Session session) throws AcademyDataException {
         try {
             List<Course> courseList = new ArrayList<>();
+            CourseRepositoryImpl courseRepository = new CourseRepositoryImpl(session);
             for (CourseDto courseDto : courseDtoList) {
-                courseList.add(CourseRepositoryImpl.getInstance(session).create(courseDto));
+                courseList.add(courseRepository.create(courseDto));
             }
             List<Professor> professorList = new ArrayList<>();
+            ProfessorRepositoryImpl professorRepository = new ProfessorRepositoryImpl(session);
             for (ProfessorDto professorDto : professorDtoList) {
-                professorList.add(ProfessorRepositoryImpl.getInstance(session).create(professorDto));
+                professorList.add(professorRepository.create(professorDto));
             }
             List<Group> groupList = new ArrayList<>();
+            GroupRepositoryImpl groupRepository = new GroupRepositoryImpl(session);
             for (GroupDto groupDto : groupDtoList) {
-                groupList.add(GroupRepositoryImpl.getInstance(session).create(groupDto));
+                groupList.add(groupRepository.create(groupDto));
             }
             List<Student> studentList = new ArrayList<>();
+            StudentRepositoryImpl studentRepository = new StudentRepositoryImpl(session);
             for (StudentDto studentDto : studentDtoList) {
-                studentList.add(StudentRepositoryImpl.getInstance(session).create(studentDto));
+                studentList.add(studentRepository.create(studentDto));
             }
             List<Theme> themeList = new ArrayList<>();
+            ThemeRepositoryImpl themeRepository = new ThemeRepositoryImpl(session);
             for (ThemeDto themeDto : themeDtoList) {
-                themeList.add(ThemeRepositoryImpl.getInstance(session).create(themeDto));
+                themeList.add(themeRepository.create(themeDto));
             }
             List<Lesson> lessonList = new ArrayList<>();
+            LessonRepositoryImpl lessonRepository = new LessonRepositoryImpl(session);
             for (LessonDto lessonDto : lessonDtoList){
-                lessonList.add(LessonRepositoryImpl.getInstance(session).create(lessonDto));
+                lessonList.add(lessonRepository.create(lessonDto));
             }
             List<Grade> gradeList = new ArrayList<>();
+            GradeRepositoryImpl gradeRepository = new GradeRepositoryImpl(session);
             for(GradeDto gradeDto : gradeDtoList){
-                gradeList.add(GradeRepositoryImpl.getInstance(session).create(gradeDto));
+                gradeList.add(gradeRepository.create(gradeDto));
             }
             for (Group group : groupList) {
                 for (Course course : courseList) {

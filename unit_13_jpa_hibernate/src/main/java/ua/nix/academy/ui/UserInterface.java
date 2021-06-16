@@ -3,8 +3,10 @@ package ua.nix.academy.ui;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import ua.nix.academy.controller.Controller;
 import ua.nix.academy.demodb.DemoDB;
 import ua.nix.academy.exception.AcademyDataException;
@@ -14,16 +16,16 @@ import ua.nix.academy.persistence.entity.Lesson;
 import java.util.Scanner;
 
 public class UserInterface {
-    private final Logger logger;
     private static UserInterface instance;
     private boolean stillWorking = true;
+    private final Logger logger = LoggerFactory.getLogger(UserInterface.class);
+    private static final Scanner scanner = new Scanner(System.in);
 
     private UserInterface() {
-        logger = LoggerFactory.getLogger(UserInterface.class);
         logger.info("UserInterface instance was created.");
     }
 
-    public void start() throws Exception {
+    public void start() {
         try (SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
              Session session = sessionFactory.openSession()) {
             logger.info("Session factory initialize successful. Session open correctly");
@@ -36,7 +38,7 @@ public class UserInterface {
                     switch (operation()) {
                         case 1:
                             System.out.println("Enter id of student");
-                            Lesson lesson = Controller.studentInfo(session, new Scanner(System.in).nextLong());
+                            Lesson lesson = new Controller().takeInfoAboutLesson(session, scanner.nextLong());
                             System.out.println("lesson id " + lesson.getId() +
                                     " lesson date and time " + lesson.getZonedDateTime().toString() +
                                     " theme " + lesson.getTheme().getName() + " professor " +
@@ -44,10 +46,10 @@ public class UserInterface {
                             break;
                         case 2:
                             System.out.println("Enter id of professor");
-                            Long professorId = new Scanner(System.in).nextLong();
+                            long professorId = scanner.nextLong();
                             System.out.println("Enter id of theme");
-                            Long themeID = new Scanner(System.in).nextLong();
-                            Group group = Controller.groupInfo(session,professorId, themeID);
+                            long themeID = scanner.nextLong();
+                            Group group = new Controller().getMostSuccessfulGroup(session,professorId, themeID);
                             System.out.println("group name " + group.getName() + " course " + group.getCourse().getCourseNumber());
                         break;
                         default:
@@ -57,6 +59,8 @@ public class UserInterface {
                 }
             } catch (AcademyDataException academyDataException) {
                 session.getTransaction().rollback();
+                logger.error("Error while program was executing.", academyDataException);
+                throw new RuntimeException();
             }
         }
     }

@@ -10,15 +10,15 @@ import ua.nix.academy.repository.impl.StudentRepositoryImpl;
 
 public class Controller {
 
-    public static Lesson studentInfo(Session session, long id) throws AcademyDataException {
+    public Lesson takeInfoAboutLesson(Session session, long id) throws AcademyDataException {
         try {
-            return StudentRepositoryImpl.getInstance(session).takeInfoAboutLesson(id);
+           return new StudentRepositoryImpl(session).takeInfoAboutLesson(id);
         } catch (AcademyDataException academyDataException) {
             throw new AcademyDataAccessException(academyDataException.getMessage(), academyDataException);
         }
     }
 
-    public static Group groupInfo(Session session, long professorId, long themeId){
-        return GroupRepositoryImpl.getInstance(session).getInfoGroup(professorId, themeId);
+    public Group getMostSuccessfulGroup(Session session, long professorId, long themeId){
+        return new GroupRepositoryImpl(session).getMostSuccessfulGroup(professorId, themeId);
     }
 }

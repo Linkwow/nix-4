@@ -11,48 +11,37 @@ import ua.nix.academy.persistence.dto.ThemeDto;
 import ua.nix.academy.persistence.entity.Theme;
 import ua.nix.academy.repository.interfaces.Repository;
 
-import java.util.List;
-
 public class ThemeRepositoryImpl implements Repository<Theme, ThemeDto> {
-    private static ThemeRepositoryImpl instance;
     private final Session session;
-    private final Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(ThemeRepositoryImpl.class);
 
-    private ThemeRepositoryImpl(Session session) {
+    public ThemeRepositoryImpl(Session session) {
         this.session = session;
-        logger = LoggerFactory.getLogger(ThemeRepositoryImpl.class);
     }
 
     @Override
     public Theme create(ThemeDto themeDto) throws AcademyDataCreateException {
         try {
-            logger.info("Start creating Theme entity.");
+            logger.info("Creating Theme entity.");
             Theme theme = ThemeDao.getInstance().create(themeDto);
             session.persist(theme);
-            logger.info("Create was successful.");
+            logger.info("Theme entity was created successfully.");
             return theme;
         } catch (RuntimeException runtimeException) {
-            logger.info("Error while created.");
+            logger.error("Theme entity wasn't created.", runtimeException);
             throw new RuntimeException(runtimeException.getMessage(), runtimeException);
         }
     }
 
-    @Override
-    public Theme getByCriteria(String criteria) throws AcademyDataAccessException {
+    public Theme getThemeByName(String themeName) throws AcademyDataAccessException {
         try {
-            Query<Theme> query = session.createQuery("select t from Theme t where t.name = ?1", Theme.class).setParameter(1, criteria);
-            logger.info("Entity was taken successful.");
+            logger.info("Searching Theme by name");
+            Query<Theme> query = session.createQuery("select t from Theme t where t.name = ?1", Theme.class).setParameter(1, themeName);
+            logger.info("Theme was found.");
             return query.getSingleResult();
         } catch (RuntimeException runtimeException) {
-            logger.info("Entity was taken unsuccessful.");
+            logger.error("Theme wasn't found.", runtimeException);
             throw new AcademyDataAccessException(runtimeException.getMessage(), runtimeException);
         }
-    }
-
-    public static ThemeRepositoryImpl getInstance(Session session) {
-        if (instance == null) {
-            instance = new ThemeRepositoryImpl(session);
-        }
-        return instance;
     }
 }
