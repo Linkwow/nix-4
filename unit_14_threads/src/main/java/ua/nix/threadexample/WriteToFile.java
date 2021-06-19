@@ -20,20 +20,23 @@ public class WriteToFile implements Runnable {
 
     @Override
     public void run() {
-        while (!application.isStop()) {
-            try (FileWriter fileWriter = new FileWriter(file)) {
+        synchronized (application) {
+            while (!application.isStop()) {
                 String input = application.getInput();
-                application.wait(1000);
+                try {
+                    application.wait(1000);
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
                 logger.debug("input hashCode" + input.hashCode());
                 logger.debug("application hashcode" + application.getInput().hashCode());
                 if (input.hashCode() != application.getInput().hashCode()) {
-                    fileWriter.write(application.getInput());
+                    try (FileWriter fileWriter = new FileWriter(file)) {
+                        fileWriter.write(application.getInput());
+                    } catch (IOException ioException) {
+                        throw new UncheckedIOException(ioException);
+                    }
                 }
-            } catch(InterruptedException interruptedException){
-                Thread.currentThread().interrupt();
-                throw new RuntimeException(interruptedException);
-            } catch(IOException ioException){
-                throw new UncheckedIOException(ioException);
             }
         }
     }
