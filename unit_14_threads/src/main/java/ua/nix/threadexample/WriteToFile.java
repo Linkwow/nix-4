@@ -20,8 +20,8 @@ public class WriteToFile implements Runnable {
 
     @Override
     public void run() {
-        try (FileWriter fileWriter = new FileWriter(file)) {
-            while (!application.isStop()) {
+        while (!application.isStop()) {
+            try (FileWriter fileWriter = new FileWriter(file)) {
                 String input = application.getInput();
                 application.wait(1000);
                 logger.debug("input hashCode" + input.hashCode());
@@ -29,12 +29,12 @@ public class WriteToFile implements Runnable {
                 if (input.hashCode() != application.getInput().hashCode()) {
                     fileWriter.write(application.getInput());
                 }
+            } catch(InterruptedException interruptedException){
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(interruptedException);
+            } catch(IOException ioException){
+                throw new UncheckedIOException(ioException);
             }
-        } catch (InterruptedException interruptedException) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(interruptedException);
-        } catch (IOException ioException) {
-            throw new UncheckedIOException(ioException);
         }
     }
 }
