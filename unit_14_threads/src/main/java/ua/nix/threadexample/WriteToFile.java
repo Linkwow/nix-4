@@ -8,6 +8,8 @@ import java.io.UncheckedIOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static java.lang.Thread.sleep;
+
 public class WriteToFile implements Runnable {
 
     private final Application application;
@@ -20,22 +22,23 @@ public class WriteToFile implements Runnable {
 
     @Override
     public void run() {
-        synchronized (application) {
-            while (!application.isStop()) {
-                String input = application.getInput();
-                try {
-                    application.wait(1000);
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-                logger.debug("input hashCode" + input.hashCode());
-                logger.debug("application hashcode" + application.getInput().hashCode());
-                if (input.hashCode() != application.getInput().hashCode()) {
-                    try (FileWriter fileWriter = new FileWriter(file)) {
-                        fileWriter.write(application.getInput());
-                    } catch (IOException ioException) {
-                        throw new UncheckedIOException(ioException);
-                    }
+        while (!application.isStop()) {
+            String input = application.getInput();
+            try {
+                sleep(1000);
+            } catch (InterruptedException interruptedException) {
+                Thread.currentThread().interrupt();
+                logger.error("Error : ", interruptedException);
+                throw new RuntimeException(interruptedException);
+            }
+            logger.debug("input hashCode = " + input.hashCode());
+            logger.debug("application hashcode = " + application.getInput().hashCode());
+            if (input.hashCode() != application.getInput().hashCode()) {
+                try (FileWriter fileWriter = new FileWriter(file)) {
+                    fileWriter.write(application.getInput());
+                } catch (IOException ioException) {
+                    logger.error("Error : ", ioException);
+                    throw new UncheckedIOException(ioException);
                 }
             }
         }
