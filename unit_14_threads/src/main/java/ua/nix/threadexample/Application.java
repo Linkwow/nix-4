@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Application {
 
-    private String input = "";
+    private volatile String input = "";
     private final Scanner scanner;
     private boolean stop;
 
