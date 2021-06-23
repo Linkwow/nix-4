@@ -31,11 +31,10 @@ public class WriteToFile implements Runnable {
                 logger.error("Error : ", interruptedException);
                 throw new RuntimeException(interruptedException);
             }
-            logger.debug("input hashCode = " + input.hashCode());
-            logger.debug("application hashcode = " + application.getInput().hashCode());
-            if (input.hashCode() != application.getInput().hashCode()) {
+            String toWrite = application.getInput();
+            if (input.equals(toWrite)) {
                 try (FileWriter fileWriter = new FileWriter(file)) {
-                    fileWriter.write(application.getInput());
+                    fileWriter.write(toWrite);
                 } catch (IOException ioException) {
                     logger.error("Error : ", ioException);
                     throw new UncheckedIOException(ioException);
