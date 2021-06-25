@@ -55,10 +55,10 @@ public class Horse implements Runnable {
         while (this.getDistance() < 1000) {
             logger.debug(this.getName() + " start running");
             this.setDistance(random.nextInt(101) + 100);
-            logger.debug("Horse " + this.getName() + " overcame distance " + this.getDistance() + " meters");
+            logger.debug(this.getName() + " overcame distance " + this.getDistance() + " meters");
             if (this.getDistance() < 1000) {
                 try {
-                    logger.debug("Horse " + this.getName() + " is sleeping now");
+                    logger.debug(this.getName() + " is sleeping now");
                     Thread.sleep(random.nextInt(101) + 400);
                 } catch (InterruptedException interruptedException) {
                     Thread.currentThread().interrupt();
@@ -72,7 +72,7 @@ public class Horse implements Runnable {
                     waiter.countDown();
                 }
                 long finish = (System.nanoTime() - start) / 1000000;
-                logger.debug("Horse " + this.getName() + " came to the finish line after " + finish + " ms");
+                logger.debug(this.getName() + " came to the finish line after " + finish + " ms");
             }
         }
     }
