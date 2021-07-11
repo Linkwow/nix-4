@@ -9,5 +9,4 @@ public class DiscordBotApplication {
     public static void main(String[] args) {
         SpringApplication.run(DiscordBotApplication.class, args);
     }
-
 }

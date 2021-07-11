@@ -1,80 +1,46 @@
+create sequence attributes_sequence increment by 1 start 1;
+create sequence categories_sequence increment by 1 start 1;
+create sequence factions_sequence increment by 1 start 1;
+create sequence races_sequence increment by 1 start 1;
+create sequence units_sequence increment by 1 start 1;
+create sequence weapons_sequence increment by 1 start 1;
+
 create table races
 (
-    id    smallserial primary key,
-    label text not null unique
+    id   smallserial primary key,
+    name text not null unique
 );
 
 create table factions
 (
     id     smallserial primary key,
     name   text     not null unique,
-    race   smallint not null references races (id),
-    banner text     not null
+    race   smallint not null references races (id)
 );
 
-create table lords
+create table categories
+(
+    id   smallserial primary key,
+    unit_category text not null
+);
+
+create table attributes
+(
+    id          smallserial primary key,
+    description text not null unique
+);
+
+create table weapon
+(
+    id smallserial primary key,
+    type text not null unique
+);
+
+create table units
 (
     id                     smallserial primary key,
     name                   text     not null unique,
-    race                   smallint not null references races (id),
-    faction                smallint not null references factions (id),
-    cost                   smallint not null,
-    upkeep                 smallint not null,
-    health                 smallint not null,
-    leadership             smallint not null,
-    speed                  smallint not null,
-    melee_attack           smallint not null,
-    melee_defence          smallint not null,
-    charge_bonus           smallint not null,
-    missile_resistance     smallint not null,
-    magic_resistance       smallint not null,
-    armor_protection       smallint not null,
-    weapon_type            smallint references weapon_types (id),
-    weapon_damage          smallint not null,
-    armour_piercing_damage smallint not null,
-    melee_interval         smallint not null,
-    magical_attack         smallint not null,
-    range                  smallint not null,
-    unit_size              smallint not null,
-    turns                  smallint not null
-);
-
-create table heroes
-(
-    id                     smallserial primary key,
-    name                   text     not null unique,
-    race                   smallint not null references races (id),
---     checkme
-    faction                smallint not null references factions (id),
-    cost                   smallint not null,
-    upkeep                 smallint not null,
-    health                 smallint not null,
-    leadership             smallint not null,
-    speed                  smallint not null,
-    melee_attack           smallint not null,
-    melee_defence          smallint not null,
-    charge_bonus           smallint not null,
-    missile_resistance     smallint not null,
-    magic_resistance       smallint not null,
-    armor_protection       smallint not null,
-    weapon_type            smallint references weapon_types (id),
-    weapon_damage          smallint not null,
-    armour_piercing_damage smallint not null,
-    melee_interval         smallint not null,
-    magical_attack         smallint not null,
-    range                  smallint not null,
-    unit_size              smallint not null,
-    turns                  smallint not null
-);
-
-create table heroes
-(
-    id                     smallserial primary key,
-    name                   text     not null unique,
-    --     checkme
-    race                   smallint not null references races (id),
-    --     checkme
-    faction                smallint not null references factions (id),
+    faction                smallint references factions (id),
     category               smallint references categories (id),
     cost                   smallint not null,
     upkeep                 smallint not null,
@@ -87,7 +53,7 @@ create table heroes
     missile_resistance     smallint not null,
     magic_resistance       smallint not null,
     armor_protection       smallint not null,
-    weapon_type            smallint references weapon_types (id),
+    weapon_type            smallint references weapon(id),
     weapon_damage          smallint not null,
     armour_piercing_damage smallint not null,
     melee_interval         smallint not null,
@@ -97,40 +63,10 @@ create table heroes
     turns                  smallint not null
 );
 
-create table weapon_types
-(
-    id   smallserial primary key,
-    type text not null
-);
-
-create table attributes
-(
-    id          smallserial primary key,
-    description text not null unique
-);
-
-create table categories
-(
-    id   smallserial primary key,
-    name text not null
-);
-
-create table attributes_lords
+create table attributes_units
 (
     attribute_id smallint references attributes (id),
-    lord_id      smallint references lords (id)
-);
-
-create table attributes_heroes
-(
-    attribute_id smallint references attributes (id),
-    lord_id      smallint references heroes (id)
-);
-
-create table attributes_heroes
-(
-    attribute_id smallint references attributes (id),
-    lord_id      smallint references heroes (id)
+    unit_id      smallint references units (id)
 );
 
 
