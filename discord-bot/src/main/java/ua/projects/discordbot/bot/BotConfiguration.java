@@ -18,7 +18,17 @@ public class BotConfiguration {
     }
 
     @Bean
-    public BotStarter initializeBotStarter(DiscordApi discordApi){
-        return new BotStarter(discordApi);
+    public SlashCommandCreator initializeSlashCommandCreator(DiscordApi discordApi, SlashCommandInitializer slashCommandInitializer, DataTaker dataTaker){
+        return new SlashCommandCreator(discordApi, slashCommandInitializer,dataTaker);
+    }
+
+    @Bean
+    public SlashCommandInitializer initializeSlashCommandInitializer(){
+        return new SlashCommandInitializer();
+    }
+
+    @Bean
+    public DataTaker initializeDataTaker(){
+        return new DataTaker();
     }
 }

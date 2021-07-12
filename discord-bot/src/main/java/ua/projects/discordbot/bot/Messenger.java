@@ -1,23 +1,50 @@
 package ua.projects.discordbot.bot;
 
+import org.javacord.api.DiscordApi;
+import org.javacord.api.entity.message.MessageAuthor;
+import org.javacord.api.interaction.SlashCommandInteraction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Messenger {
 
-    private CommandConfigurator commandConfigurator;
-    private BotStarter botStarter;
+    private final DiscordApi discordApi;
+
+    private final SlashCommandCreator slashCommandCreator;
 
     @Autowired
-    public Messenger(CommandConfigurator commandConfigurator, BotStarter botStarter){
-        this.commandConfigurator = commandConfigurator;
-        this.botStarter = botStarter;
+    public Messenger(DiscordApi discordApi, SlashCommandCreator slashCommandCreator){
+        this.discordApi = discordApi;
+        //todo setter?
+        this.slashCommandCreator = slashCommandCreator;
         start();
     }
 
     public void start(){
-        botStarter.listenChannel();
-        commandConfigurator.showUnits();
+        slashCommandCreator.updateCommands();
+        listenMainChannel();
+        showUnits();
+    }
+
+    public void listenMainChannel() {
+        discordApi.addMessageCreateListener(event -> {
+            if (event.getMessageContent().equalsIgnoreCase("chat")) {
+                MessageAuthor messageAuthor = event.getMessageAuthor();
+                discordApi.getUserById(messageAuthor.getId()).join().sendMessage("hi, " +
+                        messageAuthor.getDisplayName() + ". Start your interaction with print \"/\"");
+            }
+        });
+    }
+
+    public void showUnits() {
+        discordApi.addSlashCommandCreateListener(event -> {
+            SlashCommandInteraction slashCommandInteraction = event.getSlashCommandInteraction();
+            String race = slashCommandInteraction.getFirstOptionStringValue().orElseThrow();
+            String faction = slashCommandInteraction.getSecondOptionStringValue().orElseThrow();
+            String unitType = slashCommandInteraction.getThirdOptionStringValue().orElseThrow();
+            String address = "http://localhost:8080/totalWarWarhammer/showAllUnits?race=" + race + "&faction=" + faction + "&unit=" + unitType;
+            slashCommandInteraction.createImmediateResponder().setContent(address).respond();
+        });
     }
 }

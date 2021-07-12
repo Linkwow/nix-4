@@ -24,7 +24,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categories_generator")
     @SequenceGenerator(name = "categories_generator", sequenceName = "categories_sequence", allocationSize = 1)
     @Column(name = "id", updatable = false)
-    private Short id;
+    private Integer id;
 
     @NotNull
     @NotBlank
@@ -41,7 +41,7 @@ public class Category {
         this.unitCategory = unitCategory;
     }
 
-    public Short getId() {
+    public Integer getId() {
         return id;
     }
 

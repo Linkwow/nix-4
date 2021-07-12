@@ -27,7 +27,7 @@ public class Unit {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "units_generator")
     @SequenceGenerator(name = "units_generator", sequenceName = "units_sequence", allocationSize = 1)
     @Column(name = "id", updatable = false)
-    private Short id;
+    private Integer id;
 
     @NotNull
     @NotBlank
@@ -43,62 +43,62 @@ public class Unit {
     private Category category;
 
     @Column(name = "cost")
-    private short cost;
+    private Integer cost;
 
     @Column(name = "upkeep")
-    private short upkeep;
+    private Integer upkeep;
 
     @Column(name = "health")
-    private short health;
+    private Integer health;
 
     @Column(name = "leadership")
-    private short leadership;
+    private Integer leadership;
 
     @Column(name = "speed")
-    private short speed;
+    private Integer speed;
 
     @Column(name = "melee_attack")
-    private short meleeAttack;
+    private Integer meleeAttack;
 
     @Column(name = "melee_defence")
-    private short meleeDefence;
+    private Integer meleeDefence;
 
     @Column(name = "charge_bonus")
-    private short chargeBonus;
+    private Integer chargeBonus;
 
     @Column(name = "missile_resistance")
-    private short missileResistance;
+    private Integer missileResistance;
 
     @Column(name = "magic_resistance")
-    private short magicResistance;
+    private Integer magicResistance;
 
     @Column(name = "armor_protection")
-    private short armorProtection;
+    private Integer armorProtection;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "weapon_type")
     private Weapon weaponType;
 
     @Column(name = "weapon_damage")
-    private short weaponDamage;
+    private Integer weaponDamage;
 
     @Column(name = "armour_piercing_damage")
-    private short armourPiercingDamage;
+    private Integer armourPiercingDamage;
 
     @Column(name = "melee_interval")
-    private short meleeInterval;
+    private Integer meleeInterval;
 
     @Column(name = "magical_attack")
-    private short magicalAttack;
+    private Integer magicalAttack;
 
     @Column(name = "range")
-    private short range;
+    private Integer range;
 
     @Column(name = "unit_size")
-    private short unitSize;
+    private Integer unitSize;
 
     @Column(name = "turns")
-    private short turns;
+    private Integer turns;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -110,7 +110,7 @@ public class Unit {
     public Unit() {
     }
 
-    public Unit(String name, Faction faction, Category category, Weapon weaponType, short[] parameters) {
+    public Unit(String name, Faction faction, Category category, Weapon weaponType, Integer[] parameters) {
         this.name = name;
         this.faction = faction;
         this.category = category;
@@ -135,7 +135,7 @@ public class Unit {
         this.turns = parameters[17];
     }
 
-    public Short getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -151,47 +151,47 @@ public class Unit {
         return category;
     }
 
-    public short getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public short getUpkeep() {
+    public Integer getUpkeep() {
         return upkeep;
     }
 
-    public short getHealth() {
+    public Integer getHealth() {
         return health;
     }
 
-    public short getLeadership() {
+    public Integer getLeadership() {
         return leadership;
     }
 
-    public short getSpeed() {
+    public Integer getSpeed() {
         return speed;
     }
 
-    public short getMeleeAttack() {
+    public Integer getMeleeAttack() {
         return meleeAttack;
     }
 
-    public short getMeleeDefence() {
+    public Integer getMeleeDefence() {
         return meleeDefence;
     }
 
-    public short getChargeBonus() {
+    public Integer getChargeBonus() {
         return chargeBonus;
     }
 
-    public short getMissileResistance() {
+    public Integer getMissileResistance() {
         return missileResistance;
     }
 
-    public short getMagicResistance() {
+    public Integer getMagicResistance() {
         return magicResistance;
     }
 
-    public short getArmorProtection() {
+    public Integer getArmorProtection() {
         return armorProtection;
     }
 
@@ -199,31 +199,31 @@ public class Unit {
         return weaponType;
     }
 
-    public short getWeaponDamage() {
+    public Integer getWeaponDamage() {
         return weaponDamage;
     }
 
-    public short getArmourPiercingDamage() {
+    public Integer getArmourPiercingDamage() {
         return armourPiercingDamage;
     }
 
-    public short getMeleeInterval() {
+    public Integer getMeleeInterval() {
         return meleeInterval;
     }
 
-    public short getMagicalAttack() {
+    public Integer getMagicalAttack() {
         return magicalAttack;
     }
 
-    public short getRange() {
+    public Integer getRange() {
         return range;
     }
 
-    public short getUnitSize() {
+    public Integer getUnitSize() {
         return unitSize;
     }
 
-    public short getTurns() {
+    public Integer getTurns() {
         return turns;
     }
 
@@ -245,47 +245,47 @@ public class Unit {
         category.setUnitList(this);
     }
 
-    public void setCost(short cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 
-    public void setUpkeep(short upkeep) {
+    public void setUpkeep(Integer upkeep) {
         this.upkeep = upkeep;
     }
 
-    public void setHealth(short health) {
+    public void setHealth(Integer health) {
         this.health = health;
     }
 
-    public void setLeadership(short leadership) {
+    public void setLeadership(Integer leadership) {
         this.leadership = leadership;
     }
 
-    public void setSpeed(short speed) {
+    public void setSpeed(Integer speed) {
         this.speed = speed;
     }
 
-    public void setMeleeAttack(short meleeAttack) {
+    public void setMeleeAttack(Integer meleeAttack) {
         this.meleeAttack = meleeAttack;
     }
 
-    public void setMeleeDefence(short meleeDefence) {
+    public void setMeleeDefence(Integer meleeDefence) {
         this.meleeDefence = meleeDefence;
     }
 
-    public void setChargeBonus(short chargeBonus) {
+    public void setChargeBonus(Integer chargeBonus) {
         this.chargeBonus = chargeBonus;
     }
 
-    public void setMissileResistance(short missileResistance) {
+    public void setMissileResistance(Integer missileResistance) {
         this.missileResistance = missileResistance;
     }
 
-    public void setMagicResistance(short magicResistance) {
+    public void setMagicResistance(Integer magicResistance) {
         this.magicResistance = magicResistance;
     }
 
-    public void setArmorProtection(short armorProtection) {
+    public void setArmorProtection(Integer armorProtection) {
         this.armorProtection = armorProtection;
     }
 
@@ -294,31 +294,31 @@ public class Unit {
         weaponType.setUnitList(this);
     }
 
-    public void setWeaponDamage(short weaponDamage) {
+    public void setWeaponDamage(Integer weaponDamage) {
         this.weaponDamage = weaponDamage;
     }
 
-    public void setArmourPiercingDamage(short armourPiercingDamage) {
+    public void setArmourPiercingDamage(Integer armourPiercingDamage) {
         this.armourPiercingDamage = armourPiercingDamage;
     }
 
-    public void setMeleeInterval(short meleeInterval) {
+    public void setMeleeInterval(Integer meleeInterval) {
         this.meleeInterval = meleeInterval;
     }
 
-    public void setMagicalAttack(short magicalAttack) {
+    public void setMagicalAttack(Integer magicalAttack) {
         this.magicalAttack = magicalAttack;
     }
 
-    public void setRange(short range) {
+    public void setRange(Integer range) {
         this.range = range;
     }
 
-    public void setUnitSize(short unitSize) {
+    public void setUnitSize(Integer unitSize) {
         this.unitSize = unitSize;
     }
 
-    public void setTurns(short turns) {
+    public void setTurns(Integer turns) {
         this.turns = turns;
     }
 

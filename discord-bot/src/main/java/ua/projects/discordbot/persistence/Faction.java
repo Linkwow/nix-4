@@ -27,7 +27,7 @@ public class Faction {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "factions_generator")
     @SequenceGenerator(name = "factions_generator", sequenceName = "factions_sequence", allocationSize = 1)
     @Column(name = "id", updatable = false)
-    private Short id;
+    private Integer id;
 
     @NotNull
     @NotBlank
@@ -50,7 +50,7 @@ public class Faction {
         this.race = race;
     }
 
-    public Short getId() {
+    public Integer getId() {
         return id;
     }
 

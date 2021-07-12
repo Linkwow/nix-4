@@ -7,38 +7,38 @@ create sequence weapons_sequence increment by 1 start 1;
 
 create table races
 (
-    id   smallserial primary key,
+    id   serial primary key,
     name text not null unique
 );
 
 create table factions
 (
-    id     smallserial primary key,
+    id     serial primary key,
     name   text     not null unique,
     race   smallint not null references races (id)
 );
 
 create table categories
 (
-    id   smallserial primary key,
+    id   serial primary key,
     unit_category text not null
 );
 
 create table attributes
 (
-    id          smallserial primary key,
+    id          serial primary key,
     description text not null unique
 );
 
 create table weapon
 (
-    id smallserial primary key,
+    id serial primary key,
     type text not null unique
 );
 
 create table units
 (
-    id                     smallserial primary key,
+    id                     serial primary key,
     name                   text     not null unique,
     faction                smallint references factions (id),
     category               smallint references categories (id),
