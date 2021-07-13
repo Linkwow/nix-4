@@ -12,7 +12,7 @@ import ua.projects.discordbot.service.RaceService;
 @RequestMapping("/totalWarWarhammer")
 public class ApplicationController {
 
-    private RaceService raceService;
+    private final RaceService raceService;
 
     @Autowired
     public ApplicationController(RaceService raceService){
@@ -28,10 +28,41 @@ public class ApplicationController {
 
     @PostMapping("/createRace")
     @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     public String createRace(@RequestParam(name = "raceName") String raceName, Model model){
         Race race = new Race(raceName);
         raceService.createRace(race);
-        model.addAttribute("test", raceName);
+        model.addAttribute("name", raceName);
         return "saved";
+    }
+
+    @GetMapping("/showRaces")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody()
+    public String getRaces(){
+        return raceService.findAllRaces();
+    }
+
+    @GetMapping("/showRaceById")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody()
+    public String getRaceById(@RequestParam(name = "raceId")Integer id){
+       return raceService.findRaceById(id);
+    }
+
+    @PutMapping("/updateRace")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String updateRace(@RequestParam(name = "jsonRace") String jsonRace, Model model){
+        String raceName = raceService.update(jsonRace);
+        model.addAttribute("name", raceName);
+        return "saved";
+    }
+
+    @DeleteMapping("/deleteRace")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String deleteRace(@RequestParam(name = "id") Integer id){
+        raceService.deleteById(id);
+        return "delete";
     }
 }

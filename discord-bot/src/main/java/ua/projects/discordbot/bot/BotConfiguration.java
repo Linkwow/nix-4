@@ -1,5 +1,6 @@
 package ua.projects.discordbot.bot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.springframework.context.annotation.Configuration;
@@ -30,5 +31,10 @@ public class BotConfiguration {
     @Bean
     public DataTaker initializeDataTaker(){
         return new DataTaker();
+    }
+
+    @Bean
+    public ObjectMapper initializeObjectMapper(){
+        return new ObjectMapper();
     }
 }

@@ -1,8 +1,15 @@
 package ua.projects.discordbot.service;
 
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import ua.projects.discordbot.Exceptions.RaceNotFoundException;
+import ua.projects.discordbot.Exceptions.JacksonInteractionException;
 import ua.projects.discordbot.bot.SlashCommandCreator;
 import ua.projects.discordbot.persistence.Faction;
 import ua.projects.discordbot.persistence.Race;
@@ -20,9 +27,18 @@ public class RaceService  {
 
     private SlashCommandCreator slashCommandCreator;
 
+    private ObjectMapper objectMapper;
+
+    private static final Logger logger = LoggerFactory.getLogger(RaceService.class);
+
     @Autowired
     public void setSlashCommandCreator(SlashCommandCreator slashCommandCreator) {
         this.slashCommandCreator = slashCommandCreator;
+    }
+
+    @Autowired
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
     public RaceService(RaceRepository repository){
@@ -34,26 +50,48 @@ public class RaceService  {
         updateCommands();
     }
 
-    public Race findRaceById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> RaceNotFoundException.notFound(id));
+    public String findRaceById(Integer id) {
+        Race race = repository.findById(id).orElseThrow(() -> RaceNotFoundException.notFound(id));
+        String jsonRace;
+        try {
+            jsonRace = objectMapper.writeValueAsString(race);
+        } catch (JacksonException jacksonException){
+            throw JacksonInteractionException.convertException(jacksonException);
+        }
+        return jsonRace;
     }
 
-    public List<Race> findAllRaces(){
+    public String findAllRaces(){
         List<Race> raceList = new ArrayList<>();
+        String jsonRaceArray;
         repository.findAll().forEach(raceList::add);
-        return raceList;
+        try {
+            jsonRaceArray = objectMapper.writeValueAsString(raceList);
+        } catch (JsonProcessingException jsonProcessingException) {
+            throw JacksonInteractionException.convertException(jsonProcessingException);
+        }
+        return jsonRaceArray;
     }
 
-    public void update(Integer id, String name, List<Faction> factionList) {
-        Race race = findRaceById(id);
-        race.setName(name);
-        for (Faction faction : factionList)
-            race.setFactionList(faction);
+    public String update(String jsonRace) {
+        Race requestBody;
+        try {
+            requestBody = objectMapper.readValue(jsonRace, Race.class);
+        } catch (JsonProcessingException jsonProcessingException) {
+            logger.error("Error while convert from json", jsonProcessingException);
+            throw JacksonInteractionException.convertException(jsonProcessingException);
+        }
+        Integer id = requestBody.getId();
+        Race race = repository.findById(id).orElseThrow(() -> RaceNotFoundException.notFound(id));
+        race.setName(requestBody.getName());
+        race.setFactionList(requestBody.getFactionList());
+        repository.save(race);
         updateCommands();
+        return race.getName();
     }
 
     public void deleteById(Integer id) {
-        Race race = findRaceById(id);
+        Race race = repository.findById(id).orElseThrow(() -> RaceNotFoundException.notFound(id));
         repository.delete(race);
         updateCommands();
     }

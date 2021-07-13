@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -30,37 +31,30 @@ public class SlashCommandCreator {
                     SlashCommandOptionChoice.create("Heroes", "Heroes"),
                     SlashCommandOptionChoice.create("Units", "Units")));
 
-    private final List<SlashCommandOption> entities = new ArrayList<>(
-            Arrays.asList(
-                    SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "race", "Choose race", true, getRaces()),
-                    SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "faction", "Choose faction", true, getFactions()),
-                    SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "unit", "Choose unit", true, getUnits())));
+    private final List<SlashCommandOption> entities = new ArrayList<>();
 
     public void setFactions(List<String> inputData) {
         factions = slashCommandInitializer.createCommandsOptions(inputData);
     }
 
     public void setRaces(List<String> inputData) {
-       races = slashCommandInitializer.createCommandsOptions(inputData);
+        races = slashCommandInitializer.createCommandsOptions(inputData);
     }
 
-    public void setCommandList() {
+    public void setCommand() {
         slashCommand = SlashCommand.with("show-units", "shows units from chosen race and faction", getEntities()).createGlobal(discordApi).join();
     }
 
-    public List<SlashCommandOptionChoice> getRaces() {
-        return races;
-    }
-
-    public List<SlashCommandOptionChoice> getFactions() {
-        return factions;
-    }
-
-    public List<SlashCommandOptionChoice> getUnits() {
-        return units;
+    public void setEntities() {
+        entities.clear();
+        Collections.addAll(entities,
+                SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "race", "Choose race", true, races),
+                SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "faction", "Choose faction", true, factions),
+                SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "unit", "Choose unit", true, units));
     }
 
     public List<SlashCommandOption> getEntities() {
+        setEntities();
         return entities;
     }
 
@@ -72,16 +66,14 @@ public class SlashCommandCreator {
     }
 
     public void updateCommands() {
-        deleteCommand();
         setRaces(dataTaker.getRacesFromDataBase());
         setFactions(dataTaker.getFactionsFromDataBase());
-        setCommandList();
-        SlashCommand updatedCommand = SlashCommand.with("show-units", "shows units from chosen race and faction", getEntities()).createGlobal(discordApi).join();
+        setCommand();
     }
 
     public void deleteCommand() {
         for (SlashCommand command : discordApi.getGlobalSlashCommands().join()) {
-            if(command.getName().equals("show-units"))
+            if (command.getName().equals("show-units"))
                 command.deleteGlobal();
         }
     }

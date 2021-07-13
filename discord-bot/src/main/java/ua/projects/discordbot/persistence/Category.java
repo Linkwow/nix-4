@@ -57,7 +57,7 @@ public class Category {
         this.unitCategory = unitCategory;
     }
 
-    public void setUnitList(Unit unit) {
-        unitList.add(unit);
+    public void setUnitList(List<Unit> unitList) {
+        this.unitList = unitList;
     }
 }

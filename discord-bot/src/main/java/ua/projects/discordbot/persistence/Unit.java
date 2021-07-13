@@ -237,12 +237,12 @@ public class Unit {
 
     public void setFaction(Faction faction) {
         this.faction = faction;
-        faction.setUnitList(this);
+        faction.getUnitList().add(this);
     }
 
     public void setCategory(Category category) {
         this.category = category;
-        category.setUnitList(this);
+        category.getUnitList().add(this);
     }
 
     public void setCost(Integer cost) {
@@ -291,7 +291,7 @@ public class Unit {
 
     public void setWeaponType(Weapon weaponType) {
         this.weaponType = weaponType;
-        weaponType.setUnitList(this);
+        weaponType.getUnitList().add(this);
     }
 
     public void setWeaponDamage(Integer weaponDamage) {
@@ -322,8 +322,8 @@ public class Unit {
         this.turns = turns;
     }
 
-    public void setAttributeSet(Attribute attribute) {
-        attributeSet.add(attribute);
-        attribute.setUnitSet(this);
+    public void setAttributeSet(Set<Attribute> attributeSet) {
+        this.attributeSet = attributeSet;
+        this.attributeSet.forEach((attribute) -> attribute.getUnitSet().add(this));
     }
 }

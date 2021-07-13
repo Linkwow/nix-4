@@ -16,12 +16,13 @@ import javax.persistence.CascadeType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
 @Entity
 @Table(name = "factions")
-public class Faction {
+public class Faction implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "factions_generator")
@@ -34,7 +35,7 @@ public class Faction {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "race")
     private Race race;
 
@@ -72,10 +73,10 @@ public class Faction {
 
     public void setRace(Race race) {
         this.race = race;
-        race.setFactionList(this);
+        race.getFactionList().add(this);
     }
 
-    public void setUnitList(Unit unit) {
-        unitList.add(unit);
+    public void setUnitList(List<Unit> unitList) {
+        this.unitList = unitList;
     }
 }

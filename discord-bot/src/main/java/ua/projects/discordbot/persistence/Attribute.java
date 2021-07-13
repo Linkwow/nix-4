@@ -58,7 +58,7 @@ public class Attribute {
         this.description = description;
     }
 
-    public void setUnitSet(Unit unit) {
-        unitSet.add(unit);
+    public void setUnitSet(Set<Unit> unitSet) {
+        this.unitSet = unitSet;
     }
 }
