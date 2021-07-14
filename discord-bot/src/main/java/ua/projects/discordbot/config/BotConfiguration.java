@@ -1,4 +1,4 @@
-package ua.projects.discordbot.bot;
+package ua.projects.discordbot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.javacord.api.DiscordApi;
@@ -6,6 +6,9 @@ import org.javacord.api.DiscordApiBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import ua.projects.discordbot.bot.DataTaker;
+import ua.projects.discordbot.bot.SlashCommandCreator;
+import ua.projects.discordbot.bot.SlashCommandInitializer;
 
 @Configuration
 public class BotConfiguration {

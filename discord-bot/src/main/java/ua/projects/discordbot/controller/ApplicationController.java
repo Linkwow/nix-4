@@ -28,7 +28,6 @@ public class ApplicationController {
 
     @PostMapping("/createRace")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
     public String createRace(@RequestParam(name = "raceName") String raceName, Model model){
         Race race = new Race(raceName);
         raceService.createRace(race);
@@ -60,7 +59,6 @@ public class ApplicationController {
 
     @DeleteMapping("/deleteRace")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public String deleteRace(@RequestParam(name = "id") Integer id){
         raceService.deleteById(id);
         return "delete";
