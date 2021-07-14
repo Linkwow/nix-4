@@ -1,8 +1,5 @@
 package ua.projects.discordbot.controller;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
-import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -24,6 +21,7 @@ public class ApplicationController {
 
     @PostMapping("/admin/createRace")
     @ResponseStatus(HttpStatus.CREATED)
+    //fixme
     @ResponseBody()
     public String createRace(@RequestParam(name = "raceName") String raceName, Model model){
         Race race = new Race(raceName);
@@ -31,26 +29,27 @@ public class ApplicationController {
         model.addAttribute("name", raceName);
         return "saved";
     }
-
-    @GetMapping("/showAllUnits")
+    //fixme rest template
+    @GetMapping("/user/showAllUnits")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody()
     public String getInfo(@RequestParam(name = "race")String race, @RequestParam(name = "faction")String faction, @RequestParam(name = "unit")String unit){
         return race + " " + faction + " " + unit;
     }
 
-    @GetMapping("/showRaces")
+    @GetMapping("/user/showRaces")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody()
     public String getRaces(){
         return raceService.findAllRaces();
     }
 
-    @GetMapping("/showRaceById")
+    @GetMapping("/user/showRaceById")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody()
     public String getRaceById(@RequestParam(name = "raceId")Integer id){
-       return raceService.findRaceById(id);
+       raceService.findRaceById(id);
+       return "!";
     }
 
     @PutMapping("/admin/updateRace")

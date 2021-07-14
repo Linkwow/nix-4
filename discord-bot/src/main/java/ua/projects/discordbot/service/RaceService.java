@@ -45,9 +45,11 @@ public class RaceService  {
         this.repository = repository;
     }
 
-    public void createRace(Race race) {
-        repository.save(race);
+    public Race createRace(Race race) {
+        Race race1 = repository.save(race);
         updateCommands();
+        return race1;
+
     }
 
     public String findRaceById(Integer id) {
