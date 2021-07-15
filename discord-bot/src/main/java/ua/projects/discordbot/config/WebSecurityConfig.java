@@ -23,6 +23,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT).hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                 .anyRequest().authenticated().and().httpBasic().and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                //fixme : add a session use
+                //.and().sessionManagement().maximumSessions(1).and().invalidSessionUrl("/test.html")
+                //and().sessionManagement().invalidSessionUrl("/test.html").sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
