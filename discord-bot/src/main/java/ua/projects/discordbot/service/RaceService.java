@@ -1,5 +1,6 @@
 package ua.projects.discordbot.service;
 
+import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -7,9 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ua.projects.discordbot.exceptions.NotFoundException;
-import ua.projects.discordbot.exceptions.JacksonException;
+import ua.projects.discordbot.Exceptions.RaceNotFoundException;
+import ua.projects.discordbot.Exceptions.JacksonInteractionException;
 import ua.projects.discordbot.bot.SlashCommandCreator;
+import ua.projects.discordbot.persistence.Faction;
 import ua.projects.discordbot.persistence.Race;
 import ua.projects.discordbot.repository.RaceRepository;
 
@@ -51,12 +53,12 @@ public class RaceService  {
     }
 
     public String findRaceById(Integer id) {
-        Race race = repository.findById(id).orElseThrow(() -> NotFoundException.notFound(id));
+        Race race = repository.findById(id).orElseThrow(() -> RaceNotFoundException.notFound(id));
         String jsonRace;
         try {
             jsonRace = objectMapper.writeValueAsString(race);
-        } catch (com.fasterxml.jackson.core.JacksonException jacksonException){
-            throw JacksonException.convertException(jacksonException);
+        } catch (JacksonException jacksonException){
+            throw JacksonInteractionException.convertException(jacksonException);
         }
         return jsonRace;
     }
@@ -68,7 +70,7 @@ public class RaceService  {
         try {
             jsonRaceArray = objectMapper.writeValueAsString(raceList);
         } catch (JsonProcessingException jsonProcessingException) {
-            throw JacksonException.convertException(jsonProcessingException);
+            throw JacksonInteractionException.convertException(jsonProcessingException);
         }
         return jsonRaceArray;
     }
@@ -79,10 +81,10 @@ public class RaceService  {
             requestBody = objectMapper.readValue(jsonRace, Race.class);
         } catch (JsonProcessingException jsonProcessingException) {
             logger.error("Error while convert from json", jsonProcessingException);
-            throw JacksonException.convertException(jsonProcessingException);
+            throw JacksonInteractionException.convertException(jsonProcessingException);
         }
         Integer id = requestBody.getId();
-        Race race = repository.findById(id).orElseThrow(() -> NotFoundException.notFound(id));
+        Race race = repository.findById(id).orElseThrow(() -> RaceNotFoundException.notFound(id));
         race.setName(requestBody.getName());
         race.setFactionList(requestBody.getFactionList());
         repository.save(race);
@@ -91,7 +93,7 @@ public class RaceService  {
     }
 
     public void deleteById(Integer id) {
-        Race race = repository.findById(id).orElseThrow(() -> NotFoundException.notFound(id));
+        Race race = repository.findById(id).orElseThrow(() -> RaceNotFoundException.notFound(id));
         repository.delete(race);
         updateCommands();
     }

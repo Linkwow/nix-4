@@ -16,6 +16,7 @@ public class Messenger {
     @Autowired
     public Messenger(DiscordApi discordApi, SlashCommandCreator slashCommandCreator){
         this.discordApi = discordApi;
+        //todo setter?
         this.slashCommandCreator = slashCommandCreator;
         start();
     }
@@ -42,8 +43,7 @@ public class Messenger {
             String race = slashCommandInteraction.getFirstOptionStringValue().orElseThrow();
             String faction = slashCommandInteraction.getSecondOptionStringValue().orElseThrow();
             String unitType = slashCommandInteraction.getThirdOptionStringValue().orElseThrow();
-            //fixme : need to understand what i will do with this link (rest?How i send parameters?)
-            String address = "http://localhost:8080/total-war-warhammer/units?race=" + race + "&faction=" + faction + "&unit=" + unitType;
+            String address = "http://localhost:8080/totalWarWarhammer/showAllUnits?race=" + race + "&faction=" + faction + "&unit=" + unitType;
             slashCommandInteraction.createImmediateResponder().setContent(address).respond();
         });
     }
