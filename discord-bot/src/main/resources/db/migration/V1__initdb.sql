@@ -1,3 +1,4 @@
+
 create sequence attributes_sequence increment by 1 start 1;
 create sequence categories_sequence increment by 1 start 1;
 create sequence factions_sequence increment by 1 start 1;
