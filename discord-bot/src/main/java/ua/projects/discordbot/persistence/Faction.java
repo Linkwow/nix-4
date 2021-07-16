@@ -46,9 +46,8 @@ public class Faction implements Serializable {
     public Faction() {
     }
 
-    public Faction(String name, Race race) {
+    public Faction(String name) {
         this.name = name;
-        this.race = race;
     }
 
     public Integer getId() {

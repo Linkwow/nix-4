@@ -3,69 +3,82 @@ package ua.projects.discordbot.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ua.projects.discordbot.persistence.Race;
 import ua.projects.discordbot.service.RaceService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
-@RequestMapping("/totalWarWarhammer")
+@RequestMapping("/total-war-warhammer")
 public class ApplicationController {
 
     private final RaceService raceService;
 
     @Autowired
-    public ApplicationController(RaceService raceService){
+    public ApplicationController(RaceService raceService) {
         this.raceService = raceService;
     }
 
-    @PostMapping("/admin/createRace")
-    @ResponseStatus(HttpStatus.CREATED)
-    //fixme
-    @ResponseBody()
-    public String createRace(@RequestParam(name = "raceName") String raceName, Model model){
-        Race race = new Race(raceName);
-        raceService.createRace(race);
-        model.addAttribute("name", raceName);
-        return "saved";
-    }
-    //fixme rest template
+    //fixme this method should be rewrite
     @GetMapping("/user/showAllUnits")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody()
-    public String getInfo(@RequestParam(name = "race")String race, @RequestParam(name = "faction")String faction, @RequestParam(name = "unit")String unit){
+    public String getInfo(@RequestParam(name = "race") String race, @RequestParam(name = "faction") String faction, @RequestParam(name = "unit") String unit) {
         return race + " " + faction + " " + unit;
     }
 
-    @GetMapping("/user/showRaces")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody()
-    public String getRaces(){
-        return raceService.findAllRaces();
-    }
-
-    @GetMapping("/user/showRaceById")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody()
-    public String getRaceById(@RequestParam(name = "raceId")Integer id){
-       raceService.findRaceById(id);
-       return "!";
-    }
-
-    @PutMapping("/admin/updateRace")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public String updateRace(@RequestParam(name = "jsonRace") String jsonRace, Model model){
-        String raceName = raceService.update(jsonRace);
-        model.addAttribute("name", raceName);
-        return "saved";
+    @PostMapping("/admin/createRace")
+    public ModelAndView createRace(@RequestParam(name = "raceName") String name) {
+        ModelAndView modelAndView = new ModelAndView("create");
+        Race race = raceService.createRace(name);
+        modelAndView.addObject("entity", "Race");
+        modelAndView.addObject("id", race.getId());
+        modelAndView.addObject("name", race.getName());
+        return modelAndView;
     }
 
-    @DeleteMapping("/admin/deleteRace")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/user/getRaces")
+    public ModelAndView getRaces() {
+        Map<String, Object> allRaces = new HashMap<>();
+        allRaces.put("races", raceService.findAllRaces());
+        return new ModelAndView("getAll", allRaces).addObject("entity", "races");
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/user/getRaceById")
+    public ModelAndView getRaceById(@RequestParam(name = "id") Integer id) {
+        ModelAndView modelAndView = new ModelAndView("race");
+        Race race = raceService.findRaceById(id);
+        modelAndView.addObject("entity", "race");
+        modelAndView.addObject("id", race.getId());
+        modelAndView.addObject("name", race.getName());
+        return modelAndView;
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/admin/updateRaceById")
+    public ModelAndView updateRace(@RequestParam(name = "id") Integer id, @RequestParam(name = "name") String name) {
+        ModelAndView modelAndView = new ModelAndView("update");
+        Race race = raceService.updateByID(id, name);
+        modelAndView.addObject("entity", "race");
+        modelAndView.addObject("id", race.getId());
+        modelAndView.addObject("name", race.getName());
+        return modelAndView;
+    }
+
+    @DeleteMapping("/admin/deleteRaceById")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String deleteRace(@RequestParam(name = "id") Integer id){
+    public ModelAndView deleteRace(@RequestParam(name = "id") Integer id) {
+        ModelAndView modelAndView = new ModelAndView("delete");
+        Race race = raceService.findRaceById(id);
+        modelAndView.addObject("entity", "race");
+        modelAndView.addObject("id", race.getId());
+        modelAndView.addObject("name", race.getName());
         raceService.deleteById(id);
-        return "delete";
+        return modelAndView;
     }
 }

@@ -1,3 +1,4 @@
+/*
 package ua.projects.discordbot.config;
 
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-
+//fixme all
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -22,10 +23,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST).hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT).hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
-                .anyRequest().authenticated().and().httpBasic().and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-                //fixme : add a session use
-                //.and().sessionManagement().maximumSessions(1).and().invalidSessionUrl("/test.html")
-                //and().sessionManagement().invalidSessionUrl("/test.html").sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .anyRequest().authenticated().and().formLogin().permitAll().and().logout().permitAll();
+                //.anyRequest().authenticated().and().formLogin().loginPage("/login").and().httpBasic().and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     }
 
     @Override
@@ -34,3 +33,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().passwordEncoder(encoder).withUser("admin").password(encoder.encode("admin")).roles("ADMIN");
     }
 }
+*/

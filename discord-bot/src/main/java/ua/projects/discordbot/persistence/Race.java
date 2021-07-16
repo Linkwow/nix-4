@@ -1,7 +1,5 @@
 package ua.projects.discordbot.persistence;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
