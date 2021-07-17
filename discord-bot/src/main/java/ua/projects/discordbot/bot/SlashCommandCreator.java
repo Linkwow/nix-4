@@ -19,8 +19,6 @@ public class SlashCommandCreator {
 
     private final DataTaker dataTaker;
 
-    private SlashCommand slashCommand;
-
     private List<SlashCommandOptionChoice> races = new ArrayList<>();
 
     private List<SlashCommandOptionChoice> factions = new ArrayList<>();
@@ -41,8 +39,10 @@ public class SlashCommandCreator {
         races = slashCommandInitializer.createCommandsOptions(inputData);
     }
 
+    //todo you should add command for show all factions relation to current race
+    //todo you should add command for show all races
     public void setCommand() {
-        slashCommand = SlashCommand.with("show-units", "shows units from chosen race and faction", getEntities()).createGlobal(discordApi).join();
+        SlashCommand.with("show-units", "shows units from chosen race and faction", getEntities()).createGlobal(discordApi).join();
     }
 
     public void setEntities() {
@@ -71,6 +71,7 @@ public class SlashCommandCreator {
         setCommand();
     }
 
+    @SuppressWarnings("unused")
     public void deleteCommand() {
         for (SlashCommand command : discordApi.getGlobalSlashCommands().join()) {
             if (command.getName().equals("show-units"))

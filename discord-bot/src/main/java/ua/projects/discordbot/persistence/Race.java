@@ -32,7 +32,7 @@ public class Race implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "race", fetch = FetchType.LAZY)
-    private List<Faction> factionList = new ArrayList<>();
+    private final List<Faction> factionList = new ArrayList<>();
 
     public Race() {
     }
@@ -55,9 +55,5 @@ public class Race implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setFactionList(List<Faction> factionList) {
-        this.factionList = factionList;
     }
 }

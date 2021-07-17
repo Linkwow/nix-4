@@ -110,29 +110,8 @@ public class Unit {
     public Unit() {
     }
 
-    public Unit(String name, Faction faction, Category category, Weapon weaponType, Integer[] parameters) {
+    public Unit(String name) {
         this.name = name;
-        this.faction = faction;
-        this.category = category;
-        this.weaponType = weaponType;
-        this.cost = parameters[0];
-        this.upkeep = parameters[1];
-        this.health = parameters[2];
-        this.leadership = parameters[3];
-        this.speed = parameters[4];
-        this.meleeAttack = parameters[5];
-        this.meleeDefence = parameters[6];
-        this.chargeBonus = parameters[7];
-        this.missileResistance = parameters[8];
-        this.magicResistance = parameters[9];
-        this.armorProtection = parameters[10];
-        this.weaponDamage = parameters[11];
-        this.armourPiercingDamage = parameters[12];
-        this.meleeInterval = parameters[13];
-        this.magicalAttack = parameters[14];
-        this.range = parameters[15];
-        this.unitSize = parameters[16];
-        this.turns = parameters[17];
     }
 
     public Integer getId() {

@@ -2,55 +2,53 @@ package ua.projects.discordbot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import ua.projects.discordbot.bot.SlashCommandCreator;
 import ua.projects.discordbot.exceptions.EntityNotFoundException;
-import ua.projects.discordbot.persistence.Race;
+import ua.projects.discordbot.persistence.Weapon;
 import ua.projects.discordbot.repository.CommonRepository;
-import ua.projects.discordbot.repository.RaceRepository;
+import ua.projects.discordbot.repository.WeaponRepository;
 
 import java.util.List;
 
 @Service
-public class RaceService implements CommonRepository<Race> {
+public class WeaponService implements CommonRepository<Weapon> {
 
-    private final RaceRepository repository;
+    private WeaponRepository repository;
 
     private SlashCommandCreator slashCommandCreator;
+
+    public WeaponService(WeaponRepository repository) {
+        this.repository = repository;
+    }
 
     @Autowired
     public void setSlashCommandCreator(SlashCommandCreator slashCommandCreator) {
         this.slashCommandCreator = slashCommandCreator;
     }
 
-    public RaceService(RaceRepository repository) {
-        this.repository = repository;
-    }
-
-    public Race create(String name) {
-        Race race = repository.save(new Race(name));
+    public Weapon create(String type){
+        Weapon weapon = repository.save(new Weapon(type));
         updateCommands();
-        return race;
+        return weapon;
     }
 
     @Override
-    public List<Race> findAll() {
+    public List<Weapon> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Race find(Integer id) {
+    public Weapon find(Integer id) {
         return repository.findById(id).orElseThrow(
                 () -> EntityNotFoundException.notFound(id));
     }
 
-    @SuppressWarnings("UnusedReturnValue")
-    public Race update(Integer id, String name) {
-        Race race = find(id);
-        race.setName(name);
-        repository.save(race);
+    public Weapon update(Integer id, String type){
+        Weapon weapon = find(id);
+        weapon.setType(type);
+        repository.save(weapon);
         updateCommands();
-        return race;
+        return weapon;
     }
 
     @Override

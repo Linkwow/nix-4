@@ -2,55 +2,53 @@ package ua.projects.discordbot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import ua.projects.discordbot.bot.SlashCommandCreator;
 import ua.projects.discordbot.exceptions.EntityNotFoundException;
-import ua.projects.discordbot.persistence.Race;
+import ua.projects.discordbot.persistence.Attribute;
+import ua.projects.discordbot.repository.AttributeRepository;
 import ua.projects.discordbot.repository.CommonRepository;
-import ua.projects.discordbot.repository.RaceRepository;
 
 import java.util.List;
 
 @Service
-public class RaceService implements CommonRepository<Race> {
+public class AttributeService implements CommonRepository<Attribute> {
 
-    private final RaceRepository repository;
+    private final AttributeRepository repository;
 
     private SlashCommandCreator slashCommandCreator;
+
+    public AttributeService(AttributeRepository repository) {
+        this.repository = repository;
+    }
 
     @Autowired
     public void setSlashCommandCreator(SlashCommandCreator slashCommandCreator) {
         this.slashCommandCreator = slashCommandCreator;
     }
 
-    public RaceService(RaceRepository repository) {
-        this.repository = repository;
-    }
-
-    public Race create(String name) {
-        Race race = repository.save(new Race(name));
+    public Attribute create(String description){
+        Attribute attribute = repository.save(new Attribute(description));
         updateCommands();
-        return race;
+        return attribute;
     }
 
     @Override
-    public List<Race> findAll() {
+    public List<Attribute> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Race find(Integer id) {
+    public Attribute find(Integer id) {
         return repository.findById(id).orElseThrow(
                 () -> EntityNotFoundException.notFound(id));
     }
 
-    @SuppressWarnings("UnusedReturnValue")
-    public Race update(Integer id, String name) {
-        Race race = find(id);
-        race.setName(name);
-        repository.save(race);
+    public Attribute update(Integer id, String description){
+        Attribute attribute = find(id);
+        attribute.setDescription(description);
+        repository.save(attribute);
         updateCommands();
-        return race;
+        return attribute;
     }
 
     @Override
@@ -60,7 +58,7 @@ public class RaceService implements CommonRepository<Race> {
     }
 
     @Override
-    public void updateCommands() {
+    public void updateCommands(){
         slashCommandCreator.updateCommands();
     }
 }

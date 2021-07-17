@@ -2,61 +2,58 @@ package ua.projects.discordbot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import ua.projects.discordbot.bot.SlashCommandCreator;
 import ua.projects.discordbot.exceptions.EntityNotFoundException;
-import ua.projects.discordbot.persistence.Race;
+import ua.projects.discordbot.persistence.Category;
+import ua.projects.discordbot.repository.CategoryRepository;
 import ua.projects.discordbot.repository.CommonRepository;
-import ua.projects.discordbot.repository.RaceRepository;
 
 import java.util.List;
 
 @Service
-public class RaceService implements CommonRepository<Race> {
+public class CategoryService implements CommonRepository<Category> {
 
-    private final RaceRepository repository;
+    private CategoryRepository repository;
 
     private SlashCommandCreator slashCommandCreator;
+
+    public CategoryService(CategoryRepository repository) {
+        this.repository = repository;
+    }
 
     @Autowired
     public void setSlashCommandCreator(SlashCommandCreator slashCommandCreator) {
         this.slashCommandCreator = slashCommandCreator;
     }
 
-    public RaceService(RaceRepository repository) {
-        this.repository = repository;
-    }
-
-    public Race create(String name) {
-        Race race = repository.save(new Race(name));
+    public Category create(String unitCategory){
+        Category category = repository.save(new Category(unitCategory));
         updateCommands();
-        return race;
+        return category;
     }
 
     @Override
-    public List<Race> findAll() {
+    public List<Category> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Race find(Integer id) {
+    public Category find(Integer id) {
         return repository.findById(id).orElseThrow(
                 () -> EntityNotFoundException.notFound(id));
     }
 
-    @SuppressWarnings("UnusedReturnValue")
-    public Race update(Integer id, String name) {
-        Race race = find(id);
-        race.setName(name);
-        repository.save(race);
+    public Category update(Integer id, String unitCategory){
+        Category category = find(id);
+        category.setUnitCategory(unitCategory);
+        repository.save(category);
         updateCommands();
-        return race;
+        return category;
     }
 
     @Override
     public void delete(Integer id) {
         repository.deleteById(id);
-        updateCommands();
     }
 
     @Override

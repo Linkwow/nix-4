@@ -15,7 +15,6 @@ import javax.persistence.FetchType;
 import java.util.Set;
 import java.util.HashSet;
 
-
 @Entity
 @Table(name = "attributes")
 public class Attribute {
