@@ -1,8 +1,6 @@
 package ua.projects.discordbot.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.projects.discordbot.bot.SlashCommandCreator;
 import ua.projects.discordbot.exceptions.EntityNotFoundException;
 import ua.projects.discordbot.persistence.Category;
 import ua.projects.discordbot.repository.CategoryRepository;
@@ -11,19 +9,12 @@ import ua.projects.discordbot.repository.CommonRepository;
 import java.util.List;
 
 @Service
-public class CategoryService implements CommonRepository<Category> {
+public class CategoryService extends CommonService implements CommonRepository<Category> {
 
-    private CategoryRepository repository;
-
-    private SlashCommandCreator slashCommandCreator;
+    private final CategoryRepository repository;
 
     public CategoryService(CategoryRepository repository) {
         this.repository = repository;
-    }
-
-    @Autowired
-    public void setSlashCommandCreator(SlashCommandCreator slashCommandCreator) {
-        this.slashCommandCreator = slashCommandCreator;
     }
 
     public Category create(String unitCategory){
@@ -54,10 +45,6 @@ public class CategoryService implements CommonRepository<Category> {
     @Override
     public void delete(Integer id) {
         repository.deleteById(id);
-    }
-
-    @Override
-    public void updateCommands() {
-        slashCommandCreator.updateCommands();
+        updateCommands();
     }
 }

@@ -1,8 +1,6 @@
 package ua.projects.discordbot.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.projects.discordbot.bot.SlashCommandCreator;
 import ua.projects.discordbot.exceptions.EntityNotFoundException;
 import ua.projects.discordbot.persistence.Attribute;
 import ua.projects.discordbot.repository.AttributeRepository;
@@ -11,19 +9,12 @@ import ua.projects.discordbot.repository.CommonRepository;
 import java.util.List;
 
 @Service
-public class AttributeService implements CommonRepository<Attribute> {
+public class AttributeService extends CommonService implements CommonRepository<Attribute> {
 
     private final AttributeRepository repository;
 
-    private SlashCommandCreator slashCommandCreator;
-
     public AttributeService(AttributeRepository repository) {
         this.repository = repository;
-    }
-
-    @Autowired
-    public void setSlashCommandCreator(SlashCommandCreator slashCommandCreator) {
-        this.slashCommandCreator = slashCommandCreator;
     }
 
     public Attribute create(String description){
@@ -55,10 +46,5 @@ public class AttributeService implements CommonRepository<Attribute> {
     public void delete(Integer id) {
         repository.deleteById(id);
         updateCommands();
-    }
-
-    @Override
-    public void updateCommands(){
-        slashCommandCreator.updateCommands();
     }
 }

@@ -1,8 +1,6 @@
 package ua.projects.discordbot.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.projects.discordbot.bot.SlashCommandCreator;
 import ua.projects.discordbot.exceptions.EntityNotFoundException;
 import ua.projects.discordbot.persistence.Weapon;
 import ua.projects.discordbot.repository.CommonRepository;
@@ -11,19 +9,12 @@ import ua.projects.discordbot.repository.WeaponRepository;
 import java.util.List;
 
 @Service
-public class WeaponService implements CommonRepository<Weapon> {
+public class WeaponService extends CommonService implements CommonRepository<Weapon> {
 
-    private WeaponRepository repository;
-
-    private SlashCommandCreator slashCommandCreator;
+    private final WeaponRepository repository;
 
     public WeaponService(WeaponRepository repository) {
         this.repository = repository;
-    }
-
-    @Autowired
-    public void setSlashCommandCreator(SlashCommandCreator slashCommandCreator) {
-        this.slashCommandCreator = slashCommandCreator;
     }
 
     public Weapon create(String type){
@@ -55,10 +46,5 @@ public class WeaponService implements CommonRepository<Weapon> {
     public void delete(Integer id) {
         repository.deleteById(id);
         updateCommands();
-    }
-
-    @Override
-    public void updateCommands() {
-        slashCommandCreator.updateCommands();
     }
 }

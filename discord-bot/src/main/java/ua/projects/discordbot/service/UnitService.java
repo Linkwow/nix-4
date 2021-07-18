@@ -2,23 +2,22 @@ package ua.projects.discordbot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.projects.discordbot.bot.SlashCommandCreator;
 import ua.projects.discordbot.exceptions.EntityNotFoundException;
-import ua.projects.discordbot.persistence.Category;
-import ua.projects.discordbot.persistence.Faction;
-import ua.projects.discordbot.persistence.Unit;
-import ua.projects.discordbot.persistence.Weapon;
+import ua.projects.discordbot.persistence.*;
 import ua.projects.discordbot.repository.*;
 
+import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
-public class UnitService implements CommonRepository<Unit> {
+public class UnitService extends CommonService implements CommonRepository<Unit> {
 
-    private UnitRepository unitRepository;
+    private final UnitRepository unitRepository;
 
     private FactionRepository factionRepository;
 
@@ -26,15 +25,10 @@ public class UnitService implements CommonRepository<Unit> {
 
     private WeaponRepository weaponRepository;
 
-    private SlashCommandCreator slashCommandCreator;
+    private AttributeRepository attributeRepository;
 
     public UnitService(UnitRepository unitRepository) {
         this.unitRepository = unitRepository;
-    }
-
-    @Autowired
-    public void setSlashCommandCreator(SlashCommandCreator slashCommandCreator) {
-        this.slashCommandCreator = slashCommandCreator;
     }
 
     @Autowired
@@ -52,15 +46,22 @@ public class UnitService implements CommonRepository<Unit> {
         this.weaponRepository = weaponRepository;
     }
 
-    public Unit create(String name, String factionName, String unitCategory, String weaponType, Map<String, Integer> parameters) {
+    @Transactional
+    public Unit create(String name, String factionName, String unitCategory, String weaponType, String attributes, Map<String, Integer> parameters) {
         Faction faction = factionRepository.findFactionByNameIs(factionName);
         Category category = categoryRepository.findCategoryByUnitCategoryIs(unitCategory);
         Weapon weapon = weaponRepository.findWeaponByTypeIs(weaponType);
+        Set<Attribute> attributeSet = attributeRepository.findAllByDescriptionIn(attributes.split("&="));
         Unit unit = new Unit(name);
-
         unit.setFaction(faction);
         unit.setCategory(category);
         unit.setWeaponType(weapon);
+        unit.setAttributeSet(attributeSet);
+        try {
+            setUnitParameters(unit, parameters);
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            throw new RuntimeException("Error while invocation parameter set");
+        }
         unitRepository.save(unit);
         updateCommands();
         return unit;
@@ -77,33 +78,44 @@ public class UnitService implements CommonRepository<Unit> {
                 () -> EntityNotFoundException.notFound(id));
     }
 
-    public Unit update(Integer id, String name, String factionName, String unitCategory, String weaponType) {
-        return null;
+    @Transactional
+    public Unit update(Integer id, String name, String factionName, String unitCategory, String weaponType, String attributes, Map<String, Integer> parameters) {
+        Unit unit = find(id);
+        unit.setName(Optional.of(name).orElse(unit.getName()));
+        unit.setFaction(factionRepository.findFactionByNameIs(
+                Optional.of(factionName).orElse(unit.getFaction().getName())));
+        unit.setCategory(categoryRepository.findCategoryByUnitCategoryIs(
+                Optional.of(unitCategory).orElse(unit.getCategory().getUnitCategory())));
+        unit.setWeaponType(weaponRepository.findWeaponByTypeIs(
+                Optional.of(weaponType).orElse(unit.getWeaponType().getType())));
+        if(attributes != null)
+            unit.setAttributeSet(attributeRepository.findAllByDescriptionIn(attributes.split("&=")));
+        try {
+            setUnitParameters(unit, parameters);
+        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+            throw new RuntimeException("Error while invocation parameter set");
+        }
+        updateCommands();
+        return unit;
     }
-
 
     @Override
     public void delete(Integer id) {
-
-    }
-
-    @Override
-    public void updateCommands() {
-        slashCommandCreator.updateCommands();
+        unitRepository.deleteById(id);
     }
 
     //todo check this method on functionality
-    private Unit setUnitParameters(Unit unit, String name, String factionName, String unitCategory, String weaponType, Map<String, Integer> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method method;
-        Character upperCaseChar;
-        StringBuilder methodName = new StringBuilder();
-        for (String key : parameters.keySet()) {
-            methodName.append("set" + key);
-            upperCaseChar = methodName.charAt(3);
-            methodName.replace(3, 4, upperCaseChar.toString().toUpperCase());
-            method = unit.getClass().getMethod(methodName.toString(), Integer.class);
-            method.invoke(unit, parameters.get(key));
+    private void setUnitParameters(Unit unit, Map<String, Integer> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        for (String methodName : parameters.keySet()) {
+            if (parameters.get(methodName) != null) {
+                Method method = unit.getClass().getMethod(methodName, Integer.class);
+                method.invoke(unit, parameters.get(methodName));
+            }
         }
-        return unit;
+        updateCommands();
+    }
+
+    public List<Unit> getUnitsByFactionAndCategory(String faction, String category){
+       return unitRepository.getUnitByFactionAndCategory(faction, category);
     }
 }

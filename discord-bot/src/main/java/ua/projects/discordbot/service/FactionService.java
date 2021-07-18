@@ -1,8 +1,6 @@
 package ua.projects.discordbot.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.projects.discordbot.bot.SlashCommandCreator;
 import ua.projects.discordbot.exceptions.EntityNotFoundException;
 import ua.projects.discordbot.persistence.Faction;
 import ua.projects.discordbot.persistence.Race;
@@ -15,25 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class FactionService implements CommonRepository<Faction> {
+public class FactionService extends CommonService implements CommonRepository<Faction> {
 
     private final FactionRepository factionRepository;
 
-    private RaceRepository raceRepository;
+    private final RaceRepository raceRepository;
 
-    private SlashCommandCreator slashCommandCreator;
-
-    public FactionService(FactionRepository factionRepository){
+    public FactionService(FactionRepository factionRepository, RaceRepository raceRepository){
         this.factionRepository = factionRepository;
-    }
-
-    @Autowired
-    public void setSlashCommandCreator(SlashCommandCreator slashCommandCreator) {
-        this.slashCommandCreator = slashCommandCreator;
-    }
-
-    @Autowired
-    public void setRaceRepository(RaceRepository raceRepository){
         this.raceRepository = raceRepository;
     }
 
@@ -62,9 +49,9 @@ public class FactionService implements CommonRepository<Faction> {
     @Transactional
     public Faction update(Integer id, String name, String raceName){
         Faction faction = find(id);
-        faction.setName(name);
-        Race race  = raceRepository.findRaceByNameIs(
-                Optional.of(raceName).orElse(faction.getName()));
+        faction.setName(Optional.of(name).orElse(faction.getName()));
+        Race race = raceRepository.findRaceByNameIs(
+                Optional.of(raceName).orElse(faction.getRace().getName()));
         faction.setRace(race);
         factionRepository.save(faction);
         updateCommands();
@@ -75,10 +62,5 @@ public class FactionService implements CommonRepository<Faction> {
     public void delete(Integer id){
         factionRepository.deleteById(id);
         updateCommands();
-    }
-
-    @Override
-    public void updateCommands(){
-        slashCommandCreator.updateCommands();
     }
 }

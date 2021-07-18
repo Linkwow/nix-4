@@ -30,7 +30,7 @@ create table attributes
     description text not null unique
 );
 
-create table weapon
+create table weapons
 (
     id serial primary key,
     type text not null unique
@@ -53,7 +53,7 @@ create table units
     missile_resistance     smallint not null,
     magic_resistance       smallint not null,
     armor_protection       smallint not null,
-    weapon_type            smallint references weapon(id),
+    weapon_type            smallint references weapons(id),
     weapon_damage          smallint not null,
     armour_piercing_damage smallint not null,
     melee_interval         smallint not null,
