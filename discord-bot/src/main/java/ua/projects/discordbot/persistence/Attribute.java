@@ -25,8 +25,7 @@ public class Attribute {
     @Column(name = "id", updatable = false)
     private Integer id;
 
-    @NotNull
-    @NotBlank
+    @NotBlank(message = "description is mandatory")
     @Column(name = "description")
     private String description;
 

@@ -1,17 +1,6 @@
 package ua.projects.discordbot.persistence;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
+import javax.persistence.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
@@ -30,17 +19,16 @@ public class Faction implements Serializable {
     @Column(name = "id", updatable = false)
     private Integer id;
 
-    @NotNull
     @NotBlank
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "race")
     private Race race;
 
-    //todo: check the cascade when first create the faction and the next create a unit
-    @OneToMany(mappedBy = "faction", orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "faction", fetch = FetchType.LAZY)
     private List<Unit> unitList = new ArrayList<>();
 
     public Faction() {

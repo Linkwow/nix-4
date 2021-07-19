@@ -27,7 +27,6 @@ public class Weapon {
     @Column(name = "id", updatable = false)
     private Integer id;
 
-    @NotNull
     @NotBlank
     @Column(name = "type")
     private String type;

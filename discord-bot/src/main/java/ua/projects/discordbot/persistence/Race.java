@@ -26,7 +26,6 @@ public class Race implements Serializable {
     @Column(name = "id", updatable = false)
     private Integer id;
 
-    @NotNull
     @NotBlank
     @Column(name = "name")
     private String name;

@@ -26,7 +26,6 @@ public class Category {
     @Column(name = "id", updatable = false)
     private Integer id;
 
-    @NotNull
     @NotBlank
     @Column(name = "unit_category")
     private String unitCategory;
