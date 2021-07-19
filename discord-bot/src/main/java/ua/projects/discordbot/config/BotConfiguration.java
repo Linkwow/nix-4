@@ -6,6 +6,8 @@ import org.javacord.api.DiscordApiBuilder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.projects.discordbot.bot.DataTaker;
 import ua.projects.discordbot.bot.SlashCommandCreator;
 import ua.projects.discordbot.bot.SlashCommandInitializer;

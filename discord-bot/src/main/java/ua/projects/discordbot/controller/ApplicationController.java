@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.projects.discordbot.persistence.*;
 import ua.projects.discordbot.service.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,8 +60,8 @@ public class ApplicationController {
 
     @GetMapping("/user/showAllUnitsFromChosenFaction")
     public ModelAndView getUnitsOfFaction(
-            @RequestParam(name = "faction") String faction,
-            @RequestParam(name = "category") String category) {
+            @Valid@RequestParam(name = "faction") String faction,
+            @Valid@RequestParam(name = "category") String category) {
         Map<String, Object> units = new HashMap<>();
         units.put("units", unitService.getUnitsByFactionAndCategory(faction, category));
         return new ModelAndView("getAllUnits", units);
