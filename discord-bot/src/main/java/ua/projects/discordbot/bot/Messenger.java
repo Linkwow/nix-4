@@ -37,6 +37,7 @@ public class Messenger {
         });
     }
 
+    //todo functionality
     public void showUnits() {
         discordApi.addSlashCommandCreateListener(event -> {
             SlashCommandInteraction slashCommandInteraction = event.getSlashCommandInteraction();

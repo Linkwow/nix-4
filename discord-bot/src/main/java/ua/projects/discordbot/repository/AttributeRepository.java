@@ -9,4 +9,5 @@ public interface AttributeRepository extends JpaRepository<Attribute, Integer> {
 
     Set<Attribute> findAllByDescriptionIn(String[] array);
 
+    boolean existsByDescription(String description);
 }

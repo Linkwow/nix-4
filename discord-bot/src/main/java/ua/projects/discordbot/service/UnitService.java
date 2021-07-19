@@ -46,6 +46,11 @@ public class UnitService extends CommonService implements CommonRepository<Unit>
         this.weaponRepository = weaponRepository;
     }
 
+    @Autowired
+    public void setAttributeRepository(AttributeRepository attributeRepository) {
+        this.attributeRepository = attributeRepository;
+    }
+
     @Transactional
     public Unit create(String name, String factionName, String unitCategory, String weaponType, String attributes, Map<String, Integer> parameters) {
         Faction faction = factionRepository.findFactionByNameIs(factionName);
