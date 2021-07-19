@@ -5,10 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ua.projects.discordbot.exceptions.ValidationException;
 import ua.projects.discordbot.persistence.*;
 import ua.projects.discordbot.service.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,18 +60,19 @@ public class ApplicationController {
         this.weaponService = weaponService;
     }
 
+    //fixme
     @GetMapping("/user/showAllUnitsFromChosenFaction")
     public ModelAndView getUnitsOfFaction(
-            @Valid@RequestParam(name = "faction") String faction,
-            @Valid@RequestParam(name = "category") String category) {
+            @Valid @RequestParam(name = "faction") String faction,
+            @Valid @RequestParam(name = "category") String category) {
         Map<String, Object> units = new HashMap<>();
-        units.put("units", unitService.getUnitsByFactionAndCategory(faction, category));
+        units.put("units", unitService.getUnitsByFactionAndCategory(faction.replace("_", " "), category.replace("_", " ")));
         return new ModelAndView("getAllUnits", units);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/admin/createAttribute")
-    public ModelAndView createAttribute(@RequestParam(name = "attributeName") String description) {
+    public ModelAndView createAttribute(@RequestParam(name = "attributeName") @Valid String description) {
         ModelAndView modelAndView = new ModelAndView("createAttribute");
         Attribute attribute = attributeService.create(description);
         modelAndView.addObject("id", attribute.getId());
@@ -280,36 +283,36 @@ public class ApplicationController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/admin/updateRace")
-    public void updateRace(@RequestParam(name = "id") Integer id, @RequestParam(name = "name") String name) {
+    public void updateRace(@RequestParam(name = "id") Integer id, @RequestParam(name = "name") @NotBlank String name) {
         raceService.update(id, name);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/admin/updateUnit")
     public void updateUnit(@RequestParam(name = "id") Integer id,
-                           @RequestParam(name = "name") String name,
-                           @RequestParam(name = "factionName") String factionName,
-                           @RequestParam(name = "unitCategory") String unitCategory,
-                           @RequestParam(name = "weaponType") String weaponType,
-                           @RequestParam(name = "attributes") String attributes,
-                           @RequestParam(name = "cost") Integer cost,
-                           @RequestParam(name = "upkeep") Integer upkeep,
-                           @RequestParam(name = "health") Integer health,
-                           @RequestParam(name = "leadership") Integer leadership,
-                           @RequestParam(name = "speed") Integer speed,
-                           @RequestParam(name = "meleeAttack") Integer meleeAttack,
-                           @RequestParam(name = "meleeDefence") Integer meleeDefence,
-                           @RequestParam(name = "chargeBonus") Integer chargeBonus,
-                           @RequestParam(name = "missileResistance") Integer missileResistance,
-                           @RequestParam(name = "magicResistance") Integer magicResistance,
-                           @RequestParam(name = "armorProtection") Integer armorProtection,
-                           @RequestParam(name = "weaponDamage") Integer weaponDamage,
-                           @RequestParam(name = "armourPiercingDamage") Integer armourPiercingDamage,
-                           @RequestParam(name = "meleeInterval") Integer meleeInterval,
-                           @RequestParam(name = "magicalAttack") Integer magicalAttack,
-                           @RequestParam(name = "range") Integer range,
-                           @RequestParam(name = "unitSize") Integer unitSize,
-                           @RequestParam(name = "turns") Integer turns) {
+                           @RequestParam(name = "name", required = false) String name,
+                           @RequestParam(name = "factionName", required = false) String factionName,
+                           @RequestParam(name = "unitCategory", required = false) String unitCategory,
+                           @RequestParam(name = "weaponType", required = false) String weaponType,
+                           @RequestParam(name = "attributes", required = false) String attributes,
+                           @RequestParam(name = "cost", required = false) Integer cost,
+                           @RequestParam(name = "upkeep", required = false) Integer upkeep,
+                           @RequestParam(name = "health", required = false) Integer health,
+                           @RequestParam(name = "leadership", required = false) Integer leadership,
+                           @RequestParam(name = "speed", required = false) Integer speed,
+                           @RequestParam(name = "meleeAttack", required = false) Integer meleeAttack,
+                           @RequestParam(name = "meleeDefence", required = false) Integer meleeDefence,
+                           @RequestParam(name = "chargeBonus", required = false) Integer chargeBonus,
+                           @RequestParam(name = "missileResistance", required = false) Integer missileResistance,
+                           @RequestParam(name = "magicResistance", required = false) Integer magicResistance,
+                           @RequestParam(name = "armorProtection", required = false) Integer armorProtection,
+                           @RequestParam(name = "weaponDamage", required = false) Integer weaponDamage,
+                           @RequestParam(name = "armourPiercingDamage", required = false) Integer armourPiercingDamage,
+                           @RequestParam(name = "meleeInterval", required = false) Integer meleeInterval,
+                           @RequestParam(name = "magicalAttack", required = false) Integer magicalAttack,
+                           @RequestParam(name = "range", required = false) Integer range,
+                           @RequestParam(name = "unitSize", required = false) Integer unitSize,
+                           @RequestParam(name = "turns", required = false) Integer turns) {
         Map<String, Integer> parameters = createParametersMap(
                 cost, upkeep, health, leadership, speed, meleeAttack,
                 meleeDefence, chargeBonus, missileResistance,
