@@ -8,9 +8,9 @@
 
 <body>
 {{#unit}}
-    <h1 style="text-align: center">You have just created unit : {{name}} with {{id}} and next parameters: </h1>
-    <h2>faction - {{faction}}</h2>
-    <h2>faction - {{category}}</h2>
+    <h1 style="text-align: center">You have just created unit : {{name}} with id {{id}} and next parameters: </h1>
+    <h2>faction - {{#faction}}{{name}}{{/faction}}</h2>
+    <h2>faction - {{#category}}{{unitCategory}}{{/category}}</h2>
     <h2>faction - {{cost}}</h2>
     <h2>faction - {{upkeep}}</h2>
     <h2>faction - {{health}}</h2>
