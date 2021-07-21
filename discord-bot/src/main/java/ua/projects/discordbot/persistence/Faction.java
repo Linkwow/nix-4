@@ -19,7 +19,7 @@ public class Faction implements Serializable {
     private Integer id;
 
     @NotBlank
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
