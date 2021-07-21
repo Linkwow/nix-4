@@ -3,6 +3,7 @@ package ua.projects.discordbot.bot;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.interaction.SlashCommandInteraction;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,15 +14,16 @@ public class Messenger {
 
     private final SlashCommandCreator slashCommandCreator;
 
+    private final StringBuilder sb = new StringBuilder();
+
     @Autowired
-    public Messenger(DiscordApi discordApi, SlashCommandCreator slashCommandCreator){
+    public Messenger(DiscordApi discordApi, SlashCommandCreator slashCommandCreator) {
         this.discordApi = discordApi;
-        //todo setter?
         this.slashCommandCreator = slashCommandCreator;
         start();
     }
 
-    public void start(){
+    public void start() {
         slashCommandCreator.updateCommands();
         listenMainChannel();
         showUnits();
@@ -29,7 +31,7 @@ public class Messenger {
 
     public void listenMainChannel() {
         discordApi.addMessageCreateListener(event -> {
-            if (event.getMessageContent().equalsIgnoreCase("chat")) {
+            if (event.getMessageContent().equalsIgnoreCase("start")) {
                 MessageAuthor messageAuthor = event.getMessageAuthor();
                 discordApi.getUserById(messageAuthor.getId()).join().sendMessage("hi, " +
                         messageAuthor.getDisplayName() + ". Start your interaction with print \"/\"");
@@ -37,15 +39,30 @@ public class Messenger {
         });
     }
 
-    //todo functionality
     public void showUnits() {
         discordApi.addSlashCommandCreateListener(event -> {
             SlashCommandInteraction slashCommandInteraction = event.getSlashCommandInteraction();
-            String race = slashCommandInteraction.getFirstOptionStringValue().orElseThrow();
-            String faction = slashCommandInteraction.getSecondOptionStringValue().orElseThrow();
-            String unitType = slashCommandInteraction.getThirdOptionStringValue().orElseThrow();
-            String address = "http://localhost:8080/totalWarWarhammer/showAllUnits?race=" + race + "&faction=" + faction + "&unit=" + unitType;
-            slashCommandInteraction.createImmediateResponder().setContent(address).respond();
+            String reference = "", race, faction, unitType;
+            if (slashCommandInteraction.getCommandName().equals("show-units")) {
+                faction = slashCommandInteraction.getSecondOptionStringValue().orElseThrow();
+                unitType = slashCommandInteraction.getThirdOptionStringValue().orElseThrow();
+                if (unitType.equals("Legendary Lords")) {
+                    sb.append(unitType);
+                    sb.deleteCharAt(sb.length() - 1);
+                } else if (unitType.equals("Heroes")) {
+                    sb.append(unitType);
+                    sb.delete(4, 5);
+                } else {
+                    sb.append(unitType);
+                    sb.deleteCharAt(sb.length() - 1);
+                }
+                reference = "http://localhost:8080/totalWarWarhammer/user/showAllUnitsFromChosenFaction?" + "faction=" + faction + "&category=" + sb;
+                sb.setLength(0);
+            } else if (slashCommandInteraction.getCommandName().equals("show-factions")) {
+                race = slashCommandInteraction.getFirstOptionStringValue().orElseThrow();
+                reference = "http://localhost:8080/totalWarWarhammer/user/showAllFactionsFromCurrentRace?race=" + race;
+            }
+            slashCommandInteraction.createImmediateResponder().setContent(reference).respond();
         });
     }
 }

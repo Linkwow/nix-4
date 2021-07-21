@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -77,6 +76,10 @@ public class Unit {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "weapon_type")
     private Weapon weaponType;
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     @Column(name = "weapon_damage")
     private Integer weaponDamage;

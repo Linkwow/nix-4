@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ua.projects.discordbot.exceptions.ValidationException;
+
 import ua.projects.discordbot.persistence.*;
 import ua.projects.discordbot.service.*;
 
@@ -60,14 +60,26 @@ public class ApplicationController {
         this.weaponService = weaponService;
     }
 
-    //fixme
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/user/showAllUnitsFromChosenFaction")
     public ModelAndView getUnitsOfFaction(
             @Valid @RequestParam(name = "faction") String faction,
             @Valid @RequestParam(name = "category") String category) {
         Map<String, Object> units = new HashMap<>();
-        units.put("units", unitService.getUnitsByFactionAndCategory(faction.replace("_", " "), category.replace("_", " ")));
+        units.put("units", unitService.getUnitsByFactionAndCategory(
+                faction.replace("_", " "),
+                category.replace("_", " ")));
         return new ModelAndView("getAllUnits", units);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/user/showAllFactionsFromChosenRace")
+    public ModelAndView getFactionsOfRace(
+            @Valid @RequestParam(name = "race") String race) {
+        Map<String, Object> factions = new HashMap<>();
+        factions.put("units", factionService.getFactionsByRace(
+                race.replace("_", " ")));
+        return new ModelAndView("getAllFactions", factions);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

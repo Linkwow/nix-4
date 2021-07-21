@@ -7,4 +7,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     Category findCategoryByUnitCategoryIs(String unitCategory);
 
+    boolean existsCategoryByUnitCategoryIs(String unitCategory);
+
 }

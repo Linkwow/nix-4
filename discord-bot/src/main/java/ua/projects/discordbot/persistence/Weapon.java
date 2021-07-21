@@ -12,7 +12,6 @@ import javax.persistence.FetchType;
 
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -43,6 +42,10 @@ public class Weapon {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getType() {

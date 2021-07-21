@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.FetchType;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,5 +53,9 @@ public class Race implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -9,4 +9,6 @@ public interface UnitRepository extends JpaRepository<Unit, Integer> {
 
     List<Unit> getUnitByFactionAndCategory(String faction, String category);
 
+    boolean existsUnitByNameIs(String name);
+
 }

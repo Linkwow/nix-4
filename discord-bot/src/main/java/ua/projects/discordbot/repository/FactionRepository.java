@@ -9,4 +9,8 @@ public interface FactionRepository extends JpaRepository<Faction, Integer> {
 
     Faction findFactionByNameIs(String factionName);
 
+    List<Faction> findFactionByRaceIs(String race);
+
+    boolean existsFactionByNameIs(String name);
+
 }

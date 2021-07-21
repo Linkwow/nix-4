@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.persistence.ManyToMany;
 import javax.persistence.FetchType;
 
@@ -54,6 +53,10 @@ public class Attribute {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setUnitSet(Set<Unit> unitSet) {

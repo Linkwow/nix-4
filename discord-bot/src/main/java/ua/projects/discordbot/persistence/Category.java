@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.FetchType;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -58,5 +57,9 @@ public class Category {
 
     public void setUnitList(List<Unit> unitList) {
         this.unitList = unitList;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

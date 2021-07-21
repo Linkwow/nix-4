@@ -2,6 +2,7 @@ package ua.projects.discordbot.bot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import ua.projects.discordbot.persistence.Faction;
 import ua.projects.discordbot.persistence.Race;
 import ua.projects.discordbot.repository.FactionRepository;

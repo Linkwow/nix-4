@@ -2,6 +2,7 @@ package ua.projects.discordbot.bot;
 
 import org.javacord.api.DiscordApi;
 import org.javacord.api.interaction.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,11 +26,13 @@ public class SlashCommandCreator {
 
     private final List<SlashCommandOptionChoice> units = new ArrayList<>(
             Arrays.asList(
-                    SlashCommandOptionChoice.create("Lords", "Lords"),
+                    SlashCommandOptionChoice.create("Lords", "Legendary_Lords"),
                     SlashCommandOptionChoice.create("Heroes", "Heroes"),
                     SlashCommandOptionChoice.create("Units", "Units")));
 
     private final List<SlashCommandOption> entities = new ArrayList<>();
+
+    private final List<SlashCommandOption> racesAndFactions = new ArrayList<>();
 
     public void setFactions(List<String> inputData) {
         factions = slashCommandInitializer.createCommandsOptions(inputData);
@@ -39,10 +42,9 @@ public class SlashCommandCreator {
         races = slashCommandInitializer.createCommandsOptions(inputData);
     }
 
-    //todo you should add command for show all factions relation to current race
-    //todo you should add command for show all races
     public void setCommand() {
         SlashCommand.with("show-units", "shows units from chosen race and faction", getEntities()).createGlobal(discordApi).join();
+        SlashCommand.with("show-factions", "shows factions from chosen race", getRacesAndFactions()).createGlobal(discordApi).join();
     }
 
     public void setEntities() {
@@ -53,9 +55,22 @@ public class SlashCommandCreator {
                 SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "unit", "Choose unit", true, units));
     }
 
+    public void setRacesAndFactions() {
+        racesAndFactions.clear();
+        Collections.addAll(racesAndFactions,
+                SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "race", "Choose race", true, races),
+                SlashCommandOption.createWithChoices(SlashCommandOptionType.STRING, "faction", "Choose faction", true, factions));
+    }
+
+
     public List<SlashCommandOption> getEntities() {
         setEntities();
         return entities;
+    }
+
+    public List<SlashCommandOption> getRacesAndFactions() {
+        setRacesAndFactions();
+        return racesAndFactions;
     }
 
     @Autowired

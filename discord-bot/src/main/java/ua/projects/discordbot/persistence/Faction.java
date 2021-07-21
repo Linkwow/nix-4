@@ -2,7 +2,6 @@ package ua.projects.discordbot.persistence;
 
 import javax.persistence.*;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
 
 import java.io.Serializable;
@@ -65,5 +64,9 @@ public class Faction implements Serializable {
 
     public void setUnitList(List<Unit> unitList) {
         this.unitList = unitList;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

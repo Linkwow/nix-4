@@ -7,4 +7,6 @@ public interface WeaponRepository extends JpaRepository<Weapon, Integer> {
 
     Weapon findWeaponByTypeIs(String type);
 
+    boolean existsWeaponByTypeIs(String type);
+
 }

@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface AttributeRepository extends JpaRepository<Attribute, Integer> {
 
-    Set<Attribute> findAllByDescriptionIn(String[] array);
+    Set<Attribute> findAttributesByDescriptionIn(String[] array);
 
-    boolean existsByDescription(String description);
+    boolean existsAttributeByDescriptionIs(String description);
 }

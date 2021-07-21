@@ -1,15 +1,24 @@
 package ua.projects.discordbot.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
+
 import ua.projects.discordbot.exceptions.EntityNotFoundException;
+import ua.projects.discordbot.exceptions.ValidationException;
 import ua.projects.discordbot.persistence.Category;
 import ua.projects.discordbot.repository.CategoryRepository;
 import ua.projects.discordbot.repository.CommonRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService extends CommonService implements CommonRepository<Category> {
+
+    private static final Logger logger = LoggerFactory.getLogger(CategoryService.class);
 
     private final CategoryRepository repository;
 
@@ -17,34 +26,75 @@ public class CategoryService extends CommonService implements CommonRepository<C
         this.repository = repository;
     }
 
-    public Category create(String unitCategory){
-        Category category = repository.save(new Category(unitCategory));
-        updateCommands();
+    public Category create(String unitCategory) {
+        Category category = new Category();
+        try {
+            if (notPresent(unitCategory)) {
+                category = repository.save(new Category(unitCategory));
+                updateCommands();
+            }
+        } catch (TransactionSystemException exception) {
+            logger.error("Invalid input: " + exception.getMessage(), exception);
+            throw new ValidationException("Category is mandatory. Category should be a string");
+        }
+        logger.debug("Category was created successfully");
         return category;
     }
 
     @Override
     public List<Category> findAll() {
+        logger.debug("All categories were found successfully");
         return repository.findAll();
     }
 
     @Override
     public Category find(Integer id) {
-        return repository.findById(id).orElseThrow(
-                () -> EntityNotFoundException.notFound(id));
+        Category category;
+        try {
+            category = repository.findById(id)
+                    .orElseThrow(
+                            () -> EntityNotFoundException
+                                    .notFoundException("Category with id " + id + " not found"));
+        } catch (IllegalArgumentException illegalArgumentException) {
+            logger.error("Invalid input: " + illegalArgumentException.getMessage(), illegalArgumentException);
+            throw new ValidationException("Id is mandatory. Id should be a number.");
+        }
+        logger.debug("Category was found successfully");
+        return category;
     }
 
-    public Category update(Integer id, String unitCategory){
+    public Category update(Integer id, String unitCategory) {
         Category category = find(id);
-        category.setUnitCategory(unitCategory);
-        repository.save(category);
-        updateCommands();
+        try {
+            if (notPresent(unitCategory))
+                category.setUnitCategory(unitCategory);
+            repository.save(category);
+            updateCommands();
+        } catch (TransactionSystemException transactionSystemException) {
+            logger.error("Invalid input: " + transactionSystemException.getMessage(), transactionSystemException);
+            throw new ValidationException("Category is mandatory. Category should be a string");
+        }
+        logger.debug("Category was updated successfully");
         return category;
     }
 
     @Override
     public void delete(Integer id) {
-        repository.deleteById(id);
+        Category category = find(id);
+        repository.delete(category);
         updateCommands();
+        logger.debug("Category was deleted successfully");
+    }
+
+    public Category getCategoryByName(String name) {
+        return Optional.ofNullable(repository.findCategoryByUnitCategoryIs(name))
+                .orElseThrow(
+                        () -> EntityNotFoundException.notFoundException("Category with name " + name + "does absence in data base"));
+    }
+
+    private boolean notPresent(String unitCategory) {
+        if (repository.existsCategoryByUnitCategoryIs(unitCategory))
+            throw new ValidationException("Unit category " + unitCategory + " presents in dataBase. Unit category should be unique.");
+        return true;
     }
 }
