@@ -3,6 +3,7 @@ package ua.projects.discordbot.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
 
@@ -34,7 +35,7 @@ public class CategoryService extends CommonService implements CommonRepository<C
                 updateCommands();
             }
         } catch (TransactionSystemException exception) {
-            logger.error("Invalid input: " + exception.getMessage(), exception);
+            logger.error("Invalid input: " + exception.getMessage());
             throw new ValidationException("Category is mandatory. Category should be a string");
         }
         logger.debug("Category was created successfully");
@@ -55,8 +56,8 @@ public class CategoryService extends CommonService implements CommonRepository<C
                     .orElseThrow(
                             () -> EntityNotFoundException
                                     .notFoundException("Category with id " + id + " not found"));
-        } catch (IllegalArgumentException illegalArgumentException) {
-            logger.error("Invalid input: " + illegalArgumentException.getMessage(), illegalArgumentException);
+        } catch (InvalidDataAccessApiUsageException invalidDataAccessApiUsageException) {
+            logger.error("Invalid input: " + invalidDataAccessApiUsageException.getMessage());
             throw new ValidationException("Id is mandatory. Id should be a number.");
         }
         logger.debug("Category was found successfully");
@@ -71,7 +72,7 @@ public class CategoryService extends CommonService implements CommonRepository<C
             repository.save(category);
             updateCommands();
         } catch (TransactionSystemException transactionSystemException) {
-            logger.error("Invalid input: " + transactionSystemException.getMessage(), transactionSystemException);
+            logger.error("Invalid input: " + transactionSystemException.getMessage());
             throw new ValidationException("Category is mandatory. Category should be a string");
         }
         logger.debug("Category was updated successfully");
@@ -89,7 +90,7 @@ public class CategoryService extends CommonService implements CommonRepository<C
     public Category getCategoryByName(String name) {
         return Optional.ofNullable(repository.findCategoryByUnitCategoryIs(name))
                 .orElseThrow(
-                        () -> EntityNotFoundException.notFoundException("Category with name " + name + "does absence in data base"));
+                        () -> EntityNotFoundException.notFoundException("Category with name " + name + " does absence in data base"));
     }
 
     private boolean notPresent(String unitCategory) {
