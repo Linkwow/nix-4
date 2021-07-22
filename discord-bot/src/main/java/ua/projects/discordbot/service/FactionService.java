@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
 
@@ -15,6 +16,7 @@ import ua.projects.discordbot.repository.CommonRepository;
 import ua.projects.discordbot.repository.FactionRepository;
 
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,12 +45,12 @@ public class FactionService extends CommonService implements CommonRepository<Fa
             if (notPresent(name))
                 faction.setName(name);
             Race race = raceService.getRaceByName(Optional.ofNullable(raceName).orElseThrow(
-                    () -> ValidationException.notValid("Name is mandatory. Name should be a string")));
+                    () -> ValidationException.notValid("Race name is mandatory. Name should be a string")));
             faction.setRace(race);
             repository.save(faction);
             updateCommands();
-        } catch (TransactionSystemException exception) {
-            logger.error("Invalid input: " + exception.getMessage(), exception);
+        } catch (TransactionSystemException | ConstraintViolationException exception) {
+            logger.error("Invalid input: " + exception.getMessage());
             throw new ValidationException("Name is mandatory. Name should be a string");
         }
         logger.debug("Faction was created successfully");
@@ -69,8 +71,8 @@ public class FactionService extends CommonService implements CommonRepository<Fa
                     .orElseThrow(
                             () -> EntityNotFoundException
                                     .notFoundException("Faction with id " + id + " not found"));
-        } catch (IllegalArgumentException illegalArgumentException) {
-            logger.error("Invalid input: " + illegalArgumentException.getMessage(), illegalArgumentException);
+        } catch (InvalidDataAccessApiUsageException invalidDataAccessApiUsageException) {
+            logger.error("Invalid input: " + invalidDataAccessApiUsageException.getMessage());
             throw new ValidationException("Id is mandatory. Id should be a number.");
         }
         logger.debug("Faction was found successfully");
@@ -80,20 +82,14 @@ public class FactionService extends CommonService implements CommonRepository<Fa
     @Transactional
     public Faction update(Integer id, String name, String raceName) {
         Faction faction = find(id);
-        try {
-            String factionNameToUpdate = (Optional.ofNullable(name).orElse(faction.getName()));
-            if (notPresent(factionNameToUpdate))
-                faction.setName(factionNameToUpdate);
-            if(!raceName.isBlank()) {
-                Race race = raceService.getRaceByName(raceName);
-                faction.setRace(race);
-            }
-            repository.save(faction);
-            updateCommands();
-        } catch (TransactionSystemException transactionSystemException) {
-            logger.error("Invalid input: " + transactionSystemException.getMessage(), transactionSystemException);
-            throw new ValidationException("Description is mandatory. Description should be a string");
+        if (notPresent(name))
+            faction.setName(Optional.ofNullable(name).orElse(faction.getName()));
+        if (!(raceName == null || raceName.isBlank())) {
+            Race race = raceService.getRaceByName(raceName);
+            faction.setRace(race);
         }
+        repository.save(faction);
+        updateCommands();
         logger.debug("Attribute was updated successfully");
         return faction;
     }
@@ -106,14 +102,15 @@ public class FactionService extends CommonService implements CommonRepository<Fa
         logger.debug("Faction was deleted successfully");
     }
 
-    public List<Faction> getFactionsByRace(String race) {
-        return repository.findFactionByRaceIs(race);
+    public List<Faction> getFactionsByRace(String raceName) {
+        Race race = raceService.getRaceByName(raceName);
+        return repository.findFactionsByRace(race.getId());
     }
 
     public Faction getFactionByName(String name) {
         return Optional.ofNullable(repository.findFactionByNameIs(name))
                 .orElseThrow(
-                        () -> EntityNotFoundException.notFoundException("Faction with name " + name + "does absence in data base"));
+                        () -> EntityNotFoundException.notFoundException("Faction with name " + name + " does absence in data base"));
     }
 
     private boolean notPresent(String name) {
