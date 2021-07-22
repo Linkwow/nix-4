@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class FactionService extends CommonService implements CommonRepository<Faction> {
 
     private static final Logger logger = LoggerFactory.getLogger(FactionService.class);
@@ -38,7 +39,6 @@ public class FactionService extends CommonService implements CommonRepository<Fa
         this.raceService = raceService;
     }
 
-    @Transactional
     public Faction create(String name, String raceName) {
         Faction faction = new Faction();
         try {
@@ -79,7 +79,6 @@ public class FactionService extends CommonService implements CommonRepository<Fa
         return faction;
     }
 
-    @Transactional
     public Faction update(Integer id, String name, String raceName) {
         Faction faction = find(id);
         if (notPresent(name))

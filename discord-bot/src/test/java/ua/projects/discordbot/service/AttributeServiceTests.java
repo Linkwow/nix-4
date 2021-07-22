@@ -58,7 +58,7 @@ public class AttributeServiceTests {
     void findAllAttributes() {
         attributeService.create("first");
         List<Attribute> attributes = attributeService.findAll();
-        Assertions.assertEquals(2, attributes.size());
+        Assertions.assertTrue(attributes.size() > 0);
     }
 
     @Test
@@ -139,10 +139,10 @@ public class AttributeServiceTests {
     @Test
     @Order(8)
     void getAttributesByName() {
-        attributeService.create("Encourage");
-        attributeService.create("Hide");
-        attributeService.create("Immune to Psychology");
-        String attributes = "Encourage,Hide,  Immune to Psychology";
+        attributeService.create("1");
+        attributeService.create("2");
+        attributeService.create("3");
+        String attributes = "1,2,  3";
         Set<Attribute> attributeSet = attributeService.getAttributesByName(attributes);
         Assertions.assertEquals(3, attributeSet.size());
     }

@@ -3,8 +3,8 @@ package ua.projects.discordbot.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionSystemException;
 import ua.projects.discordbot.exceptions.EntityNotFoundException;
 import ua.projects.discordbot.exceptions.ValidationException;
 import ua.projects.discordbot.persistence.*;
@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Transactional
 public class UnitService extends CommonService implements CommonRepository<Unit> {
 
     private static final Logger logger = LoggerFactory.getLogger(UnitService.class);
@@ -57,7 +58,6 @@ public class UnitService extends CommonService implements CommonRepository<Unit>
         this.attributeService = attributeService;
     }
 
-    @Transactional
     public Unit create(String name, String factionName, String unitCategory, String weaponType, String attributes, Map<String, Integer> parameters) {
         Faction faction = factionService.getFactionByName(Optional.ofNullable(factionName).orElseThrow(
                 () -> ValidationException.notValid("Faction name is mandatory.")));
@@ -66,24 +66,22 @@ public class UnitService extends CommonService implements CommonRepository<Unit>
         Weapon weapon = weaponService.getWeaponByType(Optional.ofNullable(weaponType).orElseThrow(
                 () -> ValidationException.notValid("Weapon type is mandatory.")));
         Set<Attribute> attributeSet = attributeService.getAttributesByName(Optional.ofNullable(attributes).orElseThrow(
-                () -> ValidationException.notValid("Weapon type is mandatory.")));
+                () -> ValidationException.notValid("Attributes name is mandatory.")));
         Unit unit = new Unit();
         try {
-            if (notPresent(name))
-                unit.setName(name);
+            notPresent(Optional.ofNullable(name).orElseThrow(
+                    () -> ValidationException.notValid("Name is mandatory.")));
+            unit.setName(name);
             unit.setFaction(faction);
             unit.setCategory(category);
             unit.setWeaponType(weapon);
             unit.setAttributeSet(attributeSet);
             setUnitParameters(unit, parameters);
-            repository.save(unit);
+            unit = repository.save(unit);
             updateCommands();
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             logger.error("Error. Check the create method " + e);
             throw new RuntimeException("Error while invocation parameter set");
-        } catch (TransactionSystemException exception) {
-            logger.error("Invalid input: " + exception.getMessage(), exception);
-            throw new ValidationException("Name is mandatory. Name should be a string");
         }
         logger.debug("Unit was created successfully");
         return unit;
@@ -103,15 +101,14 @@ public class UnitService extends CommonService implements CommonRepository<Unit>
                     .orElseThrow(
                             () -> EntityNotFoundException
                                     .notFoundException("Unit with id " + id + " not found"));
-        } catch (IllegalArgumentException illegalArgumentException) {
-            logger.error("Invalid input: " + illegalArgumentException.getMessage(), illegalArgumentException);
+        } catch (InvalidDataAccessApiUsageException invalidDataAccessApiUsageException) {
+            logger.error("Invalid input: " + invalidDataAccessApiUsageException.getMessage());
             throw new ValidationException("Id is mandatory. Id should be a number.");
         }
         logger.debug("Unit was found successfully");
         return unit;
     }
 
-    @Transactional
     public Unit update(Integer id, String name, String factionName, String unitCategory, String weaponType, String attributes, Map<String, Integer> parameters) {
         Unit unit = find(id);
         unit.setName(Optional.ofNullable(name).orElse(unit.getName()));
@@ -124,7 +121,8 @@ public class UnitService extends CommonService implements CommonRepository<Unit>
         if (attributes != null)
             unit.setAttributeSet(attributeService.getAttributesByName(attributes));
         try {
-            setUnitParameters(unit, parameters);
+            if (parameters != null)
+                setUnitParameters(unit, parameters);
         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
             logger.error("Error. Check the update method " + e);
             throw new RuntimeException("Error while invocation parameter set");
@@ -143,7 +141,7 @@ public class UnitService extends CommonService implements CommonRepository<Unit>
     }
 
     public List<Unit> getUnitsByFactionAndCategory(String faction, String category) {
-        return repository.getUnitByFactionAndCategory(faction, category);
+        return repository.getUnitsByFactionAndCategory(faction, category);
     }
 
     private void setUnitParameters(Unit unit, Map<String, Integer> parameters) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
