@@ -84,7 +84,7 @@ public class ApplicationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/admin/createAttribute")
-    public ModelAndView createAttribute(@RequestParam(name = "attributeName") @Valid String description) {
+    public ModelAndView createAttribute(@Valid @RequestParam(name = "attributeName") String description) {
         ModelAndView modelAndView = new ModelAndView("createAttribute");
         Attribute attribute = attributeService.create(description);
         modelAndView.addObject("id", attribute.getId());
@@ -104,9 +104,9 @@ public class ApplicationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/admin/createFaction")
-    public ModelAndView createFaction(@RequestParam(name = "factionName") String name, @RequestParam(name = "raceName") String raceName) {
+    public ModelAndView createFaction(@RequestParam(name = "factionName") String factionName, @RequestParam(name = "raceName") String raceName) {
         ModelAndView modelAndView = new ModelAndView("createFaction");
-        Faction faction = factionService.create(name, raceName);
+        Faction faction = factionService.create(factionName, raceName);
         modelAndView.addObject("id", faction.getId());
         modelAndView.addObject("name", faction.getName());
         modelAndView.addObject("race", faction.getRace());
@@ -129,25 +129,25 @@ public class ApplicationController {
                                    @RequestParam(name = "factionName") String factionName,
                                    @RequestParam(name = "unitCategory") String unitCategory,
                                    @RequestParam(name = "weaponType") String weaponType,
-                                   @RequestParam(name = "attributes") String attributes,
-                                   @RequestParam(name = "cost") Integer cost,
-                                   @RequestParam(name = "upkeep") Integer upkeep,
-                                   @RequestParam(name = "health") Integer health,
-                                   @RequestParam(name = "leadership") Integer leadership,
-                                   @RequestParam(name = "speed") Integer speed,
-                                   @RequestParam(name = "meleeAttack") Integer meleeAttack,
-                                   @RequestParam(name = "meleeDefence") Integer meleeDefence,
-                                   @RequestParam(name = "chargeBonus") Integer chargeBonus,
-                                   @RequestParam(name = "missileResistance") Integer missileResistance,
-                                   @RequestParam(name = "magicResistance") Integer magicResistance,
-                                   @RequestParam(name = "armorProtection") Integer armorProtection,
-                                   @RequestParam(name = "weaponDamage") Integer weaponDamage,
-                                   @RequestParam(name = "armourPiercingDamage") Integer armourPiercingDamage,
-                                   @RequestParam(name = "meleeInterval") Integer meleeInterval,
-                                   @RequestParam(name = "magicalAttack") Integer magicalAttack,
-                                   @RequestParam(name = "range") Integer range,
-                                   @RequestParam(name = "unitSize") Integer unitSize,
-                                   @RequestParam(name = "turns") Integer turns) {
+                                   @RequestParam(name = "attributes", required = false) String attributes,
+                                   @RequestParam(name = "cost", required = false, defaultValue = "0") Integer cost,
+                                   @RequestParam(name = "upkeep", required = false, defaultValue = "0") Integer upkeep,
+                                   @RequestParam(name = "health", required = false, defaultValue = "0") Integer health,
+                                   @RequestParam(name = "leadership", required = false, defaultValue = "0") Integer leadership,
+                                   @RequestParam(name = "speed", required = false, defaultValue = "0") Integer speed,
+                                   @RequestParam(name = "meleeAttack", required = false, defaultValue = "0") Integer meleeAttack,
+                                   @RequestParam(name = "meleeDefence", required = false, defaultValue = "0") Integer meleeDefence,
+                                   @RequestParam(name = "chargeBonus", required = false, defaultValue = "0") Integer chargeBonus,
+                                   @RequestParam(name = "missileResistance", required = false, defaultValue = "0") Integer missileResistance,
+                                   @RequestParam(name = "magicResistance", required = false, defaultValue = "0") Integer magicResistance,
+                                   @RequestParam(name = "armorProtection", required = false, defaultValue = "0") Integer armorProtection,
+                                   @RequestParam(name = "weaponDamage", required = false, defaultValue = "0") Integer weaponDamage,
+                                   @RequestParam(name = "armourPiercingDamage", required = false, defaultValue = "0") Integer armourPiercingDamage,
+                                   @RequestParam(name = "meleeInterval", required = false, defaultValue = "0") Integer meleeInterval,
+                                   @RequestParam(name = "magicalAttack", required = false, defaultValue = "0") Integer magicalAttack,
+                                   @RequestParam(name = "range", required = false, defaultValue = "0") Integer range,
+                                   @RequestParam(name = "unitSize", required = false, defaultValue = "0") Integer unitSize,
+                                   @RequestParam(name = "turns", required = false, defaultValue = "0") Integer turns) {
         Map<String, Integer> parameters = createParametersMap(
                 cost, upkeep, health, leadership, speed, meleeAttack,
                 meleeDefence, chargeBonus, missileResistance,
@@ -307,24 +307,24 @@ public class ApplicationController {
                            @RequestParam(name = "unitCategory", required = false) String unitCategory,
                            @RequestParam(name = "weaponType", required = false) String weaponType,
                            @RequestParam(name = "attributes", required = false) String attributes,
-                           @RequestParam(name = "cost", required = false) Integer cost,
-                           @RequestParam(name = "upkeep", required = false) Integer upkeep,
-                           @RequestParam(name = "health", required = false) Integer health,
-                           @RequestParam(name = "leadership", required = false) Integer leadership,
-                           @RequestParam(name = "speed", required = false) Integer speed,
-                           @RequestParam(name = "meleeAttack", required = false) Integer meleeAttack,
-                           @RequestParam(name = "meleeDefence", required = false) Integer meleeDefence,
-                           @RequestParam(name = "chargeBonus", required = false) Integer chargeBonus,
-                           @RequestParam(name = "missileResistance", required = false) Integer missileResistance,
-                           @RequestParam(name = "magicResistance", required = false) Integer magicResistance,
-                           @RequestParam(name = "armorProtection", required = false) Integer armorProtection,
-                           @RequestParam(name = "weaponDamage", required = false) Integer weaponDamage,
-                           @RequestParam(name = "armourPiercingDamage", required = false) Integer armourPiercingDamage,
-                           @RequestParam(name = "meleeInterval", required = false) Integer meleeInterval,
-                           @RequestParam(name = "magicalAttack", required = false) Integer magicalAttack,
-                           @RequestParam(name = "range", required = false) Integer range,
-                           @RequestParam(name = "unitSize", required = false) Integer unitSize,
-                           @RequestParam(name = "turns", required = false) Integer turns) {
+                           @RequestParam(name = "cost", required = false, defaultValue = "0") Integer cost,
+                           @RequestParam(name = "upkeep", required = false, defaultValue = "0") Integer upkeep,
+                           @RequestParam(name = "health", required = false, defaultValue = "0") Integer health,
+                           @RequestParam(name = "leadership", required = false, defaultValue = "0") Integer leadership,
+                           @RequestParam(name = "speed", required = false, defaultValue = "0") Integer speed,
+                           @RequestParam(name = "meleeAttack", required = false, defaultValue = "0") Integer meleeAttack,
+                           @RequestParam(name = "meleeDefence", required = false, defaultValue = "0") Integer meleeDefence,
+                           @RequestParam(name = "chargeBonus", required = false, defaultValue = "0") Integer chargeBonus,
+                           @RequestParam(name = "missileResistance", required = false, defaultValue = "0") Integer missileResistance,
+                           @RequestParam(name = "magicResistance", required = false, defaultValue = "0") Integer magicResistance,
+                           @RequestParam(name = "armorProtection", required = false, defaultValue = "0") Integer armorProtection,
+                           @RequestParam(name = "weaponDamage", required = false, defaultValue = "0") Integer weaponDamage,
+                           @RequestParam(name = "armourPiercingDamage", required = false, defaultValue = "0") Integer armourPiercingDamage,
+                           @RequestParam(name = "meleeInterval", required = false, defaultValue = "0") Integer meleeInterval,
+                           @RequestParam(name = "magicalAttack",  required = false, defaultValue = "0") Integer magicalAttack,
+                           @RequestParam(name = "range", required = false, defaultValue = "0") Integer range,
+                           @RequestParam(name = "unitSize", required = false, defaultValue = "0") Integer unitSize,
+                           @RequestParam(name = "turns", required = false, defaultValue = "0") Integer turns) {
         Map<String, Integer> parameters = createParametersMap(
                 cost, upkeep, health, leadership, speed, meleeAttack,
                 meleeDefence, chargeBonus, missileResistance,
